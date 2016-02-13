@@ -3,12 +3,12 @@ package com.setycz.chickens;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
+import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -35,6 +35,7 @@ public class ChickensMod {
 
     private static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
 
+    private static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
@@ -92,6 +93,14 @@ public class ChickensMod {
         List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
         for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
             registerChicken(chickenIndex, chickens.get(chickenIndex), event);
+        }
+
+        // colored egg
+        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
+        if (event.getSide() == Side.CLIENT) {
+            ModelResourceLocation resourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, EnumDyeColor.BLACK.getDyeDamage(), resourceLocation);
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, EnumDyeColor.BLUE.getDyeDamage(), resourceLocation);
         }
     }
 
