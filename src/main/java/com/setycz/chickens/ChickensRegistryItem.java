@@ -1,6 +1,7 @@
 package com.setycz.chickens;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -8,21 +9,19 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ChickensRegistryItem {
     private final String entityName;
-    private final Item dropItem;
-    private final Item layItem;
+    private final ItemStack layItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
     private final ChickensRegistryItem parent1;
     private final ChickensRegistryItem parent2;
 
-    public ChickensRegistryItem(String entityName, ResourceLocation texture, Item dropItem, Item layItem, int bgColor, int fgColor) {
-        this(entityName, texture, dropItem, layItem, bgColor, fgColor, null, null);
+    public ChickensRegistryItem(String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
+        this(entityName, texture, layItem, bgColor, fgColor, null, null);
     }
 
-    public ChickensRegistryItem(String entityName, ResourceLocation texture, Item layItem, Item dropItem, int bgColor, int fgColor, ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         this.entityName = entityName;
-        this.dropItem = dropItem;
         this.layItem = layItem;
         this.bgColor = bgColor;
         this.fgColor = fgColor;
@@ -47,12 +46,8 @@ public class ChickensRegistryItem {
         return texture;
     }
 
-    public Item getDropItem() {
-        return dropItem;
-    }
-
-    public Item getLayItem() {
-        return layItem;
+    public ItemStack createLayItem() {
+        return layItem.copy();
     }
 
     public int getTier() {

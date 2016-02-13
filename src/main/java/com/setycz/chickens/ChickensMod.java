@@ -10,7 +10,9 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -39,39 +41,39 @@ public class ChickensMod {
     {
         ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
-                Items.gunpowder, Item.getItemFromBlock(Blocks.tnt),
+                new ItemStack(Items.gunpowder),
                 0x999999, 0x404040);
         ChickensRegistry.register(gunpowderChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
-                Items.glowstone_dust, Item.getItemFromBlock(Blocks.glowstone),
+                new ItemStack(Items.glowstone_dust),
                 0xffff66, 0xffff00));
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
-                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage()),
                 0x666666, 0x333333));
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "BlueChicken", new ResourceLocation("chickens", "textures/entity/BlueChicken.png"),
-                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage()),
                 0x000066, 0x000033));
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
-                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
                 0x006600, 0x003300));
 
         ChickensRegistryItem redChicken = new ChickensRegistryItem(
                 "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
-                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                new ItemStack(Items.dye, 1, EnumDyeColor.RED.getDyeDamage()),
                 0x660000, 0x330000);
         ChickensRegistry.register(redChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
-                Items.redstone, Item.getItemFromBlock(Blocks.redstone_block),
+                new ItemStack(Items.redstone),
                 0xe60000, 0x800000,
                 redChicken, gunpowderChicken
                 ));

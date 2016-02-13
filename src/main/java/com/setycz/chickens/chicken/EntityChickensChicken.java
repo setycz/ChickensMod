@@ -93,18 +93,12 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    protected Item getDropItem() {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
-        return chickenDescription.getDropItem();
-    }
-
-    @Override
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 1)
         {
             ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-            this.dropItem(chickenDescription.getLayItem(), 1);
+            this.entityDropItem(chickenDescription.createLayItem(), 0);
             this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
         }
         super.onLivingUpdate();
