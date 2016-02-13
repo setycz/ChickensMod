@@ -1,10 +1,19 @@
 package com.setycz.chickens.coloredEgg;
 
+import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.ChickensRegistry;
+import com.setycz.chickens.ChickensRegistryItem;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityEgg;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -17,14 +26,59 @@ public class ItemColoredEgg extends ItemEgg {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        EnumDyeColor color = EnumDyeColor.byDyeDamage(stack.getMetadata());
+        return StatCollector.translateToLocal("entity." + ChickensMod.MODID + "." + color.getUnlocalizedName() + ".name");
+    }
+
+    @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        subItems.add(new ItemStack(itemIn, 1, EnumDyeColor.BLACK.getDyeDamage()));
-        subItems.add(new ItemStack(itemIn, 1, EnumDyeColor.BLUE.getDyeDamage()));
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            ItemStack itemDrop = chicken.createLayItem();
+            if (itemDrop.getItem() == Items.dye) {
+                subItems.add(new ItemStack(itemIn, 1, itemDrop.getMetadata()));
+            }
+        }
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int renderPass)
     {
         return EnumDyeColor.byDyeDamage(stack.getMetadata()).getMapColor().colorValue;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+        if (!playerIn.capabilities.isCreativeMode)
+        {
+            --itemStackIn.stackSize;
+        }
+
+        worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+
+        if (!worldIn.isRemote)
+        {
+            int chickenType = getChickenType(itemStackIn);
+            if (chickenType != -1) {
+                EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
+                entityIn.setChickenType(chickenType);
+                worldIn.spawnEntityInWorld(entityIn);
+            }
+        }
+
+        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+        return itemStackIn;
+    }
+
+    private int getChickenType(ItemStack itemStack) {
+        List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
+        for(int chickenIndex = 0; chickenIndex <= chickens.size(); chickenIndex++) {
+            ChickensRegistryItem chicken = chickens.get(chickenIndex);
+            ItemStack itemDrop = chicken.createLayItem();
+            if (itemDrop.getItem() == Items.dye && itemDrop.getMetadata() == itemStack.getMetadata()) {
+                return chickenIndex;
+            }
+        }
+        return -1;
     }
 }

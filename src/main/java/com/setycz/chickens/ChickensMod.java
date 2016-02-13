@@ -3,10 +3,12 @@ package com.setycz.chickens;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
+import com.setycz.chickens.coloredEgg.EntityColoredEgg;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -40,6 +42,9 @@ public class ChickensMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        Item i = Items.egg;
+        Item j = Items.spawn_egg;
+
         ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 new ItemStack(Items.gunpowder),
@@ -65,6 +70,11 @@ public class ChickensMod {
                 "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
                 0x006600, 0x003300));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.YELLOW.getDyeDamage()),
+                0xffff00, 0xcccc00));
 
         ChickensRegistryItem redChicken = new ChickensRegistryItem(
                 "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
@@ -99,8 +109,21 @@ public class ChickensMod {
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
         if (event.getSide() == Side.CLIENT) {
             ModelResourceLocation resourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, EnumDyeColor.BLACK.getDyeDamage(), resourceLocation);
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, EnumDyeColor.BLUE.getDyeDamage(), resourceLocation);
+            for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+                ItemStack dropItem = chicken.createLayItem();
+                if (dropItem.getItem() == Items.dye) {
+                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, dropItem.getMetadata(), resourceLocation);
+                }
+            }
+        }
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            ItemStack dropItem = chicken.createLayItem();
+            if (dropItem.getItem() == Items.dye) {
+                GameRegistry.addShapelessRecipe(
+                        new ItemStack(coloredEgg, 1, dropItem.getMetadata()),
+                        new ItemStack(Items.egg), new ItemStack(Items.dye, 1, dropItem.getMetadata())
+                );
+            }
         }
     }
 

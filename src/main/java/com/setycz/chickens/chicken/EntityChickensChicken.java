@@ -28,7 +28,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(TYPE_ID, Integer.valueOf(0));
+        this.dataWatcher.addObject(TYPE_ID, 0);
     }
 
     public ResourceLocation getTexture() {
@@ -105,7 +105,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public void setChickenType(int type) {
-        this.dataWatcher.updateObject(TYPE_ID, Integer.valueOf(type));
+        this.dataWatcher.updateObject(TYPE_ID, type);
     }
 
     private int getChickenType() {
