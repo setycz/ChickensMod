@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -29,6 +30,12 @@ public class ItemSpawnEgg extends Item {
         for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
             subItems.add(new ItemStack(itemIn, 1, chickenIndex));
         }
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(stack.getMetadata());
+        return StatCollector.translateToLocal("entity." + ChickensMod.MODID + "." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override

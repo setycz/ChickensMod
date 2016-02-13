@@ -41,10 +41,41 @@ public class ChickensMod {
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 Items.gunpowder, Item.getItemFromBlock(Blocks.tnt),
                 0x0000ff, 0x00ff00));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
+                Items.glowstone_dust, Item.getItemFromBlock(Blocks.glowstone),
+                0xffff66, 0xffff00));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
+                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                0x666666, 0x333333));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "BlueChicken", new ResourceLocation("chickens", "textures/entity/BlueChicken.png"),
+                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                0x000066, 0x000033));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
+                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                0x006600, 0x003300));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
+                Items.dye, Item.getItemFromBlock(Blocks.stone),
+                0x660000, 0x330000));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
+                Items.redstone, Item.getItemFromBlock(Blocks.redstone_block),
+                0xe60000, 0x800000));
+
         ChickensRegistry.register(new ChickensRegistryItem(
                 "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
                 Items.flint, Item.getItemFromBlock(Blocks.gravel),
-                0x00ff00, 0x0000ff));
+                0x000000, 0x1a1a1a));
 
         // register spawn egg item to Minecraft
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
