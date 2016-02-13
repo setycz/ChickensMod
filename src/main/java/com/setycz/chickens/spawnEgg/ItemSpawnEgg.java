@@ -3,10 +3,9 @@ package com.setycz.chickens.spawnEgg;
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
-import com.setycz.chickens.chicken.EntityGunpowderChicken;
+import com.setycz.chickens.chicken.EntityChickensChicken;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,12 +62,12 @@ public class ItemSpawnEgg extends Item {
     }
 
     private void activate(World worldIn, BlockPos pos, int metadata) {
-        String entityName = ChickensMod.MODID + ".GunpowderChicken";// + ChickensRegistry.getByIndex(metadata).getEntityName();
-        EntityLiving entity = (EntityLiving)EntityList.createEntityByName(entityName, worldIn);
+        String entityName = ChickensMod.MODID + "." + ChickensMod.CHICKEN;
+        EntityChickensChicken entity = (EntityChickensChicken)EntityList.createEntityByName(entityName, worldIn);
         if (!worldIn.isRemote) {
             entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             entity.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
-            ((EntityGunpowderChicken)entity).setType(metadata);
+            entity.setChickenType(metadata);
             worldIn.spawnEntityInWorld(entity);
         }
     }
