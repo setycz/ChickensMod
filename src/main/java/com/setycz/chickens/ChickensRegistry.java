@@ -1,5 +1,7 @@
 package com.setycz.chickens;
 
+import com.setycz.chickens.chicken.EntityChickensChicken;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,5 +21,19 @@ public final class ChickensRegistry {
 
     public static List<ChickensRegistryItem> getItems() {
         return items;
+    }
+
+    public static List<ChickensRegistryItem> getChildrens(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
+        for (ChickensRegistryItem item : items) {
+            if (item.isChildOf(parent1, parent2)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public static int getChildIndex(ChickensRegistryItem chicken) {
+        return items.indexOf(chicken);
     }
 }

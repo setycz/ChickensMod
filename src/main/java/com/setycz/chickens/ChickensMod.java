@@ -37,10 +37,11 @@ public class ChickensMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 Items.gunpowder, Item.getItemFromBlock(Blocks.tnt),
-                0x0000ff, 0x00ff00));
+                0x999999, 0x404040);
+        ChickensRegistry.register(gunpowderChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
@@ -62,20 +63,18 @@ public class ChickensMod {
                 Items.dye, Item.getItemFromBlock(Blocks.stone),
                 0x006600, 0x003300));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem redChicken = new ChickensRegistryItem(
                 "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
                 Items.dye, Item.getItemFromBlock(Blocks.stone),
-                0x660000, 0x330000));
+                0x660000, 0x330000);
+        ChickensRegistry.register(redChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
                 Items.redstone, Item.getItemFromBlock(Blocks.redstone_block),
-                0xe60000, 0x800000));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
-                Items.flint, Item.getItemFromBlock(Blocks.gravel),
-                0x000000, 0x1a1a1a));
+                0xe60000, 0x800000,
+                redChicken, gunpowderChicken
+                ));
 
         // register spawn egg item to Minecraft
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));

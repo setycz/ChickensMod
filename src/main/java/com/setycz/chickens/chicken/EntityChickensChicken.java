@@ -10,6 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by setyc on 12.02.2016.
  */
@@ -35,33 +38,64 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
-        return new EntityChickensChicken(this.worldObj);
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
+        EntityChickensChicken mate = (EntityChickensChicken)ageable;
+        ChickensRegistryItem mateChickenDescription = ChickensRegistry.getByIndex(mate.getChickenType());
+
+        ArrayList<ChickensRegistryItem> possibleChildren = new ArrayList<ChickensRegistryItem>(ChickensRegistry.getChildrens(chickenDescription, mateChickenDescription));
+        possibleChildren.add(chickenDescription);
+        possibleChildren.add(mateChickenDescription);
+
+        ChickensRegistryItem childToBeBorn = getRandomChickenToBeBorn(possibleChildren);
+        if (childToBeBorn == null) {
+            return null;
+        }
+
+        EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
+        newChicken.setChickenType(ChickensRegistry.getChildIndex(childToBeBorn));
+        return newChicken;
+    }
+
+    private ChickensRegistryItem getRandomChickenToBeBorn(ArrayList<ChickensRegistryItem> possibleChildren) {
+        int maxChance = getMaxChance(possibleChildren);
+        int maxDiceValue = getMaxDiceValue(possibleChildren, maxChance);
+
+        int diceValue = rand.nextInt(maxDiceValue);
+        return getChickenToBeBorn(possibleChildren, maxChance, diceValue);
+    }
+
+    private ChickensRegistryItem getChickenToBeBorn(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance, int diceValue) {
+        int currentVale = 0;
+        for(ChickensRegistryItem child: possibleChildren) {
+            currentVale += maxChance - (child.getTier() + 1);
+            if (diceValue < currentVale) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    private int getMaxDiceValue(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance) {
+        int maxDiceValue = 0;
+        for(ChickensRegistryItem child: possibleChildren) {
+            maxDiceValue += maxChance - (child.getTier() + 1);
+        }
+        return maxDiceValue;
+    }
+
+    private int getMaxChance(ArrayList<ChickensRegistryItem> possibleChildren) {
+        int maxChance =0;
+        for(ChickensRegistryItem child: possibleChildren) {
+            maxChance = Math.max(maxChance, child.getTier() + 1);
+        }
+        maxChance += 1;
+        return maxChance;
     }
 
     @Override
     protected Item getDropItem() {
         ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
         return chickenDescription.getDropItem();
-    }
-
-    @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-
-        int i = this.rand.nextInt(3) + this.rand.nextInt(1 + p_70628_2_);
-
-        for (int j = 0; j < i; ++j)
-        {
-            this.dropItem(getDropItem(), 1);
-        }
-
-        if (this.isBurning())
-        {
-            this.dropItem(Items.cooked_chicken, 1);
-        }
-        else
-        {
-            this.dropItem(Items.chicken, 1);
-        }
     }
 
     @Override
