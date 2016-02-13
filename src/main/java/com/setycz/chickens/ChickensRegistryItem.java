@@ -1,5 +1,6 @@
 package com.setycz.chickens;
 
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -7,12 +8,16 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ChickensRegistryItem {
     private final String entityName;
+    private final Item dropItem;
+    private final Item layItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
 
-    public ChickensRegistryItem(String entityName, ResourceLocation texture, int bgColor, int fgColor) {
+    public ChickensRegistryItem(String entityName, ResourceLocation texture, Item layItem, Item dropItem, int bgColor, int fgColor) {
         this.entityName = entityName;
+        this.dropItem = dropItem;
+        this.layItem = layItem;
         this.bgColor = bgColor;
         this.fgColor = fgColor;
         this.texture = texture;
@@ -32,5 +37,13 @@ public class ChickensRegistryItem {
 
     public ResourceLocation getTexture() {
         return texture;
+    }
+
+    public Item getDropItem() {
+        return dropItem;
+    }
+
+    public Item getLayItem() {
+        return layItem;
     }
 }

@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
@@ -35,8 +37,14 @@ public class ChickensMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        ChickensRegistry.register(new ChickensRegistryItem("GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"), 0x0000ff, 0x00ff00));
-        ChickensRegistry.register(new ChickensRegistryItem("FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"), 0x00ff00, 0x0000ff));
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
+                Items.gunpowder, Item.getItemFromBlock(Blocks.tnt),
+                0x0000ff, 0x00ff00));
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
+                Items.flint, Item.getItemFromBlock(Blocks.gravel),
+                0x00ff00, 0x0000ff));
 
         // register spawn egg item to Minecraft
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
