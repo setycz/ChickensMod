@@ -70,13 +70,10 @@ public class ItemColoredEgg extends ItemEgg {
     }
 
     private int getChickenType(ItemStack itemStack) {
-        List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
-        for(int chickenIndex = 0; chickenIndex <= chickens.size(); chickenIndex++) {
-            ChickensRegistryItem chicken = chickens.get(chickenIndex);
-            if (chicken.isDye(itemStack.getMetadata())) {
-                return chickenIndex;
-            }
+        ChickensRegistryItem chicken = ChickensRegistry.findDyeChicken(itemStack.getMetadata());
+        if (chicken == null) {
+            return  -1;
         }
-        return -1;
+        return ChickensRegistry.getType(chicken);
     }
 }

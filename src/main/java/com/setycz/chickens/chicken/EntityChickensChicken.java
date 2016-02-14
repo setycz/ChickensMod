@@ -5,8 +5,6 @@ import com.setycz.chickens.ChickensRegistryItem;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
@@ -28,17 +26,17 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public ResourceLocation getTexture() {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
         return chickenDescription.getTexture();
     }
 
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
         EntityChickensChicken mate = (EntityChickensChicken)ageable;
-        ChickensRegistryItem mateChickenDescription = ChickensRegistry.getByIndex(mate.getChickenType());
+        ChickensRegistryItem mateChickenDescription = ChickensRegistry.getByType(mate.getChickenType());
 
-        ArrayList<ChickensRegistryItem> possibleChildren = new ArrayList<ChickensRegistryItem>(ChickensRegistry.getChildrens(chickenDescription, mateChickenDescription));
+        ArrayList<ChickensRegistryItem> possibleChildren = new ArrayList<ChickensRegistryItem>(ChickensRegistry.getChildren(chickenDescription, mateChickenDescription));
         possibleChildren.add(chickenDescription);
         possibleChildren.add(mateChickenDescription);
 
@@ -48,7 +46,7 @@ public class EntityChickensChicken extends EntityChicken {
         }
 
         EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
-        newChicken.setChickenType(ChickensRegistry.getChildIndex(childToBeBorn));
+        newChicken.setChickenType(ChickensRegistry.getType(childToBeBorn));
         return newChicken;
     }
 
@@ -92,7 +90,7 @@ public class EntityChickensChicken extends EntityChicken {
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 1)
         {
-            ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(getChickenType());
+            ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.entityDropItem(chickenDescription.createLayItem(), 0);
             this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
@@ -101,19 +99,19 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-        livingdata = super.onInitialSpawn(difficulty, livingdata);
-        if (livingdata instanceof GroupData) {
-            GroupData groupData = (GroupData)livingdata;
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
+        livingData = super.onInitialSpawn(difficulty, livingData);
+        if (livingData instanceof GroupData) {
+            GroupData groupData = (GroupData)livingData;
             setChickenType(groupData.getType());
         }
         else {
-            List<ChickensRegistryItem> possibleChickens = getPossibleChickensToSpawn();
+            List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn();
             ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
 
-            int type = ChickensRegistry.getChildIndex(chickenToSpawn);
+            int type = ChickensRegistry.getType(chickenToSpawn);
             setChickenType(type);
-            livingdata = new GroupData(type);
+            livingData = new GroupData(type);
         }
 
         if (rand.nextInt(5) == 0)
@@ -121,17 +119,7 @@ public class EntityChickensChicken extends EntityChicken {
             setGrowingAge(-24000);
         }
 
-        return livingdata;
-    }
-
-    private List<ChickensRegistryItem> getPossibleChickensToSpawn() {
-        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.getTier() == 0 && !chicken.isDye()) {
-                result.add(chicken);
-            }
-        }
-        return result;
+        return livingData;
     }
 
     private static class GroupData implements IEntityLivingData {

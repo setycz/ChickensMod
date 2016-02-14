@@ -1,7 +1,5 @@
 package com.setycz.chickens;
 
-import com.setycz.chickens.chicken.EntityChickensChicken;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +13,15 @@ public final class ChickensRegistry {
         items.add(entity);
     }
 
-    public static ChickensRegistryItem getByIndex(int index) {
-        return items.get(index);
+    public static ChickensRegistryItem getByType(int type) {
+        return items.get(type);
     }
 
     public static List<ChickensRegistryItem> getItems() {
         return items;
     }
 
-    public static List<ChickensRegistryItem> getChildrens(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    public static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         for (ChickensRegistryItem item : items) {
             if (item.isChildOf(parent1, parent2)) {
@@ -33,7 +31,26 @@ public final class ChickensRegistry {
         return result;
     }
 
-    public static int getChildIndex(ChickensRegistryItem chicken) {
+    public static int getType(ChickensRegistryItem chicken) {
         return items.indexOf(chicken);
+    }
+
+    public static ChickensRegistryItem findDyeChicken(int dyeMetadata) {
+        for (ChickensRegistryItem chicken : items) {
+            if (chicken.isDye(dyeMetadata)) {
+                return chicken;
+            }
+        }
+        return null;
+    }
+
+    public static List<ChickensRegistryItem> getPossibleChickensToSpawn() {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            if (chicken.canSpawn()) {
+                result.add(chicken);
+            }
+        }
+        return result;
     }
 }

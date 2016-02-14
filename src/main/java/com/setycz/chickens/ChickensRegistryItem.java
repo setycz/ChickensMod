@@ -73,4 +73,8 @@ public class ChickensRegistryItem {
     public int getDyeMetadata() {
         return layItem.getMetadata();
     }
+
+    public boolean canSpawn() {
+        return getTier() == 0 && !isDye();
+    }
 }

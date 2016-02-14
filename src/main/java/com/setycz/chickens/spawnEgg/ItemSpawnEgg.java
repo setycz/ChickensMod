@@ -34,13 +34,13 @@ public class ItemSpawnEgg extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(stack.getMetadata());
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(stack.getMetadata());
         return StatCollector.translateToLocal("entity." + ChickensMod.MODID + "." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int renderPass) {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByIndex(stack.getMetadata());
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(stack.getMetadata());
         return renderPass == 0 ? chickenDescription.getBgColor() : chickenDescription.getFgColor();
     }
 

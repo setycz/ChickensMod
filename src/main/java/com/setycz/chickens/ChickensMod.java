@@ -88,13 +88,11 @@ public class ChickensMod {
                 redChicken, gunpowderChicken
                 ));
 
-        // colored egg
+        // item registration
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
-
-        // register spawn egg item to Minecraft
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
 
-        // register chicken entity to Minecraft
+        // chicken entity registration
         EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, 30000, this, 64, 3, true);
         if (event.getSide() == Side.CLIENT) {
             RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
