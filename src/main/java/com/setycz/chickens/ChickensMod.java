@@ -55,6 +55,16 @@ public class ChickensMod {
         ChickensRegistry.register(gunpowderChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
+                "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
+                new ItemStack(Items.flint),
+                0x6b6b47, 0xa3a375));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
+                new ItemStack(Items.snowball),
+                0x33bbff, 0x0088cc));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
                 "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage()),
                 0x666666, 0x333333));
@@ -68,6 +78,11 @@ public class ChickensMod {
                 "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
                 0x006600, 0x003300));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
+                0xf2f2f2, 0xffffff));
 
         ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
                 "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
