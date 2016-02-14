@@ -3,12 +3,10 @@ package com.setycz.chickens;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
-import com.setycz.chickens.coloredEgg.EntityColoredEgg;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -19,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -41,7 +40,7 @@ public class ChickensMod {
 
     private static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
 
-    @Mod.EventHandler
+    @EventHandler
     public void init(FMLInitializationEvent event)
     {
         ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
@@ -49,11 +48,6 @@ public class ChickensMod {
                 new ItemStack(Items.gunpowder),
                 0x999999, 0x404040);
         ChickensRegistry.register(gunpowderChicken);
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
-                new ItemStack(Items.glowstone_dust),
-                0xffff66, 0xffff00));
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
@@ -70,10 +64,11 @@ public class ChickensMod {
                 new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
                 0x006600, 0x003300));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
                 "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.YELLOW.getDyeDamage()),
-                0xffff00, 0xcccc00));
+                0xffff00, 0xcccc00);
+        ChickensRegistry.register(yellowChicken);
 
         ChickensRegistryItem redChicken = new ChickensRegistryItem(
                 "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
@@ -88,6 +83,12 @@ public class ChickensMod {
                 redChicken, gunpowderChicken
                 ));
 
+        ChickensRegistry.register(new ChickensRegistryItem(
+                "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
+                new ItemStack(Items.glowstone_dust),
+                0xffff66, 0xffff00,
+                yellowChicken, gunpowderChicken));
+
         // item registration
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
@@ -100,8 +101,16 @@ public class ChickensMod {
         }
 
         // chicken entity spawning
-        EntityRegistry.addSpawn(EntityChickensChicken.class, 100, 4, 4, EnumCreatureType.CREATURE,
-                BiomeGenBase.plains, BiomeGenBase.forest, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.jungle);
+        EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
+                BiomeGenBase.plains, BiomeGenBase.extremeHills, BiomeGenBase.forest,
+                BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.icePlains,
+                BiomeGenBase.iceMountains, BiomeGenBase.forestHills, BiomeGenBase.taigaHills,
+                BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills,
+                BiomeGenBase.jungleEdge, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
+                BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
+                BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills, BiomeGenBase.extremeHillsPlus,
+                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau
+                );
 
         // register all chickens to Minecraft
         List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
