@@ -88,6 +88,9 @@ public class ChickensMod {
                 redChicken, gunpowderChicken
                 ));
 
+        // colored egg
+        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
+
         // register spawn egg item to Minecraft
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
 
@@ -107,31 +110,24 @@ public class ChickensMod {
         for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
             registerChicken(chickenIndex, chickens.get(chickenIndex), event);
         }
-
-        // colored egg
-        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
-        if (event.getSide() == Side.CLIENT) {
-            ModelResourceLocation resourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
-            for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-                if (chicken.isDye()) {
-                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, chicken.getDyeMetadata(), resourceLocation);
-                }
-            }
-        }
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.isDye()) {
-                GameRegistry.addShapelessRecipe(
-                        new ItemStack(coloredEgg, 1, chicken.getDyeMetadata()),
-                        new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
-                );
-            }
-        }
     }
 
-    private void registerChicken(int index, ChickensRegistryItem chickenDescription, FMLInitializationEvent event) {
+    private void registerChicken(int index, ChickensRegistryItem chicken, FMLInitializationEvent event) {
         if (event.getSide() == Side.CLIENT) {
-            ModelResourceLocation resourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(spawnEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(spawnEgg, index, resourceLocation);
+            ModelResourceLocation spawnResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(spawnEgg), "inventory");
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(spawnEgg, index, spawnResourceLocation);
+
+            if (chicken.isDye()) {
+                ModelResourceLocation eggResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
+                Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, chicken.getDyeMetadata(), eggResourceLocation);
+            }
+        }
+
+        if (chicken.isDye()) {
+            GameRegistry.addShapelessRecipe(
+                    new ItemStack(coloredEgg, 1, chicken.getDyeMetadata()),
+                    new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
+            );
         }
     }
 
