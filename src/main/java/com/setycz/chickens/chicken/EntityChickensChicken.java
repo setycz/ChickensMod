@@ -110,7 +110,7 @@ public class EntityChickensChicken extends EntityChicken {
         else {
             List<ChickensRegistryItem> possibleChickens = getPossibleChickensToSpawn();
             ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
-            
+
             int type = ChickensRegistry.getChildIndex(chickenToSpawn);
             setChickenType(type);
             livingdata = new GroupData(type);
@@ -127,7 +127,7 @@ public class EntityChickensChicken extends EntityChicken {
     private List<ChickensRegistryItem> getPossibleChickensToSpawn() {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.getTier() == 0 && chicken.createLayItem().getItem() != Items.dye) {
+            if (chicken.getTier() == 0 && !chicken.isDye()) {
                 result.add(chicken);
             }
         }

@@ -113,18 +113,16 @@ public class ChickensMod {
         if (event.getSide() == Side.CLIENT) {
             ModelResourceLocation resourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
             for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-                ItemStack dropItem = chicken.createLayItem();
-                if (dropItem.getItem() == Items.dye) {
-                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, dropItem.getMetadata(), resourceLocation);
+                if (chicken.isDye()) {
+                    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, chicken.getDyeMetadata(), resourceLocation);
                 }
             }
         }
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            ItemStack dropItem = chicken.createLayItem();
-            if (dropItem.getItem() == Items.dye) {
+            if (chicken.isDye()) {
                 GameRegistry.addShapelessRecipe(
-                        new ItemStack(coloredEgg, 1, dropItem.getMetadata()),
-                        new ItemStack(Items.egg), new ItemStack(Items.dye, 1, dropItem.getMetadata())
+                        new ItemStack(coloredEgg, 1, chicken.getDyeMetadata()),
+                        new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
                 );
             }
         }

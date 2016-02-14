@@ -1,5 +1,6 @@
 package com.setycz.chickens;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -59,5 +60,17 @@ public class ChickensRegistryItem {
 
     public boolean isChildOf(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         return this.parent1 == parent1 && this.parent2 == parent2 || this.parent1 == parent2 && this.parent2 == parent1;
+    }
+
+    public boolean isDye() {
+        return layItem.getItem() == Items.dye;
+    }
+
+    public boolean isDye(int dyeMetadata) {
+        return layItem.getItem() == Items.dye && layItem.getMetadata() == dyeMetadata;
+    }
+
+    public int getDyeMetadata() {
+        return layItem.getMetadata();
     }
 }

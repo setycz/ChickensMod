@@ -34,9 +34,8 @@ public class ItemColoredEgg extends ItemEgg {
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            ItemStack itemDrop = chicken.createLayItem();
-            if (itemDrop.getItem() == Items.dye) {
-                subItems.add(new ItemStack(itemIn, 1, itemDrop.getMetadata()));
+            if (chicken.isDye()) {
+                subItems.add(new ItemStack(itemIn, 1, chicken.getDyeMetadata()));
             }
         }
     }
@@ -74,8 +73,7 @@ public class ItemColoredEgg extends ItemEgg {
         List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
         for(int chickenIndex = 0; chickenIndex <= chickens.size(); chickenIndex++) {
             ChickensRegistryItem chicken = chickens.get(chickenIndex);
-            ItemStack itemDrop = chicken.createLayItem();
-            if (itemDrop.getItem() == Items.dye && itemDrop.getMetadata() == itemStack.getMetadata()) {
+            if (chicken.isDye(itemStack.getMetadata())) {
                 return chickenIndex;
             }
         }
