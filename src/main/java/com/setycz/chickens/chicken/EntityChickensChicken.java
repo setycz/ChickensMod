@@ -3,11 +3,13 @@ package com.setycz.chickens.chicken;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -23,12 +25,6 @@ public class EntityChickensChicken extends EntityChicken {
 
     public EntityChickensChicken(World worldIn) {
         super(worldIn);
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(TYPE_ID, 0);
     }
 
     public ResourceLocation getTexture() {
@@ -104,12 +100,64 @@ public class EntityChickensChicken extends EntityChicken {
         super.onLivingUpdate();
     }
 
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
+        livingdata = super.onInitialSpawn(difficulty, livingdata);
+        if (livingdata instanceof GroupData) {
+            GroupData groupData = (GroupData)livingdata;
+            setChickenType(groupData.getType());
+        }
+        else {
+            List<ChickensRegistryItem> possibleChickens = getPossibleChickensToSpawn();
+            ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
+            
+            int type = ChickensRegistry.getChildIndex(chickenToSpawn);
+            setChickenType(type);
+            livingdata = new GroupData(type);
+        }
+
+        if (rand.nextInt(5) == 0)
+        {
+            setGrowingAge(-24000);
+        }
+
+        return livingdata;
+    }
+
+    private List<ChickensRegistryItem> getPossibleChickensToSpawn() {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            if (chicken.getTier() == 0 && chicken.createLayItem().getItem() != Items.dye) {
+                result.add(chicken);
+            }
+        }
+        return result;
+    }
+
+    private static class GroupData implements IEntityLivingData {
+        private final int type;
+
+        public GroupData(int type) {
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
+        }
+    }
+
     public void setChickenType(int type) {
         this.dataWatcher.updateObject(TYPE_ID, type);
     }
 
     private int getChickenType() {
         return this.dataWatcher.getWatchableObjectInt(TYPE_ID);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(TYPE_ID, 0);
     }
 
     @Override

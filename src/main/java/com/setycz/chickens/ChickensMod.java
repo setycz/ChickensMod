@@ -11,11 +11,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -42,9 +44,6 @@ public class ChickensMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        Item i = Items.egg;
-        Item j = Items.spawn_egg;
-
         ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 new ItemStack(Items.gunpowder),
@@ -98,6 +97,10 @@ public class ChickensMod {
             RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
             renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
         }
+
+        // chicken entity spawning
+        EntityRegistry.addSpawn(EntityChickensChicken.class, 100, 4, 4, EnumCreatureType.CREATURE,
+                BiomeGenBase.plains, BiomeGenBase.forest, BiomeGenBase.birchForest, BiomeGenBase.coldTaiga, BiomeGenBase.jungle);
 
         // register all chickens to Minecraft
         List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
