@@ -1,12 +1,9 @@
 package com.setycz.chickens.coloredEgg;
 
-import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEgg;
@@ -41,22 +38,19 @@ public class ItemColoredEgg extends ItemEgg {
     }
 
     @Override
-    public int getColorFromItemStack(ItemStack stack, int renderPass)
-    {
+    public int getColorFromItemStack(ItemStack stack, int renderPass) {
         return EnumDyeColor.byDyeDamage(stack.getMetadata()).getMapColor().colorValue;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-        if (!playerIn.capabilities.isCreativeMode)
-        {
+        if (!playerIn.capabilities.isCreativeMode) {
             --itemStackIn.stackSize;
         }
 
         worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-        if (!worldIn.isRemote)
-        {
+        if (!worldIn.isRemote) {
             int chickenType = getChickenType(itemStackIn);
             if (chickenType != -1) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
@@ -72,8 +66,8 @@ public class ItemColoredEgg extends ItemEgg {
     private int getChickenType(ItemStack itemStack) {
         ChickensRegistryItem chicken = ChickensRegistry.findDyeChicken(itemStack.getMetadata());
         if (chicken == null) {
-            return  -1;
+            return -1;
         }
-        return ChickensRegistry.getType(chicken);
+        return chicken.getId();
     }
 }

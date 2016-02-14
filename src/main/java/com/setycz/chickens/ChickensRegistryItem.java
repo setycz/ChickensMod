@@ -1,7 +1,6 @@
 package com.setycz.chickens;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -9,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
  * Created by setyc on 12.02.2016.
  */
 public class ChickensRegistryItem {
+    private final int id;
     private final String entityName;
     private final ItemStack layItem;
     private final int bgColor;
@@ -17,11 +17,12 @@ public class ChickensRegistryItem {
     private final ChickensRegistryItem parent1;
     private final ChickensRegistryItem parent2;
 
-    public ChickensRegistryItem(String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
-        this(entityName, texture, layItem, bgColor, fgColor, null, null);
+    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
+        this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
     }
 
-    public ChickensRegistryItem(String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+        this.id = id;
         this.entityName = entityName;
         this.layItem = layItem;
         this.bgColor = bgColor;
@@ -76,5 +77,9 @@ public class ChickensRegistryItem {
 
     public boolean canSpawn() {
         return getTier() == 0 && !isDye();
+    }
+
+    public int getId() {
+        return id;
     }
 }

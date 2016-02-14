@@ -25,8 +25,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
-
 /**
  * Created by setyc on 12.02.2016.
  */
@@ -43,71 +41,9 @@ public class ChickensMod {
     private static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
 
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        LiquidEggRegistry.register(new LiquidEggRegistryItem(0, Blocks.flowing_water, 0x0000ff));
-        LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000));
-
-        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
-                "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
-                new ItemStack(Items.gunpowder),
-                0x999999, 0x404040);
-        ChickensRegistry.register(gunpowderChicken);
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
-                new ItemStack(Items.flint),
-                0x6b6b47, 0xa3a375));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
-                new ItemStack(Items.snowball),
-                0x33bbff, 0x0088cc));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage()),
-                0x666666, 0x333333));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "BlueChicken", new ResourceLocation("chickens", "textures/entity/BlueChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage()),
-                0x000066, 0x000033));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
-                0x006600, 0x003300));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
-                0xf2f2f2, 0xffffff));
-
-        ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
-                "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.YELLOW.getDyeDamage()),
-                0xffff00, 0xcccc00);
-        ChickensRegistry.register(yellowChicken);
-
-        ChickensRegistryItem redChicken = new ChickensRegistryItem(
-                "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
-                new ItemStack(Items.dye, 1, EnumDyeColor.RED.getDyeDamage()),
-                0x660000, 0x330000);
-        ChickensRegistry.register(redChicken);
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
-                new ItemStack(Items.redstone),
-                0xe60000, 0x800000,
-                redChicken, gunpowderChicken
-                ));
-
-        ChickensRegistry.register(new ChickensRegistryItem(
-                "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
-                new ItemStack(Items.glowstone_dust),
-                0xffff66, 0xffff00,
-                yellowChicken, gunpowderChicken));
+    public void init(FMLInitializationEvent event) {
+        registerLiquidEggs();
+        registerChickens();
 
         // item registration
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
@@ -130,12 +66,11 @@ public class ChickensMod {
                 BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
                 BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills, BiomeGenBase.extremeHillsPlus,
                 BiomeGenBase.savanna, BiomeGenBase.savannaPlateau
-                );
+        );
 
         // register all chickens to Minecraft
-        List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
-        for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
-            registerChicken(chickenIndex, chickens.get(chickenIndex), event);
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            registerChicken(chicken, event);
         }
 
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
@@ -146,10 +81,81 @@ public class ChickensMod {
         }
     }
 
-    private void registerChicken(int index, ChickensRegistryItem chicken, FMLInitializationEvent event) {
+    private void registerLiquidEggs() {
+        LiquidEggRegistry.register(new LiquidEggRegistryItem(0, Blocks.flowing_water, 0x0000ff));
+        LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000));
+    }
+
+    private void registerChickens() {
+        // dye chickens
+        ChickensRegistry.register(new ChickensRegistryItem(
+                0, "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.WHITE.getDyeDamage()),
+                0xf2f2f2, 0xffffff));
+
+        ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
+                4, "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.YELLOW.getDyeDamage()),
+                0xffff00, 0xcccc00);
+        ChickensRegistry.register(yellowChicken);
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                11, "BlueChicken", new ResourceLocation("chickens", "textures/entity/BlueChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage()),
+                0x000066, 0x000033));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                13, "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
+                0x006600, 0x003300));
+
+        ChickensRegistryItem redChicken = new ChickensRegistryItem(
+                14, "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.RED.getDyeDamage()),
+                0x660000, 0x330000);
+        ChickensRegistry.register(redChicken);
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                15, "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage()),
+                0x666666, 0x333333));
+
+        // base chickens
+        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
+                100, "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
+                new ItemStack(Items.gunpowder),
+                0x999999, 0x404040);
+        ChickensRegistry.register(gunpowderChicken);
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                101, "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
+                new ItemStack(Items.flint),
+                0x6b6b47, 0xa3a375));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                102, "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
+                new ItemStack(Items.snowball),
+                0x33bbff, 0x0088cc));
+
+        // chicken tier 1
+        ChickensRegistry.register(new ChickensRegistryItem(
+                201, "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
+                new ItemStack(Items.redstone),
+                0xe60000, 0x800000,
+                redChicken, gunpowderChicken
+        ));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                202, "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
+                new ItemStack(Items.glowstone_dust),
+                0xffff66, 0xffff00,
+                yellowChicken, gunpowderChicken));
+    }
+
+    private void registerChicken(ChickensRegistryItem chicken, FMLInitializationEvent event) {
         if (event.getSide() == Side.CLIENT) {
             ModelResourceLocation spawnResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(spawnEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(spawnEgg, index, spawnResourceLocation);
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(spawnEgg, chicken.getId(), spawnResourceLocation);
 
             if (chicken.isDye()) {
                 ModelResourceLocation eggResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");

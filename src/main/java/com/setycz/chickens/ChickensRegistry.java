@@ -1,29 +1,28 @@
 package com.setycz.chickens;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by setyc on 12.02.2016.
  */
 public final class ChickensRegistry {
-    private static final List<ChickensRegistryItem> items = new ArrayList<ChickensRegistryItem>();
+    private static final Map<Integer, ChickensRegistryItem> items = new HashMap<Integer, ChickensRegistryItem>();
 
     public static void register(ChickensRegistryItem entity) {
-        items.add(entity);
+        items.put(entity.getId(), entity);
     }
 
     public static ChickensRegistryItem getByType(int type) {
         return items.get(type);
     }
 
-    public static List<ChickensRegistryItem> getItems() {
-        return items;
+    public static Collection<ChickensRegistryItem> getItems() {
+        return items.values();
     }
 
     public static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        for (ChickensRegistryItem item : items) {
+        for (ChickensRegistryItem item : items.values()) {
             if (item.isChildOf(parent1, parent2)) {
                 result.add(item);
             }
@@ -31,12 +30,8 @@ public final class ChickensRegistry {
         return result;
     }
 
-    public static int getType(ChickensRegistryItem chicken) {
-        return items.indexOf(chicken);
-    }
-
     public static ChickensRegistryItem findDyeChicken(int dyeMetadata) {
-        for (ChickensRegistryItem chicken : items) {
+        for (ChickensRegistryItem chicken : items.values()) {
             if (chicken.isDye(dyeMetadata)) {
                 return chicken;
             }

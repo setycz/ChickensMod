@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Created by setyc on 12.02.2016.
  */
-public class RenderChickensChicken extends RenderLiving<EntityChickensChicken>  {
+public class RenderChickensChicken extends RenderLiving<EntityChickensChicken> {
 
     public RenderChickensChicken(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn) {
         super(renderManagerIn, modelBaseIn, shadowSizeIn);

@@ -26,9 +26,8 @@ public class ItemSpawnEgg extends Item {
 
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
-        for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
-            subItems.add(new ItemStack(itemIn, 1, chickenIndex));
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            subItems.add(new ItemStack(itemIn, 1, chicken.getId()));
         }
     }
 
@@ -57,9 +56,9 @@ public class ItemSpawnEgg extends Item {
     }
 
     private BlockPos correctPosition(BlockPos pos, EnumFacing side) {
-        final int[] offsetsXForSide = new int[] { 0, 0, 0, 0, -1, 1 };
-        final int[] offsetsYForSide = new int[] { -1, 1, 0, 0, 0, 0 };
-        final int[] offsetsZForSide = new int[] { 0, 0, -1, 1, 0, 0 };
+        final int[] offsetsXForSide = new int[]{0, 0, 0, 0, -1, 1};
+        final int[] offsetsYForSide = new int[]{-1, 1, 0, 0, 0, 0};
+        final int[] offsetsZForSide = new int[]{0, 0, -1, 1, 0, 0};
 
         int posX = pos.getX() + offsetsXForSide[side.ordinal()];
         int posY = pos.getY() + offsetsYForSide[side.ordinal()];
@@ -70,7 +69,7 @@ public class ItemSpawnEgg extends Item {
 
     private void activate(World worldIn, BlockPos pos, int metadata) {
         String entityName = ChickensMod.MODID + "." + ChickensMod.CHICKEN;
-        EntityChickensChicken entity = (EntityChickensChicken)EntityList.createEntityByName(entityName, worldIn);
+        EntityChickensChicken entity = (EntityChickensChicken) EntityList.createEntityByName(entityName, worldIn);
         if (!worldIn.isRemote) {
             entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             entity.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
