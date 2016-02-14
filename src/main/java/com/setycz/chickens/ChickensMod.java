@@ -4,12 +4,14 @@ import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
+import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -37,12 +39,15 @@ public class ChickensMod {
     private static final CreativeTabs tab = new ChickensTab("chickens");
 
     private static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
-
     private static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
+    private static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
 
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        LiquidEggRegistry.register(new LiquidEggRegistryItem(0, Blocks.flowing_water, 0x0000ff));
+        LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000));
+
         ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 new ItemStack(Items.gunpowder),
@@ -116,6 +121,13 @@ public class ChickensMod {
         List<ChickensRegistryItem> chickens = ChickensRegistry.getItems();
         for (int chickenIndex=0; chickenIndex < chickens.size(); chickenIndex++) {
             registerChicken(chickenIndex, chickens.get(chickenIndex), event);
+        }
+
+        GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
+        if (event.getSide() == Side.CLIENT) {
+            ModelResourceLocation eggResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(liquidEgg), "inventory");
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(liquidEgg, 0, eggResourceLocation);
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(liquidEgg, 1, eggResourceLocation);
         }
     }
 

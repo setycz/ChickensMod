@@ -28,7 +28,7 @@ public class ItemColoredEgg extends ItemEgg {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         EnumDyeColor color = EnumDyeColor.byDyeDamage(stack.getMetadata());
-        return StatCollector.translateToLocal("entity." + ChickensMod.MODID + "." + color.getUnlocalizedName() + ".name");
+        return StatCollector.translateToLocal(getUnlocalizedName() + "." + color.getUnlocalizedName() + ".name");
     }
 
     @Override
