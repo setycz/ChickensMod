@@ -137,6 +137,16 @@ public class ChickensMod {
                 new ItemStack(Items.snowball),
                 0x33bbff, 0x0088cc));
 
+        ChickensRegistry.register(new ChickensRegistryItem(
+                103, "LavaChicken", new ResourceLocation("chickens", "textures/entity/LavaChicken.png"),
+                new ItemStack(liquidEgg, 1, 1),
+                0xcc3300, 0xffff00));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                104, "QuartzChicken", new ResourceLocation("chickens", "textures/entity/QuartzChicken.png"),
+                new ItemStack(Items.quartz),
+                0x4d0000, 0x1a0000));
+
         // chicken tier 1
         ChickensRegistry.register(new ChickensRegistryItem(
                 201, "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
