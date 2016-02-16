@@ -1,0 +1,24 @@
+itemGroup.chickens=Chickens
+
+item.liquid_egg.water.name=Water Egg
+item.liquid_egg.lava.name=Lava Egg
+
+entity.WhiteChicken.name=White Chicken
+item.colored_egg.white.name=White Chicken Egg
+entity.YellowChicken.name=Yellow Chicken
+item.colored_egg.yellow.name=Yellow Chicken Egg
+entity.BlueChicken.name=Blue Chicken
+item.colored_egg.blue.name=Blue Chicken Egg
+entity.GreenChicken.name=Green Chicken
+item.colored_egg.green.name=Green Chicken Egg
+entity.RedChicken.name=Red Chicken
+item.colored_egg.red.name=Red Chicken Egg
+entity.BlackChicken.name=Black Chicken
+item.colored_egg.black.name=Black Chicken Egg
+entity.GunpowderChicken.name=Gunpowder Chicken
+entity.FlintChicken.name=Flint Chicken
+entity.SnowballChicken.name=Snowball Chicken
+entity.LavaChicken.name=Lava Chicken
+entity.QuartzChicken.name=Quartz Chicken
+entity.RedstoneChicken.name=Redstone Chicken
+entity.GlowstoneChicken.name=Glowstone Chicken

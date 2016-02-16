@@ -1,12 +1,15 @@
 package com.setycz.chickens.chicken;
 
+import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -28,6 +31,16 @@ public class EntityChickensChicken extends EntityChicken {
     public ResourceLocation getTexture() {
         ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
         return chickenDescription.getTexture();
+    }
+
+    @Override
+    public String getName() {
+        if (this.hasCustomName()) {
+            return getCustomNameTag();
+        }
+
+        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
+        return StatCollector.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ItemSpawnEgg extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(stack.getMetadata());
-        return StatCollector.translateToLocal("entity." + ChickensMod.MODID + "." + chickenDescription.getEntityName() + ".name");
+        return StatCollector.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override
