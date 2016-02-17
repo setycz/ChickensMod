@@ -105,6 +105,11 @@ public class ChickensMod {
                 0x000066, 0x000033));
 
         ChickensRegistry.register(new ChickensRegistryItem(
+                12, "BrownChicken", new ResourceLocation("chickens", "textures/entity/BrownChicken.png"),
+                new ItemStack(Items.dye, 1, EnumDyeColor.BROWN.getDyeDamage()),
+                0x663300, 0x1a0d00));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
                 13, "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
                 0x006600, 0x003300));
