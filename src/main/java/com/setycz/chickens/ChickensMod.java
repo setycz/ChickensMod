@@ -144,10 +144,11 @@ public class ChickensMod {
                 new ItemStack(Items.snowball),
                 0x33bbff, 0x0088cc));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem lavaChicken = new ChickensRegistryItem(
                 103, "LavaChicken", new ResourceLocation("chickens", "textures/entity/LavaChicken.png"),
                 new ItemStack(liquidEgg, 1, 1),
-                0xcc3300, 0xffff00));
+                0xcc3300, 0xffff00);
+        ChickensRegistry.register(lavaChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 104, "QuartzChicken", new ResourceLocation("chickens", "textures/entity/QuartzChicken.png"),
@@ -173,6 +174,12 @@ public class ChickensMod {
                 new ItemStack(Items.iron_ingot),
                 0xffffcc, 0xffcccc,
                 flintChicken, whiteChicken));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                204, "CoalChicken", new ResourceLocation("chickens", "textures/entity/CoalChicken.png"),
+                new ItemStack(Items.coal),
+                0x262626, 0x000000,
+                flintChicken, lavaChicken));
     }
 
     private void registerChicken(ChickensRegistryItem chicken, FMLInitializationEvent event) {
