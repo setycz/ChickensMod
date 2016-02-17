@@ -88,10 +88,11 @@ public class ChickensMod {
 
     private void registerChickens() {
         // dye chickens
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem whiteChicken = new ChickensRegistryItem(
                 0, "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.WHITE.getDyeDamage()),
-                0xf2f2f2, 0xffffff));
+                0xf2f2f2, 0xffffff);
+        ChickensRegistry.register(whiteChicken);
 
         ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
                 4, "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
@@ -132,10 +133,11 @@ public class ChickensMod {
                 0x999999, 0x404040);
         ChickensRegistry.register(gunpowderChicken);
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem flintChicken = new ChickensRegistryItem(
                 101, "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
                 new ItemStack(Items.flint),
-                0x6b6b47, 0xa3a375));
+                0x6b6b47, 0xa3a375);
+        ChickensRegistry.register(flintChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 102, "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
@@ -165,6 +167,12 @@ public class ChickensMod {
                 new ItemStack(Items.glowstone_dust),
                 0xffff66, 0xffff00,
                 yellowChicken, gunpowderChicken));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                203, "IronChicken", new ResourceLocation("chickens", "textures/entity/IronChicken.png"),
+                new ItemStack(Items.iron_ingot),
+                0xffffcc, 0xffcccc,
+                flintChicken, whiteChicken));
     }
 
     private void registerChicken(ChickensRegistryItem chicken, FMLInitializationEvent event) {
