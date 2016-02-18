@@ -5,10 +5,13 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by setyc on 12.02.2016.
  */
+@SideOnly(Side.CLIENT)
 public class RenderChickensChicken extends RenderLiving<EntityChickensChicken> {
 
     public RenderChickensChicken(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn) {

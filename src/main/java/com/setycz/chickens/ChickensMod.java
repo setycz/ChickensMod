@@ -1,14 +1,9 @@
 package com.setycz.chickens;
 
 import com.setycz.chickens.chicken.EntityChickensChicken;
-import com.setycz.chickens.chicken.ModelChickensChicken;
-import com.setycz.chickens.chicken.RenderChickensChicken;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -20,10 +15,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -36,12 +31,17 @@ public class ChickensMod {
 
     private static final CreativeTabs tab = new ChickensTab("chickens");
 
-    private static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
-    private static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
-    private static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
+    public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
+    public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
+    public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
+
+    @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
+    public static CommonProxy proxy;
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        proxy.init();
+
         registerLiquidEggs();
         registerChickens();
 
@@ -51,10 +51,6 @@ public class ChickensMod {
 
         // chicken entity registration
         EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, 30000, this, 64, 3, true);
-        if (event.getSide() == Side.CLIENT) {
-            RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-            renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
-        }
 
         // chicken entity spawning
         EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
@@ -70,15 +66,10 @@ public class ChickensMod {
 
         // register all chickens to Minecraft
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            registerChicken(chicken, event);
+            proxy.registerChicken(chicken);
         }
 
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
-        if (event.getSide() == Side.CLIENT) {
-            ModelResourceLocation eggResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(liquidEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(liquidEgg, 0, eggResourceLocation);
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(liquidEgg, 1, eggResourceLocation);
-        }
     }
 
     private void registerLiquidEggs() {
@@ -182,26 +173,7 @@ public class ChickensMod {
                 flintChicken, lavaChicken));
     }
 
-    private void registerChicken(ChickensRegistryItem chicken, FMLInitializationEvent event) {
-        if (event.getSide() == Side.CLIENT) {
-            ModelResourceLocation spawnResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(spawnEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(spawnEgg, chicken.getId(), spawnResourceLocation);
-
-            if (chicken.isDye()) {
-                ModelResourceLocation eggResourceLocation = new ModelResourceLocation(MODID + ":" + getItemName(coloredEgg), "inventory");
-                Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(coloredEgg, chicken.getDyeMetadata(), eggResourceLocation);
-            }
-        }
-
-        if (chicken.isDye()) {
-            GameRegistry.addShapelessRecipe(
-                    new ItemStack(coloredEgg, 1, chicken.getDyeMetadata()),
-                    new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
-            );
-        }
-    }
-
-    private String getItemName(Item item) {
+    public static String getItemName(Item item) {
         return item.getUnlocalizedName().substring(5);
     }
 }
