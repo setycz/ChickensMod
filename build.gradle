@@ -37,6 +37,12 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+    mavenCentral()
+    maven { url "http://mobiusstrip.eu/maven" }
+    maven { url = "http://chickenbones.net/maven/" }
+}
+
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
@@ -59,6 +65,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    compile "mcp.mobius.waila:Waila:1.6.0-B3_1.8.8"
 }
 
 processResources

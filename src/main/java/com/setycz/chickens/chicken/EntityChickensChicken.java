@@ -27,8 +27,16 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public ResourceLocation getTexture() {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
+        ChickensRegistryItem chickenDescription = getChickenDescription();
         return chickenDescription.getTexture();
+    }
+
+    private ChickensRegistryItem getChickenDescription() {
+        return ChickensRegistry.getByType(getChickenType());
+    }
+
+    public int getTier() {
+        return getChickenDescription().getTier();
     }
 
     @Override
@@ -37,13 +45,13 @@ public class EntityChickensChicken extends EntityChicken {
             return getCustomNameTag();
         }
 
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
+        ChickensRegistryItem chickenDescription = getChickenDescription();
         return StatCollector.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
-        ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
+        ChickensRegistryItem chickenDescription = getChickenDescription();
         EntityChickensChicken mate = (EntityChickensChicken) ageable;
         ChickensRegistryItem mateChickenDescription = ChickensRegistry.getByType(mate.getChickenType());
 
@@ -100,7 +108,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 1) {
-            ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(getChickenType());
+            ChickensRegistryItem chickenDescription = getChickenDescription();
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.entityDropItem(chickenDescription.createLayItem(), 0);
             this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;

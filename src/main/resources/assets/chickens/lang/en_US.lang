@@ -3,6 +3,8 @@ itemGroup.chickens=Chickens
 item.liquid_egg.water.name=Water Egg
 item.liquid_egg.lava.name=Lava Egg
 
+entity.ChickensChicken.tier=Tier: %1$s
+
 entity.WhiteChicken.name=White Chicken
 item.colored_egg.white.name=White Chicken Egg
 entity.YellowChicken.name=Yellow Chicken
