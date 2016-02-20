@@ -71,6 +71,9 @@ public class ChickensMod {
         }
 
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
+        for (LiquidEggRegistryItem liquidEgg : LiquidEggRegistry.getAll()) {
+            proxy.registerLiquidEgg(liquidEgg);
+        }
 
         // waila integration
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");

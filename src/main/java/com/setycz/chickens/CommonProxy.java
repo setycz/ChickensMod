@@ -20,4 +20,8 @@ public class CommonProxy {
             );
         }
     }
+
+    public void registerLiquidEgg(LiquidEggRegistryItem liquidEgg) {
+
+    }
 }

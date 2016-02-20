@@ -18,11 +18,14 @@ public class ClientProxy extends CommonProxy {
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
         renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
+    }
 
-        // liquid egg
+    @Override
+    public void registerLiquidEgg(LiquidEggRegistryItem liquidEgg) {
+        super.registerLiquidEgg(liquidEgg);
+
         ModelResourceLocation eggResourceLocation = new ModelResourceLocation(ChickensMod.MODID + ":" + ChickensMod.getItemName(ChickensMod.liquidEgg), "inventory");
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.liquidEgg, 0, eggResourceLocation);
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.liquidEgg, 1, eggResourceLocation);
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.liquidEgg, liquidEgg.getId(), eggResourceLocation);
     }
 
     @Override

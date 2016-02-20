@@ -52,8 +52,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        EntityChickensChicken mate = (EntityChickensChicken) ageable;
-        ChickensRegistryItem mateChickenDescription = ChickensRegistry.getByType(mate.getChickenType());
+        ChickensRegistryItem mateChickenDescription = ((EntityChickensChicken)ageable).getChickenDescription();
 
         ArrayList<ChickensRegistryItem> possibleChildren = new ArrayList<ChickensRegistryItem>(ChickensRegistry.getChildren(chickenDescription, mateChickenDescription));
         possibleChildren.add(chickenDescription);
