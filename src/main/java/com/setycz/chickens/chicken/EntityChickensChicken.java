@@ -80,7 +80,7 @@ public class EntityChickensChicken extends EntityChicken {
     private ChickensRegistryItem getChickenToBeBorn(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance, int diceValue) {
         int currentVale = 0;
         for (ChickensRegistryItem child : possibleChildren) {
-            currentVale += maxChance - (child.getTier() + 1);
+            currentVale += maxChance - child.getTier();
             if (diceValue < currentVale) {
                 return child;
             }
@@ -91,7 +91,7 @@ public class EntityChickensChicken extends EntityChicken {
     private int getMaxDiceValue(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance) {
         int maxDiceValue = 0;
         for (ChickensRegistryItem child : possibleChildren) {
-            maxDiceValue += maxChance - (child.getTier() + 1);
+            maxDiceValue += maxChance - child.getTier();
         }
         return maxDiceValue;
     }
@@ -99,7 +99,7 @@ public class EntityChickensChicken extends EntityChicken {
     private int getMaxChance(ArrayList<ChickensRegistryItem> possibleChildren) {
         int maxChance = 0;
         for (ChickensRegistryItem child : possibleChildren) {
-            maxChance = Math.max(maxChance, child.getTier() + 1);
+            maxChance = Math.max(maxChance, child.getTier());
         }
         maxChance += 1;
         return maxChance;

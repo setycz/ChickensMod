@@ -54,7 +54,7 @@ public class ChickensRegistryItem {
 
     public int getTier() {
         if (parent1 == null || parent2 == null) {
-            return 0;
+            return 1;
         }
         return Math.max(parent1.getTier(), parent2.getTier()) + 1;
     }
@@ -76,7 +76,7 @@ public class ChickensRegistryItem {
     }
 
     public boolean canSpawn() {
-        return getTier() == 0 && !isDye();
+        return getTier() == 1 && !isDye();
     }
 
     public int getId() {
