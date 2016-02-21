@@ -32,7 +32,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private ChickensRegistryItem getChickenDescription() {
-        return ChickensRegistry.getByType(getChickenType());
+        return ChickensRegistry.getByType(getChickenTypeInternal());
     }
 
     public int getTier() {
@@ -110,9 +110,13 @@ public class EntityChickensChicken extends EntityChicken {
             ChickensRegistryItem chickenDescription = getChickenDescription();
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.entityDropItem(chickenDescription.createLayItem(), 0);
-            this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
+            resetTimeUntilNextEgg();
         }
         super.onLivingUpdate();
+    }
+
+    private void resetTimeUntilNextEgg() {
+        this.timeUntilNextEgg = (rand.nextInt(6000) + 6000) * 2 * getTier();
     }
 
     @Override
@@ -150,10 +154,15 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public void setChickenType(int type) {
+        setChickenTypeInternal(type);
+        resetTimeUntilNextEgg();
+    }
+
+    private void setChickenTypeInternal(int type) {
         this.dataWatcher.updateObject(TYPE_ID, type);
     }
 
-    private int getChickenType() {
+    private int getChickenTypeInternal() {
         return this.dataWatcher.getWatchableObjectInt(TYPE_ID);
     }
 
@@ -166,12 +175,12 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public void writeToNBT(NBTTagCompound tagCompund) {
         super.writeToNBT(tagCompund);
-        tagCompund.setInteger(TYPE_NBT, getChickenType());
+        tagCompund.setInteger(TYPE_NBT, getChickenTypeInternal());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompund) {
         super.readFromNBT(tagCompund);
-        setChickenType(tagCompund.getInteger(TYPE_NBT));
+        setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
     }
 }
