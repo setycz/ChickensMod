@@ -25,9 +25,9 @@ public class LayingRecipeCategory implements IRecipeCategory {
         title = Translator.translateToLocal("gui.laying");
 
         ResourceLocation location = new ResourceLocation(ChickensMod.MODID, "textures/gui/laying.png");
-        background = guiHelper.createDrawable(location, 55, 16, 82, 54);
+        background = guiHelper.createDrawable(location, 0, 0, 82, 54);
 
-        IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 176, 14, 24, 17);
+        IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 82, 0, 13, 10);
         arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -56,7 +56,7 @@ public class LayingRecipeCategory implements IRecipeCategory {
 
     @Override
     public void drawAnimations(Minecraft minecraft) {
-        arrow.draw(minecraft, 24, 18);
+        arrow.draw(minecraft, 40, 21);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class LayingRecipeCategory implements IRecipeCategory {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
         int inputSlot = 0;
-        guiItemStacks.init(inputSlot, true, 0, 0);
+        guiItemStacks.init(inputSlot, true, 13, 15);
         guiItemStacks.setFromRecipe(inputSlot, recipeWrapper.getInputs());
 
         int outputSlot = 1;
-        guiItemStacks.init(outputSlot, false, 60, 18);
+        guiItemStacks.init(outputSlot, false, 57, 15);
         guiItemStacks.setFromRecipe(outputSlot, recipeWrapper.getOutputs());
     }
 }
