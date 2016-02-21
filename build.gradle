@@ -41,6 +41,7 @@ repositories {
     mavenCentral()
     maven { url "http://mobiusstrip.eu/maven" }
     maven { url = "http://chickenbones.net/maven/" }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
 }
 
 dependencies {
@@ -65,6 +66,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    deobfCompile "mezz.jei:jei_1.8.9:2.25.7.145"
     compile "mcp.mobius.waila:Waila:1.6.0-B3_1.8.8"
 }
 
