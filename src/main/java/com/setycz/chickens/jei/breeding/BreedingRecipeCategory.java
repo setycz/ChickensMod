@@ -28,7 +28,7 @@ public class BreedingRecipeCategory implements IRecipeCategory {
 
 
         IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 82, 0, 7, 7);
-        arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+        arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
 
     @Nonnull
