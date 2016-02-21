@@ -194,11 +194,12 @@ public class ChickensMod {
                 flintChicken, lavaChicken);
         ChickensRegistry.register(coalChicken);
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem slimeChicken = new ChickensRegistryItem(
                 205, "SlimeChicken", new ResourceLocation("chickens", "textures/entity/SlimeChicken.png"),
                 new ItemStack(Items.slime_ball),
                 0x009933, 0x99ffbb,
-                snowballChicken, greenChicken));
+                snowballChicken, greenChicken);
+        ChickensRegistry.register(slimeChicken);
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 206, "WaterChicken", new ResourceLocation("chickens", "textures/entity/WaterChicken.png"),
@@ -251,6 +252,12 @@ public class ChickensMod {
                 new ItemStack(Items.ghast_tear),
                 0xffffcc, 0xffffff,
                 diamondChicken, quartzChicken));
+
+        ChickensRegistry.register(new ChickensRegistryItem(
+                403, "MagmaChicken", new ResourceLocation("chickens", "textures/entity/MagmaChicken.png"),
+                new ItemStack(Items.magma_cream),
+                0x1a0500, 0x000000,
+                slimeChicken, blazeChicken));
 
     }
 
