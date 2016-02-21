@@ -3,6 +3,9 @@ package com.setycz.chickens.jei;
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
+import com.setycz.chickens.jei.breeding.BreedingRecipeCategory;
+import com.setycz.chickens.jei.breeding.BreedingRecipeHandler;
+import com.setycz.chickens.jei.breeding.BreedingRecipeWrapper;
 import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import com.setycz.chickens.jei.laying.LayingRecipeHandler;
 import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
@@ -31,9 +34,16 @@ public class ChickensJeiPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipeCategories(new LayingRecipeCategory(jeiHelpers.getGuiHelper()));
-        registry.addRecipeHandlers(new LayingRecipeHandler());
+        registry.addRecipeCategories(
+                new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
+                new BreedingRecipeCategory(jeiHelpers.getGuiHelper())
+        );
+        registry.addRecipeHandlers(
+                new LayingRecipeHandler(),
+                new BreedingRecipeHandler()
+        );
         registry.addRecipes(getLayingRecipes());
+        registry.addRecipes(getBreedingRecipes());
     }
 
     @Override
@@ -53,6 +63,20 @@ public class ChickensJeiPlugin implements IModPlugin {
                     new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
                     chicken.createLayItem()
             ));
+        }
+        return result;
+    }
+
+    private List<BreedingRecipeWrapper> getBreedingRecipes() {
+        List<BreedingRecipeWrapper> result = new ArrayList<BreedingRecipeWrapper>();
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            if (chicken.getTier() > 1) {
+                result.add(new BreedingRecipeWrapper(
+                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent1().getId()),
+                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent2().getId()),
+                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId())
+                ));
+            }
         }
         return result;
     }

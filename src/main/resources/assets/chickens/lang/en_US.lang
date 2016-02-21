@@ -39,3 +39,4 @@ entity.GhastChicken.name=Ghast Tear Chicken
 
 entity.ChickensChicken.tier=Tier: %1$s
 gui.laying=Laying Egg
+gui.breeding=Chicken Breeding

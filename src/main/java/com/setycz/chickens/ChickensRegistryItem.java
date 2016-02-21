@@ -36,6 +36,14 @@ public class ChickensRegistryItem {
         return entityName;
     }
 
+    public ChickensRegistryItem getParent1() {
+        return parent1;
+    }
+
+    public ChickensRegistryItem getParent2() {
+        return parent2;
+    }
+
     public int getBgColor() {
         return bgColor;
     }

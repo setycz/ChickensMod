@@ -10,21 +10,21 @@ import java.util.List;
  * Created by setyc on 21.02.2016.
  */
 public class LayingRecipeWrapper extends BlankRecipeWrapper{
-    private final List<ItemStack> input;
-    private final List<ItemStack> output;
+    private final List<ItemStack> chicken;
+    private final List<ItemStack> egg;
 
-    public LayingRecipeWrapper(ItemStack input, ItemStack output) {
-        this.input = Collections.singletonList(input);
-        this.output = Collections.singletonList(output);
+    public LayingRecipeWrapper(ItemStack chicken, ItemStack egg) {
+        this.chicken = Collections.singletonList(chicken);
+        this.egg = Collections.singletonList(egg);
     }
 
     @Override
     public List getInputs() {
-        return input;
+        return chicken;
     }
 
     @Override
     public List getOutputs() {
-        return output;
+        return egg;
     }
 }
