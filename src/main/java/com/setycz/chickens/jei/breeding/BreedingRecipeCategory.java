@@ -24,10 +24,10 @@ public class BreedingRecipeCategory implements IRecipeCategory {
         title = Translator.translateToLocal("gui.breeding");
 
         ResourceLocation location = new ResourceLocation(ChickensMod.MODID, "textures/gui/breeding.png");
-        background = guiHelper.createDrawable(location, 55, 16, 82, 54);
+        background = guiHelper.createDrawable(location, 0, 0, 82, 54);
 
 
-        IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 176, 14, 24, 17);
+        IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 82, 0, 7, 7);
         arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
@@ -56,7 +56,7 @@ public class BreedingRecipeCategory implements IRecipeCategory {
 
     @Override
     public void drawAnimations(Minecraft minecraft) {
-        arrow.draw(minecraft, 24, 18);
+        arrow.draw(minecraft, 37, 5);
     }
 
     @Override
@@ -64,15 +64,15 @@ public class BreedingRecipeCategory implements IRecipeCategory {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
         int parent1Slot = 0;
-        guiItemStacks.init(parent1Slot, true, 0, 0);
+        guiItemStacks.init(parent1Slot, true, 10, 15);
         guiItemStacks.setFromRecipe(parent1Slot, recipeWrapper.getInputs().get(0));
 
         int parent2Slot = 1;
-        guiItemStacks.init(parent2Slot, true, 0, 36);
+        guiItemStacks.init(parent2Slot, true, 53, 15);
         guiItemStacks.setFromRecipe(parent2Slot, recipeWrapper.getInputs().get(1));
 
         int childrenSlot = 2;
-        guiItemStacks.init(childrenSlot, false, 60, 18);
+        guiItemStacks.init(childrenSlot, false, 33, 30);
         guiItemStacks.setFromRecipe(childrenSlot, recipeWrapper.getOutputs());
     }
 }
