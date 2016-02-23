@@ -90,4 +90,12 @@ public class ChickensRegistryItem {
     public int getId() {
         return id;
     }
+
+    public int getMinLayTime() {
+        return 6000*getTier();
+    }
+
+    public int getMaxLayTime() {
+        return 2*6000*getTier();
+    }
 }

@@ -116,7 +116,9 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private void resetTimeUntilNextEgg() {
-        this.timeUntilNextEgg = (rand.nextInt(6000) + 6000) * 2 * getTier();
+        ChickensRegistryItem chickenDescription = getChickenDescription();
+        this.timeUntilNextEgg = (chickenDescription.getMinLayTime()
+                + rand.nextInt(chickenDescription.getMaxLayTime()-chickenDescription.getMinLayTime())) * 2;
     }
 
     @Override

@@ -61,7 +61,8 @@ public class ChickensJeiPlugin implements IModPlugin {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             result.add(new LayingRecipeWrapper(
                     new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
-                    chicken.createLayItem()
+                    chicken.createLayItem(),
+                    chicken.getMinLayTime(), chicken.getMaxLayTime()
             ));
         }
         return result;
