@@ -75,7 +75,8 @@ public class ChickensJeiPlugin implements IModPlugin {
                 result.add(new BreedingRecipeWrapper(
                         new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent1().getId()),
                         new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent2().getId()),
-                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId())
+                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
+                        ChickensRegistry.getChildChance(chicken)
                 ));
             }
         }

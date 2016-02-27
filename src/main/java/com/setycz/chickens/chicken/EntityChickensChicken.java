@@ -11,7 +11,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,11 +53,7 @@ public class EntityChickensChicken extends EntityChicken {
         ChickensRegistryItem chickenDescription = getChickenDescription();
         ChickensRegistryItem mateChickenDescription = ((EntityChickensChicken)ageable).getChickenDescription();
 
-        ArrayList<ChickensRegistryItem> possibleChildren = new ArrayList<ChickensRegistryItem>(ChickensRegistry.getChildren(chickenDescription, mateChickenDescription));
-        possibleChildren.add(chickenDescription);
-        possibleChildren.add(mateChickenDescription);
-
-        ChickensRegistryItem childToBeBorn = getRandomChickenToBeBorn(possibleChildren);
+        ChickensRegistryItem childToBeBorn = ChickensRegistry.getRandomChild(chickenDescription, mateChickenDescription);
         if (childToBeBorn == null) {
             return null;
         }
@@ -66,42 +61,6 @@ public class EntityChickensChicken extends EntityChicken {
         EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
         newChicken.setChickenType(childToBeBorn.getId());
         return newChicken;
-    }
-
-    private ChickensRegistryItem getRandomChickenToBeBorn(ArrayList<ChickensRegistryItem> possibleChildren) {
-        int maxChance = getMaxChance(possibleChildren);
-        int maxDiceValue = getMaxDiceValue(possibleChildren, maxChance);
-
-        int diceValue = rand.nextInt(maxDiceValue);
-        return getChickenToBeBorn(possibleChildren, maxChance, diceValue);
-    }
-
-    private ChickensRegistryItem getChickenToBeBorn(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance, int diceValue) {
-        int currentVale = 0;
-        for (ChickensRegistryItem child : possibleChildren) {
-            currentVale += maxChance - child.getTier();
-            if (diceValue < currentVale) {
-                return child;
-            }
-        }
-        return null;
-    }
-
-    private int getMaxDiceValue(ArrayList<ChickensRegistryItem> possibleChildren, int maxChance) {
-        int maxDiceValue = 0;
-        for (ChickensRegistryItem child : possibleChildren) {
-            maxDiceValue += maxChance - child.getTier();
-        }
-        return maxDiceValue;
-    }
-
-    private int getMaxChance(ArrayList<ChickensRegistryItem> possibleChildren) {
-        int maxChance = 0;
-        for (ChickensRegistryItem child : possibleChildren) {
-            maxChance = Math.max(maxChance, child.getTier());
-        }
-        maxChance += 1;
-        return maxChance;
     }
 
     @Override
