@@ -5,19 +5,29 @@ import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.SpawnerAnimals;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -39,8 +49,61 @@ public class ChickensMod {
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
 
+    @SubscribeEvent
+    public void populateChunk(PopulateChunkEvent.Post event) {
+        BlockPos chunkCentrePos = new BlockPos(event.chunkX * 16 + 8, 0, event.chunkZ * 16 + 8);
+        BiomeGenBase biome = event.world.getBiomeGenForCoords(chunkCentrePos);
+        if (biome != BiomeGenBase.hell) {
+            return;
+        }
+
+        if (event.world.rand.nextFloat() < biome.getSpawningChance()) {
+
+            BlockPos basePosition = getRandomChunkPosition(event.world, event.chunkX, event.chunkZ);
+            BlockPos spawnPos = findFloor(event.world, basePosition);
+
+            IEntityLivingData livingData = spawn(event.world, null, spawnPos);
+            livingData = spawn(event.world, livingData, spawnPos.north());
+            livingData = spawn(event.world, livingData, spawnPos.south());
+            livingData = spawn(event.world, livingData, spawnPos.west());
+            spawn(event.world, livingData, spawnPos.east());
+        }
+    }
+
+    private BlockPos findFloor(World world, BlockPos basePosition) {
+        BlockPos spawnPos = basePosition;
+        while (spawnPos.getY() < 100 && !SpawnerAnimals.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(EntityChickensChicken.class), world, spawnPos)) {
+            spawnPos = spawnPos.up();
+        }
+        return spawnPos;
+    }
+
+    private IEntityLivingData spawn(World world, IEntityLivingData livingData, BlockPos spawnPos) {
+        if (SpawnerAnimals.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(EntityChickensChicken.class), world, spawnPos)) {
+            EntityChickensChicken entity = new EntityChickensChicken(world);
+            entity.setLocationAndAngles(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0.0F);
+            livingData = entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), livingData);
+            if (entity.isNotColliding()) {
+                world.spawnEntityInWorld(entity);
+            }
+        }
+        return livingData;
+    }
+
+    protected static BlockPos getRandomChunkPosition(World worldIn, int x, int z)
+    {
+        Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
+        int i = x * 16 + worldIn.rand.nextInt(16);
+        int j = z * 16 + worldIn.rand.nextInt(16);
+        int k = MathHelper.roundUp(chunk.getHeight(new BlockPos(i, 0, j)) + 1, 16);
+        int l = worldIn.rand.nextInt(k > 0 ? k : chunk.getTopFilledSegment() + 16 - 1);
+        return new BlockPos(i, l, j);
+    }
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+
         proxy.init();
 
         registerLiquidEggs();
@@ -62,7 +125,7 @@ public class ChickensMod {
                 BiomeGenBase.jungleEdge, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
                 BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
                 BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills, BiomeGenBase.extremeHillsPlus,
-                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau
+                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell
         );
 
         // register all chickens to Minecraft
@@ -143,19 +206,19 @@ public class ChickensMod {
         ChickensRegistryItem snowballChicken = new ChickensRegistryItem(
                 102, "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
                 new ItemStack(Items.snowball),
-                0x33bbff, 0x0088cc);
+                0x33bbff, 0x0088cc).setSpawnType(SpawnType.SNOW);
         ChickensRegistry.register(snowballChicken);
 
         ChickensRegistryItem lavaChicken = new ChickensRegistryItem(
                 103, "LavaChicken", new ResourceLocation("chickens", "textures/entity/LavaChicken.png"),
                 new ItemStack(liquidEgg, 1, 1),
-                0xcc3300, 0xffff00);
+                0xcc3300, 0xffff00).setSpawnType(SpawnType.HELL);
         ChickensRegistry.register(lavaChicken);
 
         ChickensRegistryItem quartzChicken = new ChickensRegistryItem(
                 104, "QuartzChicken", new ResourceLocation("chickens", "textures/entity/QuartzChicken.png"),
                 new ItemStack(Items.quartz),
-                0x4d0000, 0x1a0000);
+                0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL);
         ChickensRegistry.register(quartzChicken);
 
         // chicken tier 2
@@ -163,15 +226,15 @@ public class ChickensMod {
                 200, "ClayChicken", new ResourceLocation("chickens", "textures/entity/ClayChicken.png"),
                 new ItemStack(Items.clay_ball),
                 0xcccccc, 0xbfbfbf,
-                flintChicken, snowballChicken
-        ));
+                flintChicken,
+                snowballChicken));
 
         ChickensRegistry.register(new ChickensRegistryItem(
                 201, "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
                 new ItemStack(Items.redstone),
                 0xe60000, 0x800000,
-                redChicken, gunpowderChicken
-        ));
+                redChicken,
+                gunpowderChicken));
 
         ChickensRegistryItem glowstoneChicken = new ChickensRegistryItem(
                 202, "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),

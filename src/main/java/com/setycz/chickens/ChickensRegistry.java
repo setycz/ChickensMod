@@ -42,10 +42,10 @@ public final class ChickensRegistry {
         return null;
     }
 
-    public static List<ChickensRegistryItem> getPossibleChickensToSpawn() {
+    public static List<ChickensRegistryItem> getPossibleChickensToSpawn(SpawnType spawnType) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.canSpawn()) {
+            if (chicken.canSpawn() && chicken.getSpawnType() == spawnType) {
                 result.add(chicken);
             }
         }

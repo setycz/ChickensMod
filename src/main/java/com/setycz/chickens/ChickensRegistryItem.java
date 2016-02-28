@@ -16,6 +16,7 @@ public class ChickensRegistryItem {
     private final ResourceLocation texture;
     private final ChickensRegistryItem parent1;
     private final ChickensRegistryItem parent2;
+    private SpawnType spawnType;
 
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
@@ -28,8 +29,14 @@ public class ChickensRegistryItem {
         this.bgColor = bgColor;
         this.fgColor = fgColor;
         this.texture = texture;
+        this.spawnType = SpawnType.NORMAL;
         this.parent1 = parent1;
         this.parent2 = parent2;
+    }
+
+    public ChickensRegistryItem setSpawnType(SpawnType type) {
+        spawnType = type;
+        return this;
     }
 
     public String getEntityName() {
@@ -97,5 +104,9 @@ public class ChickensRegistryItem {
 
     public int getMaxLayTime() {
         return 2*6000*getTier();
+    }
+
+    public SpawnType getSpawnType() {
+        return spawnType;
     }
 }

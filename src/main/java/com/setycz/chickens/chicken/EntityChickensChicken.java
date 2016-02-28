@@ -2,6 +2,7 @@ package com.setycz.chickens.chicken;
 
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
+import com.setycz.chickens.SpawnType;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
@@ -10,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.List;
 
@@ -81,13 +83,20 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
+    public boolean getCanSpawnHere() {
+        BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
+        return biome == BiomeGenBase.hell || super.getCanSpawnHere();
+    }
+
+    @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
         livingData = super.onInitialSpawn(difficulty, livingData);
         if (livingData instanceof GroupData) {
             GroupData groupData = (GroupData) livingData;
             setChickenType(groupData.getType());
         } else {
-            List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn();
+            SpawnType spawnType = getSpawnType();
+            List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn(spawnType);
             ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
 
             int type = chickenToSpawn.getId();
@@ -100,6 +109,19 @@ public class EntityChickensChicken extends EntityChicken {
         }
 
         return livingData;
+    }
+
+    private SpawnType getSpawnType() {
+        BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
+        if (biome == BiomeGenBase.hell) {
+            return SpawnType.HELL;
+        }
+
+        if (biome == BiomeGenBase.extremeHills || biome.isSnowyBiome()) {
+            return SpawnType.SNOW;
+        }
+
+        return SpawnType.NORMAL;
     }
 
     private static class GroupData implements IEntityLivingData {
@@ -116,6 +138,7 @@ public class EntityChickensChicken extends EntityChicken {
 
     public void setChickenType(int type) {
         setChickenTypeInternal(type);
+        isImmuneToFire = getChickenDescription().getSpawnType() == SpawnType.HELL;
         resetTimeUntilNextEgg();
     }
 
