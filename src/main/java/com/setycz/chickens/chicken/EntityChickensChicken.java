@@ -138,7 +138,7 @@ public class EntityChickensChicken extends EntityChicken {
 
     public void setChickenType(int type) {
         setChickenTypeInternal(type);
-        isImmuneToFire = getChickenDescription().getSpawnType() == SpawnType.HELL;
+        isImmuneToFire = getChickenDescription().isImmuneToFire();
         resetTimeUntilNextEgg();
     }
 

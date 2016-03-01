@@ -109,4 +109,8 @@ public class ChickensRegistryItem {
     public SpawnType getSpawnType() {
         return spawnType;
     }
+
+    public boolean isImmuneToFire() {
+        return spawnType == SpawnType.HELL;
+    }
 }
