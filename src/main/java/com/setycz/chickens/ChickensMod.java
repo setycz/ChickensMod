@@ -2,8 +2,10 @@ package com.setycz.chickens;
 
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
+import com.setycz.chickens.henhouse.BlockHenhouse;
 import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
@@ -45,6 +47,8 @@ public class ChickensMod {
     public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
     public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
+
+    public static final Block henhouse = new BlockHenhouse().setUnlocalizedName("henhouse").setCreativeTab(tab);
 
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
@@ -140,6 +144,8 @@ public class ChickensMod {
 
         // waila integration
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+
+        GameRegistry.registerBlock(henhouse, "henhouse");
     }
 
     private void registerLiquidEggs() {
