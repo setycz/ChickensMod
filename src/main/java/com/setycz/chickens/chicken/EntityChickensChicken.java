@@ -84,8 +84,10 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public boolean getCanSpawnHere() {
+        boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
+        boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
-        return biome == BiomeGenBase.hell || super.getCanSpawnHere();
+        return anyInNether && biome == BiomeGenBase.hell || anyInOverworld && super.getCanSpawnHere();
     }
 
     @Override
@@ -113,15 +115,7 @@ public class EntityChickensChicken extends EntityChicken {
 
     private SpawnType getSpawnType() {
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
-        if (biome == BiomeGenBase.hell) {
-            return SpawnType.HELL;
-        }
-
-        if (biome == BiomeGenBase.extremeHills || biome.isSnowyBiome()) {
-            return SpawnType.SNOW;
-        }
-
-        return SpawnType.NORMAL;
+        return ChickensRegistry.getSpawnType(biome);
     }
 
     private static class GroupData implements IEntityLivingData {

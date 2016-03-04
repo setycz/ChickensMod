@@ -17,6 +17,7 @@ public class ChickensRegistryItem {
     private final ChickensRegistryItem parent1;
     private final ChickensRegistryItem parent2;
     private SpawnType spawnType;
+    private boolean isEnabled = true;
 
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
@@ -112,5 +113,15 @@ public class ChickensRegistryItem {
 
     public boolean isImmuneToFire() {
         return spawnType == SpawnType.HELL;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return !(!isEnabled
+                || parent1 != null && !parent1.isEnabled()
+                || parent2 != null && !parent2.isEnabled());
     }
 }

@@ -21,15 +21,21 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -41,6 +47,8 @@ public class ChickensMod {
     public static final String CHICKEN = "ChickensChicken";
 
     private static final CreativeTabs tab = new ChickensTab("chickens");
+
+    private int chickenEntityId = 0;
 
     public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
@@ -100,24 +108,42 @@ public class ChickensMod {
         return new BlockPos(i, l, j);
     }
 
+
     @EventHandler
-    public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
-
-        proxy.init();
-
+    public void preInit(FMLPreInitializationEvent event) {
         registerLiquidEggs();
         registerChickens();
+
+        File configFile = new File(event.getModConfigurationDirectory() + "/" + MODID + ".cfg");
+        loadConfiguration(configFile);
+    }
+
+    private void loadConfiguration(File configFile) {
+        Configuration configuration = new Configuration(configFile);
+
+        chickenEntityId = configuration.getInt("entityId", "general", 30000, Integer.MIN_VALUE, Integer.MAX_VALUE, "Chicken Entity ID");
+
+        for (ChickensRegistryItem chicken : ChickensRegistry.getAllItems()) {
+            boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
+            chicken.setEnabled(enabled);
+        }
+
+        configuration.save();
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.init();
 
         // item registration
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
 
         // chicken entity registration
-        EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, 30000, this, 64, 3, true);
+        EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
 
         // chicken entity spawning
-        EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
+        BiomeGenBase[] allPossibleBiomes = {
                 BiomeGenBase.plains, BiomeGenBase.extremeHills, BiomeGenBase.forest,
                 BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.icePlains,
                 BiomeGenBase.iceMountains, BiomeGenBase.forestHills, BiomeGenBase.taigaHills,
@@ -125,8 +151,23 @@ public class ChickensMod {
                 BiomeGenBase.jungleEdge, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
                 BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
                 BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills, BiomeGenBase.extremeHillsPlus,
-                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell
-        );
+                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell};
+
+        List<BiomeGenBase> biomesForSpawning = new ArrayList<BiomeGenBase>();
+        for (BiomeGenBase biome: allPossibleBiomes) {
+            if (ChickensRegistry.isAnyIn(ChickensRegistry.getSpawnType(biome))) {
+                biomesForSpawning.add(biome);
+            }
+        }
+
+        if (biomesForSpawning.size() > 0) {
+            EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
+                    biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()])
+            );
+        }
+        if (ChickensRegistry.isAnyIn(SpawnType.HELL)) {
+            MinecraftForge.EVENT_BUS.register(this);
+        }
 
         // register all chickens to Minecraft
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {

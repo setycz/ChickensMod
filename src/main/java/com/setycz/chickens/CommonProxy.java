@@ -13,7 +13,7 @@ public class CommonProxy {
     }
 
     public void registerChicken(ChickensRegistryItem chicken) {
-        if (chicken.isDye()) {
+        if (chicken.isDye() && chicken.isEnabled()) {
             GameRegistry.addShapelessRecipe(
                     new ItemStack(ChickensMod.coloredEgg, 1, chicken.getDyeMetadata()),
                     new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
