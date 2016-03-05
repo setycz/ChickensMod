@@ -35,8 +35,12 @@ public final class ChickensRegistry {
 
     public static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        result.add(parent1);
-        result.add(parent2);
+        if (parent1.isEnabled()) {
+            result.add(parent1);
+        }
+        if (parent2.isEnabled()) {
+            result.add(parent2);
+        }
         for (ChickensRegistryItem item : items.values()) {
             if (item.isEnabled() && item.isChildOf(parent1, parent2)) {
                 result.add(item);
@@ -91,6 +95,9 @@ public final class ChickensRegistry {
 
     public static ChickensRegistryItem getRandomChild(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> possibleChildren = getChildren(parent1, parent2);
+        if (possibleChildren.size() == 0) {
+            return null;
+        }
 
         int maxChance = getMaxChance(possibleChildren);
         int maxDiceValue = getMaxDiceValue(possibleChildren, maxChance);
