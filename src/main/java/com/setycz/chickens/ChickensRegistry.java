@@ -1,5 +1,7 @@
 package com.setycz.chickens;
 
+import net.minecraft.world.biome.BiomeGenBase;
+
 import java.util.*;
 
 /**
@@ -18,15 +20,29 @@ public final class ChickensRegistry {
     }
 
     public static Collection<ChickensRegistryItem> getItems() {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
+        for (ChickensRegistryItem chicken : items.values()) {
+            if (chicken.isEnabled()) {
+                result.add(chicken);
+            }
+        }
+        return result;
+    }
+
+    public static Collection<ChickensRegistryItem> getAllItems() {
         return items.values();
     }
 
     public static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        result.add(parent1);
-        result.add(parent2);
+        if (parent1.isEnabled()) {
+            result.add(parent1);
+        }
+        if (parent2.isEnabled()) {
+            result.add(parent2);
+        }
         for (ChickensRegistryItem item : items.values()) {
-            if (item.isChildOf(parent1, parent2)) {
+            if (item.isEnabled() && item.isChildOf(parent1, parent2)) {
                 result.add(item);
             }
         }
@@ -44,12 +60,24 @@ public final class ChickensRegistry {
 
     public static List<ChickensRegistryItem> getPossibleChickensToSpawn(SpawnType spawnType) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.canSpawn() && chicken.getSpawnType() == spawnType) {
+        for (ChickensRegistryItem chicken : items.values()) {
+            if (chicken.canSpawn() && chicken.getSpawnType() == spawnType && chicken.isEnabled()) {
                 result.add(chicken);
             }
         }
         return result;
+    }
+
+    public static SpawnType getSpawnType(BiomeGenBase biome) {
+        if (biome == BiomeGenBase.hell) {
+            return SpawnType.HELL;
+        }
+
+        if (biome == BiomeGenBase.extremeHills || biome.isSnowyBiome()) {
+            return SpawnType.SNOW;
+        }
+
+        return SpawnType.NORMAL;
     }
 
     public static float getChildChance(ChickensRegistryItem child) {
@@ -67,6 +95,9 @@ public final class ChickensRegistry {
 
     public static ChickensRegistryItem getRandomChild(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> possibleChildren = getChildren(parent1, parent2);
+        if (possibleChildren.size() == 0) {
+            return null;
+        }
 
         int maxChance = getMaxChance(possibleChildren);
         int maxDiceValue = getMaxDiceValue(possibleChildren, maxChance);
@@ -101,5 +132,14 @@ public final class ChickensRegistry {
         }
         maxChance += 1;
         return maxChance;
+    }
+
+    public static boolean isAnyIn(SpawnType spawnType) {
+        for (ChickensRegistryItem chicken : items.values()) {
+            if (chicken.canSpawn() && chicken.isEnabled() && chicken.getSpawnType() == spawnType) {
+                return true;
+            }
+        }
+        return false;
     }
 }
