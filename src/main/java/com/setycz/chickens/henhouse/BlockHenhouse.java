@@ -3,7 +3,12 @@ package com.setycz.chickens.henhouse;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -17,5 +22,26 @@ public class BlockHenhouse extends Block implements ITileEntityProvider{
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityHenhouse();
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityHenhouse) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHenhouse)tileEntity);
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        if(stack.hasDisplayName()){
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof TileEntityHenhouse) {
+                ((TileEntityHenhouse)tileEntity).setCustomName(stack.getDisplayName());
+            }
+        }
     }
 }
