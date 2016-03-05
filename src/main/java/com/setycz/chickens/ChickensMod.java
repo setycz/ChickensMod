@@ -51,11 +51,16 @@ public class ChickensMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        registerLiquidEggs();
-        registerChickens();
+        EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
 
-        File configFile = new File(event.getModConfigurationDirectory() + "/" + MODID + ".cfg");
-        loadConfiguration(configFile);
+        registerChickens();
+        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
+        GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
+
+        registerLiquidEggs();
+        GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
+
+        loadConfiguration(event.getSuggestedConfigurationFile());
     }
 
     private void loadConfiguration(File configFile) {
@@ -66,22 +71,57 @@ public class ChickensMod {
         for (ChickensRegistryItem chicken : ChickensRegistry.getAllItems()) {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
+            float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
+            chicken.setLayCoefficient(layCoefficient);
+            ItemStack itemStack = getLayItemStack(configuration, chicken);
+            chicken.setLayItem(itemStack);
         }
 
         configuration.save();
+    }
+
+    private ItemStack getLayItemStack(Configuration configuration, ChickensRegistryItem chicken) {
+        ItemStack defaultItemStack = chicken.createLayItem();
+        String eggItemName = configuration.getString("eggItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName(), "Item name to be laid.");
+        int eggItemAmount = configuration.getInt("eggItemAmount", chicken.getEntityName(), defaultItemStack.stackSize, 1, 64, "Item amount to be laid.");
+        int eggItemMeta = configuration.getInt("eggItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid.");
+
+        ResourceLocation itemResourceLocation = new ResourceLocation(eggItemName);
+        Item item = GameRegistry.findItem(itemResourceLocation.getResourceDomain(), itemResourceLocation.getResourcePath());
+        if (item == null) {
+            throw new RuntimeException("Cannot find egg item with name: " + eggItemName);
+        }
+        return new ItemStack(item, eggItemAmount, eggItemMeta);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
 
-        // item registration
-        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
-        GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
+        List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
+        if (biomesForSpawning.size() > 0) {
+            EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
+                    biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()])
+            );
+            if (biomesForSpawning.contains(BiomeGenBase.hell)) {
+                MinecraftForge.EVENT_BUS.register(new ChickenNetherPopulateHandler());
+            }
+        }
 
-        // chicken entity registration
-        EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
+        // register all chickens to Minecraft
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            proxy.registerChicken(chicken);
+        }
 
+        for (LiquidEggRegistryItem liquidEgg : LiquidEggRegistry.getAll()) {
+            proxy.registerLiquidEgg(liquidEgg);
+        }
+
+        // waila integration
+        FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+    }
+
+    private List<BiomeGenBase> getAllSpawnBiomes() {
         // chicken entity spawning
         BiomeGenBase[] allPossibleBiomes = {
                 BiomeGenBase.plains, BiomeGenBase.extremeHills, BiomeGenBase.forest,
@@ -99,28 +139,7 @@ public class ChickensMod {
                 biomesForSpawning.add(biome);
             }
         }
-
-        if (biomesForSpawning.size() > 0) {
-            EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
-                    biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()])
-            );
-        }
-        if (ChickensRegistry.isAnyIn(SpawnType.HELL)) {
-            MinecraftForge.EVENT_BUS.register(new ChickenNetherPopulateHandler());
-        }
-
-        // register all chickens to Minecraft
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            proxy.registerChicken(chicken);
-        }
-
-        GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
-        for (LiquidEggRegistryItem liquidEgg : LiquidEggRegistry.getAll()) {
-            proxy.registerLiquidEgg(liquidEgg);
-        }
-
-        // waila integration
-        FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+        return biomesForSpawning;
     }
 
     private void registerLiquidEggs() {

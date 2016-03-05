@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class ChickensRegistryItem {
     private final int id;
     private final String entityName;
-    private final ItemStack layItem;
+    private ItemStack layItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
@@ -18,6 +18,7 @@ public class ChickensRegistryItem {
     private final ChickensRegistryItem parent2;
     private SpawnType spawnType;
     private boolean isEnabled = true;
+    private float layCoefficient = 1.0f;
 
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
@@ -37,6 +38,11 @@ public class ChickensRegistryItem {
 
     public ChickensRegistryItem setSpawnType(SpawnType type) {
         spawnType = type;
+        return this;
+    }
+
+    public ChickensRegistryItem setLayCoefficient(float coef) {
+        layCoefficient = coef;
         return this;
     }
 
@@ -100,11 +106,11 @@ public class ChickensRegistryItem {
     }
 
     public int getMinLayTime() {
-        return 6000*getTier();
+        return (int)Math.max(6000*getTier()*layCoefficient, 1.0f);
     }
 
     public int getMaxLayTime() {
-        return 2*6000*getTier();
+        return 2*getMinLayTime();
     }
 
     public SpawnType getSpawnType() {
@@ -123,5 +129,9 @@ public class ChickensRegistryItem {
         return !(!isEnabled
                 || parent1 != null && !parent1.isEnabled()
                 || parent2 != null && !parent2.isEnabled());
+    }
+
+    public void setLayItem(ItemStack itemStack) {
+        layItem = itemStack;
     }
 }
