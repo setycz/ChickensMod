@@ -1,21 +1,29 @@
 package com.setycz.chickens.henhouse;
 
+import com.setycz.chickens.IInventoryGui;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
 /**
  * Created by setyc on 01.03.2016.
  */
-public class TileEntityHenhouse extends TileEntity implements IInventory {
+public class TileEntityHenhouse extends TileEntity implements IInventory, IInventoryGui {
     private String customName;
     private final ItemStack[] slots = new ItemStack[5];
 
@@ -174,5 +182,16 @@ public class TileEntityHenhouse extends TileEntity implements IInventory {
 
     public void setCustomName(String customName) {
         this.customName = customName;
+    }
+
+    @Override
+    public Container createContainer(InventoryPlayer inventoryplayer, World world, BlockPos pos) {
+        return new ContainerHenhouse(inventoryplayer, this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiContainer createGui(InventoryPlayer inventoryplayer, World world, BlockPos pos) {
+        return new GuiHenhouse(inventoryplayer, this);
     }
 }

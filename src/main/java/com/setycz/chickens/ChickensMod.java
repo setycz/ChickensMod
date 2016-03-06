@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -41,6 +42,9 @@ public class ChickensMod {
     public static final String VERSION = "1.0.1";
     public static final String CHICKEN = "ChickensChicken";
 
+    @Mod.Instance(MODID)
+    public static ChickensMod instance;
+
     private static final CreativeTabs tab = new ChickensTab("chickens");
 
     private int chickenEntityId = 0;
@@ -51,11 +55,15 @@ public class ChickensMod {
 
     public static final Block henhouse = new BlockHenhouse().setUnlocalizedName("henhouse").setCreativeTab(tab);
 
+    public static TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
+
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
+
         EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
 
         registerChickens();
