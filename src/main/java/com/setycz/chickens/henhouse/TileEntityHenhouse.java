@@ -1,42 +1,23 @@
 package com.setycz.chickens.henhouse;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
-import javax.print.DocFlavor;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Created by setyc on 01.03.2016.
  */
-public class TileEntityHenhouse extends TileEntity implements ITickable, IInventory {
+public class TileEntityHenhouse extends TileEntity implements IInventory {
     private String customName;
     private ItemStack[] slots = new ItemStack[8];
-
-    @Override
-    public void update() {
-        /*
-        EntityZombie z = new EntityZombie(worldObj);
-        z.setPositionAndRotation(this.getPos().getX(), this.getPos().getY() + 3, this.getPos().getZ(), 0, 0);
-        worldObj.spawnEntityInWorld(z);
-        */
-        if (!worldObj.isRemote) {
-            List<EntityItem> entityItems = worldObj.getEntitiesWithinAABB(
-                    EntityItem.class,
-                    new AxisAlignedBB(getPos().add(-1, -1, -1), getPos().add(1,1,1)),
-                    EntitySelectors.selectAnything
-                    );
-            for (EntityItem entity :
-                    entityItems) {
-                worldObj.removeEntity(entity);
-            }
-        }
-    }
 
     public ItemStack pushItemStack(ItemStack stack) {
         ItemStack rest = stack.copy();
@@ -62,13 +43,36 @@ public class TileEntityHenhouse extends TileEntity implements ITickable, IInvent
         if (hasCustomName()) {
             compound.setString("customName", customName);
         }
+
+        NBTTagList items = new NBTTagList();
+        for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
+            ItemStack itemStack = slots[slotIndex];
+            if (itemStack != null) {
+                NBTTagCompound item = new NBTTagCompound();
+                item.setInteger("slot", slotIndex);
+                itemStack.writeToNBT(item);
+                items.appendTag(item);
+            }
+        }
+        compound.setTag("items", items);
+
         super.writeToNBT(compound);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+
         customName = compound.getString("customName");
+
+        Arrays.fill(slots, null);
+        NBTTagList items = compound.getTagList("items", 10);
+        for (int itemIndex=0; itemIndex<items.tagCount(); itemIndex++) {
+            NBTTagCompound item = items.getCompoundTagAt(itemIndex);
+            int slotIndex = item.getInteger("slot");
+            ItemStack itemStack = ItemStack.loadItemStackFromNBT(item);
+            slots[slotIndex] = itemStack;
+        }
     }
 
     @Override

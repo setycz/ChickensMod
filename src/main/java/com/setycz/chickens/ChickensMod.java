@@ -10,28 +10,21 @@ import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -72,6 +65,7 @@ public class ChickensMod {
         registerLiquidEggs();
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
 
+        GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
         GameRegistry.registerBlock(henhouse, "henhouse");
 
         loadConfiguration(event.getSuggestedConfigurationFile());
@@ -86,7 +80,7 @@ public class ChickensMod {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
             float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
-            chicken.setLayCoefficient(layCoefficient);
+            chicken.setLayCoefficient(0.1f/*layCoefficient*/);
             ItemStack itemStack = getLayItemStack(configuration, chicken);
             chicken.setLayItem(itemStack);
         }
@@ -108,36 +102,8 @@ public class ChickensMod {
         return new ItemStack(item, eggItemAmount, eggItemMeta);
     }
 
-    @SubscribeEvent
-    public void handleEntityJoin(EntityJoinWorldEvent event) {
-        if (event.entity instanceof EntityItem) {
-            EntityItem itemEntity = (EntityItem)event.entity;
-
-            int i = MathHelper.floor_double(event.entity.posX / 16.0D);
-            int j = MathHelper.floor_double(event.entity.posZ / 16.0D);
-            Chunk chunk = event.world.getChunkFromChunkCoords(i, j);
-
-            for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
-                if (tileEntity instanceof TileEntityHenhouse) {
-                    TileEntityHenhouse henhouseTileEntity = (TileEntityHenhouse) tileEntity;
-                    double distance = henhouseTileEntity.getPos().distanceSq(event.entity.getPosition());
-                    if (distance < 5.f) {
-                        ItemStack result = henhouseTileEntity.pushItemStack(itemEntity.getEntityItem());
-                        if (result == null) {
-                            event.setCanceled(true);
-                            return;
-                        }
-                        itemEntity.setEntityItemStack(result);
-                    }
-                }
-            }
-        }
-    }
-
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
-
         proxy.init();
 
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
