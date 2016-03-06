@@ -38,6 +38,25 @@ public class TileEntityHenhouse extends TileEntity implements ITickable, IInvent
         }
     }
 
+    public ItemStack pushItemStack(ItemStack stack) {
+        ItemStack rest = stack.copy();
+        for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
+            if (slots[slotIndex] == null) {
+                slots[slotIndex] = stack;
+                return null;
+            }
+            if (slots[slotIndex].stackSize < getInventoryStackLimit() && slots[slotIndex].isItemEqual(rest)) {
+                int toAdd = Math.min(rest.stackSize, getInventoryStackLimit() - slots[slotIndex].stackSize);
+                slots[slotIndex].stackSize += toAdd;
+                rest.stackSize -= toAdd;
+                if (rest.stackSize == 0) {
+                    return null;
+                }
+            }
+        }
+        return rest;
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         if (hasCustomName()) {
