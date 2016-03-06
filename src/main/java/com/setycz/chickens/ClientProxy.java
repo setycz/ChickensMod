@@ -6,6 +6,7 @@ import com.setycz.chickens.chicken.RenderChickensChicken;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 
 /**
  * Created by setyc on 18.02.2016.
@@ -18,26 +19,31 @@ public class ClientProxy extends CommonProxy {
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
         renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
+
+        Item henhouse = Item.getItemFromBlock(ChickensMod.henhouse);
+        registerItemModel(henhouse, 0);
+    }
+
+    private void registerItemModel(Item item, int meta) {
+        ModelResourceLocation resourceLocation = new ModelResourceLocation(ChickensMod.MODID + ":" + ChickensMod.getItemName(item), "inventory");
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, resourceLocation);
     }
 
     @Override
     public void registerLiquidEgg(LiquidEggRegistryItem liquidEgg) {
         super.registerLiquidEgg(liquidEgg);
 
-        ModelResourceLocation eggResourceLocation = new ModelResourceLocation(ChickensMod.MODID + ":" + ChickensMod.getItemName(ChickensMod.liquidEgg), "inventory");
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.liquidEgg, liquidEgg.getId(), eggResourceLocation);
+        registerItemModel(ChickensMod.liquidEgg, liquidEgg.getId());
     }
 
     @Override
     public void registerChicken(ChickensRegistryItem chicken) {
         super.registerChicken(chicken);
 
-        ModelResourceLocation spawnResourceLocation = new ModelResourceLocation(ChickensMod.MODID + ":" + ChickensMod.getItemName(ChickensMod.spawnEgg), "inventory");
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.spawnEgg, chicken.getId(), spawnResourceLocation);
+        registerItemModel(ChickensMod.spawnEgg, chicken.getId());
 
         if (chicken.isDye()) {
-            ModelResourceLocation eggResourceLocation = new ModelResourceLocation(ChickensMod.MODID + ":" + ChickensMod.getItemName(ChickensMod.coloredEgg), "inventory");
-            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ChickensMod.coloredEgg, chicken.getDyeMetadata(), eggResourceLocation);
+            registerItemModel(ChickensMod.coloredEgg, chicken.getDyeMetadata());
         }
     }
 }

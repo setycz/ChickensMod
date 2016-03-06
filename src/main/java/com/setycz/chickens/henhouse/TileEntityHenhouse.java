@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class TileEntityHenhouse extends TileEntity implements IInventory {
     private String customName;
-    private ItemStack[] slots = new ItemStack[8];
+    private final ItemStack[] slots = new ItemStack[5];
 
     public ItemStack pushItemStack(ItemStack stack) {
         ItemStack rest = stack.copy();

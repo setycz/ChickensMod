@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "chickens:henhouse" },
+            { "model": "chickens:henhouse", "y": 90 },
+            { "model": "chickens:henhouse", "y": 180 },
+            { "model": "chickens:henhouse", "y": 270 }
+        ]
+    }
+}
