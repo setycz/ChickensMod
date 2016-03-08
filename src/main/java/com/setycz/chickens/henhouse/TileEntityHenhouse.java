@@ -4,8 +4,10 @@ import com.setycz.chickens.IInventoryGui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,26 +26,104 @@ import java.util.Arrays;
  * Created by setyc on 01.03.2016.
  */
 public class TileEntityHenhouse extends TileEntity implements IInventory, IInventoryGui {
+    public static final int hayBaleEnergy = 100;
+
+    public static final int hayBaleSlotIndex = 0;
+    public static final int dirtSlotIndex = 1;
+    public static final int firstItemSlotIndex = 2;
+    public static final int lastItemSlotIndex = 10;
+
     private String customName;
-    private final ItemStack[] slots = new ItemStack[5];
+    private final ItemStack[] slots = new ItemStack[11];
+    private int energy = 0;
 
     public ItemStack pushItemStack(ItemStack stack) {
         ItemStack rest = stack.copy();
-        for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
-            if (slots[slotIndex] == null) {
-                slots[slotIndex] = stack;
-                return null;
-            }
-            if (slots[slotIndex].stackSize < getInventoryStackLimit() && slots[slotIndex].isItemEqual(rest)) {
-                int toAdd = Math.min(rest.stackSize, getInventoryStackLimit() - slots[slotIndex].stackSize);
-                slots[slotIndex].stackSize += toAdd;
-                rest.stackSize -= toAdd;
-                if (rest.stackSize == 0) {
+
+        int capacity = getEffectiveCapacity();
+        if (capacity <= 0){
+            return rest;
+        }
+
+        for (int slotIndex = firstItemSlotIndex; slotIndex <= lastItemSlotIndex; slotIndex++) {
+            int canAdd = canAdd(slots[slotIndex], rest);
+            int willAdd = Math.min(canAdd, capacity);
+            if (willAdd > 0) {
+                consumeEnergy(willAdd);
+                capacity -= willAdd;
+
+                if (slots[slotIndex] == null) {
+                    slots[slotIndex] = rest.splitStack(willAdd);
+                }
+                else {
+                    slots[slotIndex].stackSize += willAdd;
+                    rest.stackSize -= willAdd;
+                }
+
+                if (rest.stackSize <= 0) {
                     return null;
                 }
             }
         }
+
         return rest;
+    }
+
+    private void consumeEnergy(int amount) {
+        int consume = amount > energy ? (int)Math.ceil((amount - energy) / hayBaleEnergy) : 0;
+        slots[hayBaleSlotIndex].stackSize -= consume;
+        if (slots[hayBaleSlotIndex].stackSize <= 0) {
+            slots[hayBaleSlotIndex] = null;
+        }
+
+        int output = amount >= energy ? 1 + ((amount - energy) / hayBaleEnergy) : 0;
+        if (slots[dirtSlotIndex] == null) {
+            slots[dirtSlotIndex] = new ItemStack(Blocks.dirt, output);
+        }
+        else {
+            slots[dirtSlotIndex].stackSize += output;
+        }
+
+        energy = amount > energy ? hayBaleEnergy - (amount - energy) % hayBaleEnergy : energy - amount;
+    }
+
+    private int canAdd(ItemStack slotStack, ItemStack inputStack) {
+        if (slotStack == null) {
+            return Math.min(getInventoryStackLimit(), inputStack.stackSize);
+        }
+        if (!slotStack.isItemEqual(inputStack)) {
+            return 0;
+        }
+        if (slotStack.stackSize >= getInventoryStackLimit()) {
+            return 0;
+        }
+        return Math.min(inputStack.stackSize, getInventoryStackLimit() - slotStack.stackSize);
+    }
+
+    private int getEffectiveCapacity() {
+        return Math.min(getInputCapacity(), getOutputCapacity());
+    }
+
+    private int getInputCapacity() {
+        int potential = energy;
+
+        ItemStack hayBaleStack = slots[hayBaleSlotIndex];
+        if (hayBaleStack != null && hayBaleStack.getItem() == Item.getItemFromBlock(Blocks.hay_block)) {
+            potential += hayBaleStack.stackSize * hayBaleEnergy;
+        }
+
+        return potential;
+    }
+
+    private int getOutputCapacity() {
+        ItemStack dirtStack = slots[dirtSlotIndex];
+        if (dirtStack == null) {
+            return getInventoryStackLimit() * hayBaleEnergy;
+        }
+        if (dirtStack.getItem() != Item.getItemFromBlock(Blocks.dirt)) {
+            return 0;
+        }
+        return (getInventoryStackLimit() - dirtStack.stackSize) * hayBaleEnergy;
     }
 
     @Override
@@ -51,6 +131,8 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
         if (hasCustomName()) {
             compound.setString("customName", customName);
         }
+
+        compound.setInteger("energy", energy);
 
         NBTTagList items = new NBTTagList();
         for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
@@ -64,6 +146,8 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
         }
         compound.setTag("items", items);
 
+        compound.setInteger("energy", energy);
+
         super.writeToNBT(compound);
     }
 
@@ -73,6 +157,8 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
 
         customName = compound.getString("customName");
 
+        energy = compound.getInteger("energy");
+
         Arrays.fill(slots, null);
         NBTTagList items = compound.getTagList("items", 10);
         for (int itemIndex=0; itemIndex<items.tagCount(); itemIndex++) {
@@ -81,6 +167,8 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
             ItemStack itemStack = ItemStack.loadItemStackFromNBT(item);
             slots[slotIndex] = itemStack;
         }
+
+        energy = compound.getInteger("energy");
     }
 
     @Override
@@ -140,22 +228,37 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
+        if (index == hayBaleSlotIndex) {
+            return stack.getItem() == Item.getItemFromBlock(Blocks.hay_block);
+        }
+        if (index == dirtSlotIndex) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int getField(int id) {
-        return 0;
+        switch (id) {
+            case 0:
+                return energy;
+            default:
+                return 0;
+        }
     }
 
     @Override
     public void setField(int id, int value) {
-
+        switch (id) {
+            case 0:
+                energy = value;
+                break;
+        }
     }
 
     @Override
     public int getFieldCount() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -193,5 +296,9 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
     @SideOnly(Side.CLIENT)
     public GuiContainer createGui(InventoryPlayer inventoryplayer, World world, BlockPos pos) {
         return new GuiHenhouse(inventoryplayer, this);
+    }
+
+    public int getEnergy() {
+        return energy;
     }
 }

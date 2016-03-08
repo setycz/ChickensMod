@@ -17,20 +17,28 @@ public class ContainerHenhouse extends Container {
     public ContainerHenhouse(InventoryPlayer playerInventory, TileEntityHenhouse tileEntityHenhouse) {
         this.playerInventory = playerInventory;
         this.tileEntityHenhouse = tileEntityHenhouse;
-        int i = 51;
 
-        for (int j = 0; j < tileEntityHenhouse.getSizeInventory(); ++j) {
-            this.addSlotToContainer(new Slot(tileEntityHenhouse, j, 44 + j * 18, 20));
+        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 24, 34));
+        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 24, 34 + 18));
+
+        for (int row = 0; row < 3; row++) {
+            for (int column=0; column <3; column++) {
+                this.addSlotToContainer(new Slot(
+                        tileEntityHenhouse,
+                        TileEntityHenhouse.firstItemSlotIndex + (row * 3) + column,
+                        98 + row * 18,
+                        17 + column * 18));
+            }
         }
 
         for (int l = 0; l < 3; ++l) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlotToContainer(new Slot(playerInventory, k + l * 9 + 9, 8 + k * 18, l * 18 + i));
+                this.addSlotToContainer(new Slot(playerInventory, k + l * 9 + 9, 8 + k * 18, l * 18 + 84));
             }
         }
 
         for (int i1 = 0; i1 < 9; ++i1) {
-            this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 58 + i));
+            this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 142));
         }
     }
 
