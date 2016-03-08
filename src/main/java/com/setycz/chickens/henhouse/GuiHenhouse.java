@@ -18,7 +18,7 @@ public class GuiHenhouse extends GuiContainer {
 
     public GuiHenhouse(InventoryPlayer playerInv, IInventory hopperInv) {
         super(new ContainerHenhouse(playerInv, (TileEntityHenhouse)hopperInv));
-        this.ySize = 133;
+        this.ySize = 166;
     }
 
     @Override
