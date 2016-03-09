@@ -66,25 +66,33 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
             }
         }
 
+        markDirty();
         return rest;
     }
 
     private void consumeEnergy(int amount) {
-        int consume = amount > energy ? (int)Math.ceil((amount - energy) / hayBaleEnergy) : 0;
-        slots[hayBaleSlotIndex].stackSize -= consume;
-        if (slots[hayBaleSlotIndex].stackSize <= 0) {
-            slots[hayBaleSlotIndex] = null;
-        }
+        while (amount > 0) {
+            if (energy == 0) {
+                slots[hayBaleSlotIndex].stackSize--;
+                if (slots[hayBaleSlotIndex].stackSize <= 0) {
+                    slots[hayBaleSlotIndex] = null;
+                }
+                energy += hayBaleEnergy;
+            }
 
-        int output = amount >= energy ? 1 + ((amount - energy) / hayBaleEnergy) : 0;
-        if (slots[dirtSlotIndex] == null) {
-            slots[dirtSlotIndex] = new ItemStack(Blocks.dirt, output);
-        }
-        else {
-            slots[dirtSlotIndex].stackSize += output;
-        }
+            int consumed = Math.min(amount, energy);
+            energy -= consumed;
+            amount -= consumed;
 
-        energy = amount > energy ? hayBaleEnergy - (amount - energy) % hayBaleEnergy : energy - amount;
+            if (energy <= 0) {
+                if (slots[dirtSlotIndex] == null) {
+                    slots[dirtSlotIndex] = new ItemStack(Blocks.dirt, 1);
+                }
+                else {
+                    slots[dirtSlotIndex].stackSize++;
+                }
+            }
+        }
     }
 
     private int canAdd(ItemStack slotStack, ItemStack inputStack) {

@@ -3,6 +3,7 @@ package com.setycz.chickens.henhouse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -13,6 +14,7 @@ public class ContainerHenhouse extends Container {
 
     private final InventoryPlayer playerInventory;
     private final TileEntityHenhouse tileEntityHenhouse;
+    private int energy;
 
     public ContainerHenhouse(InventoryPlayer playerInventory, TileEntityHenhouse tileEntityHenhouse) {
         this.playerInventory = playerInventory;
@@ -79,5 +81,29 @@ public class ContainerHenhouse extends Container {
     public void onContainerClosed(EntityPlayer playerIn) {
         super.onContainerClosed(playerIn);
         tileEntityHenhouse.closeInventory(playerIn);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+
+        for (ICrafting crafter : crafters) {
+            if (energy != tileEntityHenhouse.getField(0)) {
+                crafter.sendProgressBarUpdate(this, 0, tileEntityHenhouse.getField(0));
+            }
+        }
+
+        energy = tileEntityHenhouse.getField(0);
+    }
+
+    @Override
+    public void onCraftGuiOpened(ICrafting listener) {
+        super.onCraftGuiOpened(listener);
+        listener.sendAllWindowProperties(this, tileEntityHenhouse);
+    }
+
+    @Override
+    public void updateProgressBar(int id, int data) {
+        tileEntityHenhouse.setField(id, data);
     }
 }
