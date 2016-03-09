@@ -28,8 +28,8 @@ public class ContainerHenhouse extends Container {
                 this.addSlotToContainer(new Slot(
                         tileEntityHenhouse,
                         TileEntityHenhouse.firstItemSlotIndex + (row * 3) + column,
-                        98 + row * 18,
-                        17 + column * 18));
+                        98 + column * 18,
+                        17 + row * 18));
             }
         }
 
