@@ -9,17 +9,13 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,13 +74,7 @@ public class EntityChickensChicken extends EntityChicken {
             ChickensRegistryItem chickenDescription = getChickenDescription();
             ItemStack itemToLay = chickenDescription.createLayItem();
 
-            List<TileEntityHenhouse> henhouses = findHenhouses();
-            for (TileEntityHenhouse henhouse : henhouses) {
-                itemToLay = henhouse.pushItemStack(itemToLay);
-                if (itemToLay == null) {
-                    break;
-                }
-            }
+            itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
 
             if (itemToLay != null) {
                 this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
@@ -94,30 +84,6 @@ public class EntityChickensChicken extends EntityChicken {
             resetTimeUntilNextEgg();
         }
         super.onLivingUpdate();
-    }
-
-    private List<TileEntityHenhouse> findHenhouses() {
-        Vec3 pos = new Vec3(posX, posY, posZ);
-        double radius = 5.5;
-
-        int i = MathHelper.floor_double((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int j = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
-        int k = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int l = MathHelper.floor_double((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
-        List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
-        for (int i1 = i; i1 <= j; ++i1) {
-            for (int j1 = k; j1 <= l; ++j1) {
-                Chunk chunk = worldObj.getChunkFromChunkCoords(i1, j1);
-                for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
-                    if (new Vec3(tileEntity.getPos()).addVector(0.5, 0.5, 0.5).distanceTo(pos) <= radius) {
-                        if (tileEntity instanceof TileEntityHenhouse) {
-                            result.add((TileEntityHenhouse) tileEntity);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     private void resetTimeUntilNextEgg() {

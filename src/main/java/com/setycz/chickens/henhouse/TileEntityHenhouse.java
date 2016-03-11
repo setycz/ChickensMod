@@ -12,15 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by setyc on 01.03.2016.
@@ -36,6 +36,40 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
     private String customName;
     private final ItemStack[] slots = new ItemStack[11];
     private int energy = 0;
+
+    public static ItemStack pushItemStack(ItemStack itemToLay, World worldObj, Vec3 pos) {
+        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos);
+        for (TileEntityHenhouse henhouse : henhouses) {
+            itemToLay = henhouse.pushItemStack(itemToLay);
+            if (itemToLay == null) {
+                break;
+            }
+        }
+        return itemToLay;
+    }
+
+    private static List<TileEntityHenhouse> findHenhouses(World worldObj, Vec3 pos) {
+        double radius = 5.5;
+
+        int i = MathHelper.floor_double((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int j = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        int k = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int l = MathHelper.floor_double((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
+        for (int i1 = i; i1 <= j; ++i1) {
+            for (int j1 = k; j1 <= l; ++j1) {
+                Chunk chunk = worldObj.getChunkFromChunkCoords(i1, j1);
+                for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
+                    if (new Vec3(tileEntity.getPos()).addVector(0.5, 0.5, 0.5).distanceTo(pos) <= radius) {
+                        if (tileEntity instanceof TileEntityHenhouse) {
+                            result.add((TileEntityHenhouse) tileEntity);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
     public ItemStack pushItemStack(ItemStack stack) {
         ItemStack rest = stack.copy();
