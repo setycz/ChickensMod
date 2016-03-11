@@ -20,7 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
     private int energy = 0;
 
     public static ItemStack pushItemStack(ItemStack itemToLay, World worldObj, Vec3 pos) {
-        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos);
+        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 5.5);
         for (TileEntityHenhouse henhouse : henhouses) {
             itemToLay = henhouse.pushItemStack(itemToLay);
             if (itemToLay == null) {
@@ -49,9 +48,7 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
         return itemToLay;
     }
 
-    private static List<TileEntityHenhouse> findHenhouses(World worldObj, Vec3 pos) {
-        double radius = 5.5;
-
+    private static List<TileEntityHenhouse> findHenhouses(World worldObj, Vec3 pos, double radius) {
         int firstChunkX = MathHelper.floor_double((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
         int lastChunkX = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
         int firstChunkY = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
