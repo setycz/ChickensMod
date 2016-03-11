@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -51,16 +52,16 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
     private static List<TileEntityHenhouse> findHenhouses(World worldObj, Vec3 pos) {
         double radius = 5.5;
 
-        int i = MathHelper.floor_double((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int j = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
-        int k = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int l = MathHelper.floor_double((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        int firstChunkX = MathHelper.floor_double((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int lastChunkX = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        int firstChunkY = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int lastChunkY = MathHelper.floor_double((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
         List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
-        for (int i1 = i; i1 <= j; ++i1) {
-            for (int j1 = k; j1 <= l; ++j1) {
-                Chunk chunk = worldObj.getChunkFromChunkCoords(i1, j1);
+        for (int chunkX = firstChunkX; chunkX <= lastChunkX; ++chunkX) {
+            for (int chunkY = firstChunkY; chunkY <= lastChunkY; ++chunkY) {
+                Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkY);
                 for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
-                    if (new Vec3(tileEntity.getPos()).addVector(0.5, 0.5, 0.5).distanceTo(pos) <= radius) {
+                    if (distanceToTileEntity(pos, tileEntity) <= radius) {
                         if (tileEntity instanceof TileEntityHenhouse) {
                             result.add((TileEntityHenhouse) tileEntity);
                         }
@@ -69,6 +70,10 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
             }
         }
         return result;
+    }
+
+    private static double distanceToTileEntity(Vec3 pos, TileEntity tileEntity) {
+        return new Vec3(tileEntity.getPos()).addVector(0.5, 0.5, 0.5).distanceTo(pos);
     }
 
     public ItemStack pushItemStack(ItemStack stack) {
