@@ -18,9 +18,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by setyc on 01.03.2016.
@@ -53,20 +51,35 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
         int lastChunkX = MathHelper.floor_double((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
         int firstChunkY = MathHelper.floor_double((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
         int lastChunkY = MathHelper.floor_double((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+
+        List<Double> distances = new ArrayList<Double>();
         List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
         for (int chunkX = firstChunkX; chunkX <= lastChunkX; ++chunkX) {
             for (int chunkY = firstChunkY; chunkY <= lastChunkY; ++chunkY) {
                 Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkY);
                 for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
-                    if (distanceToTileEntity(pos, tileEntity) <= radius) {
-                        if (tileEntity instanceof TileEntityHenhouse) {
-                            result.add((TileEntityHenhouse) tileEntity);
+                    if (tileEntity instanceof TileEntityHenhouse) {
+                        double distance = distanceToTileEntity(pos, tileEntity);
+                        if (distance <= radius) {
+                            addHenhouseToResults((TileEntityHenhouse) tileEntity, distance, distances, result);
                         }
                     }
                 }
             }
         }
         return result;
+    }
+
+    private static void addHenhouseToResults(TileEntityHenhouse henhouse, double distance, List<Double> distances, List<TileEntityHenhouse> henhouses) {
+        for (int resultIndex = 0; resultIndex < distances.size(); resultIndex++) {
+            if (distance < distances.get(resultIndex)) {
+                distances.add(resultIndex, distance);
+                henhouses.add(resultIndex, henhouse);
+                return;
+            }
+        }
+        distances.add(distance);
+        henhouses.add(henhouse);
     }
 
     private static double distanceToTileEntity(Vec3 pos, TileEntity tileEntity) {
