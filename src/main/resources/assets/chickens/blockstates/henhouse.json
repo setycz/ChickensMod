@@ -1,10 +1,8 @@
 {
     "variants": {
-        "normal": [
-            { "model": "chickens:henhouse" },
-            { "model": "chickens:henhouse", "y": 90 },
-            { "model": "chickens:henhouse", "y": 180 },
-            { "model": "chickens:henhouse", "y": 270 }
-        ]
+        "facing=north": { "model": "chickens:henhouse" },
+        "facing=south": { "model": "chickens:henhouse", "y": 180 },
+        "facing=west":  { "model": "chickens:henhouse", "y": 270 },
+        "facing=east":  { "model": "chickens:henhouse", "y": 90 }
     }
 }
