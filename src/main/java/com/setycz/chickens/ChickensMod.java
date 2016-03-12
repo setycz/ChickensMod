@@ -75,6 +75,13 @@ public class ChickensMod {
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
         GameRegistry.registerBlock(henhouse, "henhouse");
+        GameRegistry.addRecipe(
+                new ItemStack(Item.getItemFromBlock(henhouse)),
+                "PPP",
+                "PHP",
+                "PPP",
+                'P', Item.getItemFromBlock(Blocks.planks),
+                'H', Item.getItemFromBlock(Blocks.hay_block));
 
         loadConfiguration(event.getSuggestedConfigurationFile());
     }
@@ -88,7 +95,7 @@ public class ChickensMod {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
             float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
-            chicken.setLayCoefficient(0.1f/*layCoefficient*/);
+            chicken.setLayCoefficient(layCoefficient);
             ItemStack itemStack = getLayItemStack(configuration, chicken);
             chicken.setLayItem(itemStack);
         }
