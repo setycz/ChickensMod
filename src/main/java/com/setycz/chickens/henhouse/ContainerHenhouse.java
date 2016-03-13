@@ -20,8 +20,8 @@ public class ContainerHenhouse extends Container {
         this.playerInventory = playerInventory;
         this.tileEntityHenhouse = tileEntityHenhouse;
 
-        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 24, 34));
-        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 24, 34 + 18));
+        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 25, 19));
+        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
 
         for (int row = 0; row < 3; row++) {
             for (int column=0; column <3; column++) {
