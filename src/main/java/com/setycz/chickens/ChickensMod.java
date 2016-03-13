@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,26 +83,14 @@ public class ChickensMod {
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
-        registerHenhouse(henhouse_acacia, BlockPlanks.EnumType.ACACIA);
-        registerHenhouse(henhouse_birch, BlockPlanks.EnumType.BIRCH);
-        registerHenhouse(henhouse_dark_oak, BlockPlanks.EnumType.DARK_OAK);
-        registerHenhouse(henhouse_jungle, BlockPlanks.EnumType.JUNGLE);
-        registerHenhouse(henhouse_spruce, BlockPlanks.EnumType.SPRUCE);
-        registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
+        GameRegistry.registerBlock(henhouse, getBlockName(henhouse));
+        GameRegistry.registerBlock(henhouse_acacia, getBlockName(henhouse_acacia));
+        GameRegistry.registerBlock(henhouse_birch, getBlockName(henhouse_birch));
+        GameRegistry.registerBlock(henhouse_dark_oak, getBlockName(henhouse_dark_oak));
+        GameRegistry.registerBlock(henhouse_jungle, getBlockName(henhouse_jungle));
+        GameRegistry.registerBlock(henhouse_spruce, getBlockName(henhouse_spruce));
 
         loadConfiguration(event.getSuggestedConfigurationFile());
-    }
-
-    private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
-        String blockName = getBlockName(henhouse);
-        GameRegistry.registerBlock(henhouse, blockName);
-        GameRegistry.addRecipe(
-                new ItemStack(Item.getItemFromBlock(henhouse)),
-                "PPP",
-                "PHP",
-                "PPP",
-                'P', new ItemStack(Blocks.planks, 1, type == BlockPlanks.EnumType.OAK ? OreDictionary.WILDCARD_VALUE : type.getMetadata()),
-                'H', Blocks.hay_block);
     }
 
     private void loadConfiguration(File configFile) {
@@ -157,8 +147,26 @@ public class ChickensMod {
             proxy.registerLiquidEgg(liquidEgg);
         }
 
+        registerHenhouse(henhouse_acacia, BlockPlanks.EnumType.ACACIA);
+        registerHenhouse(henhouse_birch, BlockPlanks.EnumType.BIRCH);
+        registerHenhouse(henhouse_dark_oak, BlockPlanks.EnumType.DARK_OAK);
+        registerHenhouse(henhouse_jungle, BlockPlanks.EnumType.JUNGLE);
+        registerHenhouse(henhouse_spruce, BlockPlanks.EnumType.SPRUCE);
+        registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
+
         // waila integration
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+    }
+
+    private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(
+                new ItemStack(Item.getItemFromBlock(henhouse)),
+                "PPP",
+                "PHP",
+                "PPP",
+                'P', type == BlockPlanks.EnumType.OAK ? "plankWood" : new ItemStack(Blocks.planks, 1, type.getMetadata()),
+                'H', Blocks.hay_block
+        ));
     }
 
     private List<BiomeGenBase> getAllSpawnBiomes() {
