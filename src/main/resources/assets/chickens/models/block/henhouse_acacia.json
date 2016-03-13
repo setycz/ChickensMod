@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "chickens:blocks/henhouse_top_acacia",
+        "front": "chickens:blocks/henhouse_front_acacia",
+        "side": "chickens:blocks/henhouse_side_acacia"
+    }
+}

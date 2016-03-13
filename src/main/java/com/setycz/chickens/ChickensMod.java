@@ -8,6 +8,7 @@ import com.setycz.chickens.henhouse.TileEntityHenhouse;
 import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
 import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -54,6 +55,11 @@ public class ChickensMod {
     public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
 
     public static final Block henhouse = new BlockHenhouse().setUnlocalizedName("henhouse").setCreativeTab(tab);
+    public static final Block henhouse_acacia = new BlockHenhouse().setUnlocalizedName("henhouse_acacia").setCreativeTab(tab);
+    public static final Block henhouse_birch = new BlockHenhouse().setUnlocalizedName("henhouse_birch").setCreativeTab(tab);
+    public static final Block henhouse_dark_oak = new BlockHenhouse().setUnlocalizedName("henhouse_dark_oak").setCreativeTab(tab);
+    public static final Block henhouse_jungle = new BlockHenhouse().setUnlocalizedName("henhouse_jungle").setCreativeTab(tab);
+    public static final Block henhouse_spruce = new BlockHenhouse().setUnlocalizedName("henhouse_spruce").setCreativeTab(tab);
 
     public static TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
@@ -74,16 +80,26 @@ public class ChickensMod {
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
-        GameRegistry.registerBlock(henhouse, "henhouse");
+        registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
+        registerHenhouse(henhouse_acacia, BlockPlanks.EnumType.ACACIA);
+        registerHenhouse(henhouse_birch, BlockPlanks.EnumType.BIRCH);
+        registerHenhouse(henhouse_dark_oak, BlockPlanks.EnumType.DARK_OAK);
+        registerHenhouse(henhouse_jungle, BlockPlanks.EnumType.JUNGLE);
+        registerHenhouse(henhouse_spruce, BlockPlanks.EnumType.SPRUCE);
+
+        loadConfiguration(event.getSuggestedConfigurationFile());
+    }
+
+    private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
+        String blockName = getBlockName(henhouse);
+        GameRegistry.registerBlock(henhouse, blockName);
         GameRegistry.addRecipe(
                 new ItemStack(Item.getItemFromBlock(henhouse)),
                 "PPP",
                 "PHP",
                 "PPP",
-                'P', Item.getItemFromBlock(Blocks.planks),
+                'P', new ItemStack(Item.getItemFromBlock(Blocks.planks), 1, type.getMetadata()),
                 'H', Item.getItemFromBlock(Blocks.hay_block));
-
-        loadConfiguration(event.getSuggestedConfigurationFile());
     }
 
     private void loadConfiguration(File configFile) {
@@ -349,5 +365,9 @@ public class ChickensMod {
 
     public static String getItemName(Item item) {
         return item.getUnlocalizedName().substring(5);
+    }
+
+    public static String getBlockName(Block block) {
+        return block.getUnlocalizedName().substring(5);
     }
 }

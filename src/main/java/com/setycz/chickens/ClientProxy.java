@@ -20,8 +20,12 @@ public class ClientProxy extends CommonProxy {
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
         renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
 
-        Item henhouse = Item.getItemFromBlock(ChickensMod.henhouse);
-        registerItemModel(henhouse, 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse), 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_acacia), 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_birch), 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_dark_oak), 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_jungle), 0);
+        registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_spruce), 0);
     }
 
     private void registerItemModel(Item item, int meta) {

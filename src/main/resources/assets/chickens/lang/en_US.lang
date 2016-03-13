@@ -43,3 +43,10 @@ gui.laying=Laying Egg
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Chicken Breeding
 gui.breeding.time=%1$s%%
+
+tile.henhouse.name=Henhouse
+tile.henhouse_acacia.name=Acacia Henhouse
+tile.henhouse_birch.name=Birch Henhouse
+tile.henhouse_dark_oak.name=Dark Oak Henhouse
+tile.henhouse_jungle.name=Jungle Henhouse
+tile.henhouse_spruce.name=Spruce Henhouse

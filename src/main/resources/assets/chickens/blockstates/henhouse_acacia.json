@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "chickens:henhouse_acacia" },
+        "facing=south": { "model": "chickens:henhouse_acacia", "y": 180 },
+        "facing=west":  { "model": "chickens:henhouse_acacia", "y": 270 },
+        "facing=east":  { "model": "chickens:henhouse_acacia", "y": 90 }
+    }
+}
