@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,12 +81,12 @@ public class ChickensMod {
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
-        registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
         registerHenhouse(henhouse_acacia, BlockPlanks.EnumType.ACACIA);
         registerHenhouse(henhouse_birch, BlockPlanks.EnumType.BIRCH);
         registerHenhouse(henhouse_dark_oak, BlockPlanks.EnumType.DARK_OAK);
         registerHenhouse(henhouse_jungle, BlockPlanks.EnumType.JUNGLE);
         registerHenhouse(henhouse_spruce, BlockPlanks.EnumType.SPRUCE);
+        registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
 
         loadConfiguration(event.getSuggestedConfigurationFile());
     }
@@ -98,8 +99,8 @@ public class ChickensMod {
                 "PPP",
                 "PHP",
                 "PPP",
-                'P', new ItemStack(Item.getItemFromBlock(Blocks.planks), 1, type.getMetadata()),
-                'H', Item.getItemFromBlock(Blocks.hay_block));
+                'P', new ItemStack(Blocks.planks, 1, type == BlockPlanks.EnumType.OAK ? OreDictionary.WILDCARD_VALUE : type.getMetadata()),
+                'H', Blocks.hay_block);
     }
 
     private void loadConfiguration(File configFile) {
