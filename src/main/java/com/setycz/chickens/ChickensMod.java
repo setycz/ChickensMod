@@ -307,8 +307,27 @@ public class ChickensMod {
                 0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL);
         chickens.add(quartzChicken);
 
+        ChickensRegistryItem sandChicken = new ChickensRegistryItem(
+                105, "SandChicken", new ResourceLocation("chickens", "textures/entity/SandChicken.png"),
+                new ItemStack(Blocks.sand),
+                0xece5b1, 0xa7a06c);
+        ChickensRegistry.register(sandChicken);
+
+        ChickensRegistryItem glassChicken = new ChickensRegistryItem(
+                106, "GlassChicken", new ResourceLocation("chickens", "textures/entity/GlassChicken.png"),
+                new ItemStack(Blocks.glass),
+                0xffffff, 0xeeeeff);
+        ChickensRegistry.register(glassChicken);
+
+        ChickensRegistryItem leatherChicken = new ChickensRegistryItem(
+                107, "LeatherChicken", new ResourceLocation("chickens", "textures/entity/LeatherChicken.png"),
+                new ItemStack(Items.leather),
+                0xA7A06C, 0x919191);
+        ChickensRegistry.register(leatherChicken);
+
+
         ChickensRegistryItem logChicken = new ChickensRegistryItem(
-                104, "LogChicken", new ResourceLocation("chickens", "textures/entity/LogChicken.png"),
+                108, "LogChicken", new ResourceLocation("chickens", "textures/entity/LogChicken.png"),
                 new ItemStack(Blocks.log),
                 0x98846d, 0x528358);
         chickens.add(logChicken);
@@ -389,7 +408,7 @@ public class ChickensMod {
         chickens.add(blazeChicken);
         
         ChickensRegistryItem stringChicken = new ChickensRegistryItem(
-                302, "StringChicken", new ResourceLocation("chickens", "textures/entity/StringChicken.png"),
+                303, "StringChicken", new ResourceLocation("chickens", "textures/entity/StringChicken.png"),
                 new ItemStack(Items.string),
                 0x331a00, 0x800000
                 //whiteChicken, clayChicken
