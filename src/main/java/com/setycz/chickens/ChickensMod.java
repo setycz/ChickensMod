@@ -307,13 +307,18 @@ public class ChickensMod {
                 0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL);
         chickens.add(quartzChicken);
 
-        // chicken tier 2
+        ChickensRegistryItem logChicken = new ChickensRegistryItem(
+                104, "LogChicken", new ResourceLocation("chickens", "textures/entity/LogChicken.png"),
+                new ItemStack(Blocks.log),
+                0x98846d, 0x528358);
+        chickens.add(logChicken);
         chickens.add(new ChickensRegistryItem(
                 200, "ClayChicken", new ResourceLocation("chickens", "textures/entity/ClayChicken.png"),
                 new ItemStack(Items.clay_ball),
                 0xcccccc, 0xbfbfbf,
                 flintChicken,
-                snowballChicken));
+                snowballChicken);
+        ChickensRegistry.register(clayChicken);
 
         chickens.add(new ChickensRegistryItem(
                 201, "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
@@ -382,6 +387,14 @@ public class ChickensMod {
                 0xffff66, 0xff3300,
                 glowstoneChicken, quartzChicken);
         chickens.add(blazeChicken);
+        
+        ChickensRegistryItem stringChicken = new ChickensRegistryItem(
+                302, "StringChicken", new ResourceLocation("chickens", "textures/entity/StringChicken.png"),
+                new ItemStack(Items.string),
+                0x331a00, 0x800000
+                //whiteChicken, clayChicken
+                );
+        chickens.add(stringChicken);
 
         // tier 4
         chickens.add(new ChickensRegistryItem(
@@ -409,6 +422,7 @@ public class ChickensMod {
                 slimeChicken, blazeChicken));
 
         return chickens;
+
     }
 
     public static String getItemName(Item item) {
