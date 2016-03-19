@@ -440,6 +440,42 @@ public class ChickensMod {
                 0x1a0500, 0x000000,
                 slimeChicken, blazeChicken));
 
+
+
+        ChickensRegistryItem logChicken = new ChickensRegistryItem(
+                108, "LogChicken", new ResourceLocation("chickens", "textures/entity/LogChicken.png"),
+                new ItemStack(Blocks.log),
+                0x98846d, 0x528358);
+        chickens.add(logChicken);
+
+        ChickensRegistryItem sandChicken = new ChickensRegistryItem(
+                105, "SandChicken", new ResourceLocation("chickens", "textures/entity/SandChicken.png"),
+                new ItemStack(Blocks.sand),
+                0xece5b1, 0xa7a06c);
+        chickens.add(sandChicken);
+
+        ChickensRegistryItem glassChicken = new ChickensRegistryItem(
+                106, "GlassChicken", new ResourceLocation("chickens", "textures/entity/GlassChicken.png"),
+                new ItemStack(Blocks.glass),
+                0xffffff, 0xeeeeff,
+                sandChicken, flintChicken);
+        chickens.add(glassChicken);
+
+        ChickensRegistryItem leatherChicken = new ChickensRegistryItem(
+                 107, "LeatherChicken", new ResourceLocation("chickens", "textures/entity/LeatherChicken.png"),
+                 new ItemStack(Items.leather),
+                 0xA7A06C, 0x919191,
+                 whiteChicken, brownChicken);
+        chickens.add(leatherChicken);
+
+        ChickensRegistryItem stringChicken = new ChickensRegistryItem(
+                303, "StringChicken", new ResourceLocation("chickens", "textures/entity/StringChicken.png"),
+                new ItemStack(Items.string),
+                0x331a00, 0x800000
+                );
+        chickens.add(stringChicken);
+
+
         return chickens;
 
     }

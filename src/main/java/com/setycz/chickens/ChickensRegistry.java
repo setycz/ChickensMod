@@ -15,6 +15,7 @@ public final class ChickensRegistry {
     public static void register(ChickensRegistryItem entity) {
         validate(entity);
         items.put(entity.getId(), entity);
+        return entity;
     }
 
     private static void validate(ChickensRegistryItem entity) {
