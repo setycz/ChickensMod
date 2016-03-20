@@ -44,6 +44,7 @@ gui.laying.time=%1$s-%2$smin.
 gui.breeding=Chicken Breeding
 gui.breeding.time=%1$s%%
 
+container.henhouse=Henhouse
 tile.henhouse.name=Henhouse
 tile.henhouse_acacia.name=Acacia Henhouse
 tile.henhouse_birch.name=Birch Henhouse

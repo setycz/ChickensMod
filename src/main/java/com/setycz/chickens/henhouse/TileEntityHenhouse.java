@@ -30,13 +30,15 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
     public static final int dirtSlotIndex = 1;
     public static final int firstItemSlotIndex = 2;
     public static final int lastItemSlotIndex = 10;
+    public static final double HENHOUSE_RADIUS = 0.5;
+    public static final double FENCE_TRESHOLD = 0.5;
 
     private String customName;
     private final ItemStack[] slots = new ItemStack[11];
     private int energy = 0;
 
     public static ItemStack pushItemStack(ItemStack itemToLay, World worldObj, Vec3 pos) {
-        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 5.5);
+        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 4 + HENHOUSE_RADIUS + FENCE_TRESHOLD);
         for (TileEntityHenhouse henhouse : henhouses) {
             itemToLay = henhouse.pushItemStack(itemToLay);
             if (itemToLay == null) {
@@ -59,8 +61,10 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
                 Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkY);
                 for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
                     if (tileEntity instanceof TileEntityHenhouse) {
-                        double distance = distanceToTileEntity(pos, tileEntity);
-                        if (distance <= radius) {
+                        Vec3 tileEntityPos = new Vec3(tileEntity.getPos()).addVector(HENHOUSE_RADIUS, HENHOUSE_RADIUS, HENHOUSE_RADIUS);
+                        boolean inRage = testRange(pos, tileEntityPos, radius);
+                        if (inRage) {
+                            double distance = pos.distanceTo(tileEntityPos);
                             addHenhouseToResults((TileEntityHenhouse) tileEntity, distance, distances, result);
                         }
                     }
@@ -68,6 +72,12 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
             }
         }
         return result;
+    }
+
+    private static boolean testRange(Vec3 pos1, Vec3 pos2, double range) {
+        return Math.abs(pos1.xCoord - pos2.xCoord) <= range &&
+                Math.abs(pos1.yCoord - pos2.yCoord) <= range &&
+                Math.abs(pos1.zCoord - pos2.zCoord) <= range;
     }
 
     private static void addHenhouseToResults(TileEntityHenhouse henhouse, double distance, List<Double> distances, List<TileEntityHenhouse> henhouses) {
@@ -80,10 +90,6 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
         }
         distances.add(distance);
         henhouses.add(henhouse);
-    }
-
-    private static double distanceToTileEntity(Vec3 pos, TileEntity tileEntity) {
-        return new Vec3(tileEntity.getPos()).addVector(0.5, 0.5, 0.5).distanceTo(pos);
     }
 
     public ItemStack pushItemStack(ItemStack stack) {
