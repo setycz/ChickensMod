@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,7 @@ import java.util.*;
 /**
  * Created by setyc on 01.03.2016.
  */
-public class TileEntityHenhouse extends TileEntity implements IInventory, IInventoryGui {
+public class TileEntityHenhouse extends TileEntity implements ISidedInventory, IInventoryGui {
     public static final int hayBaleEnergy = 100;
 
     public static final int hayBaleSlotIndex = 0;
@@ -363,5 +364,33 @@ public class TileEntityHenhouse extends TileEntity implements IInventory, IInven
 
     public int getEnergy() {
         return energy;
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        switch (side) {
+            case DOWN:
+                int itemSlotCount = lastItemSlotIndex - firstItemSlotIndex + 1;
+                int[] itemSlots = new int[itemSlotCount + 1];
+                itemSlots[0] = dirtSlotIndex;
+                for (int resultIndex=0; resultIndex<itemSlotCount; resultIndex++) {
+                    itemSlots[resultIndex + 1] = firstItemSlotIndex + resultIndex;
+                }
+                return itemSlots;
+            case UP:
+                return new int[] { hayBaleSlotIndex };
+            default:
+                return new int[0];
+        }
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return isItemValidForSlot(index, itemStackIn);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return true;
     }
 }
