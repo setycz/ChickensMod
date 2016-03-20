@@ -3,6 +3,7 @@ package com.setycz.chickens;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.EnumDyeColor;
 
 /**
  * Created by setyc on 12.02.2016.
