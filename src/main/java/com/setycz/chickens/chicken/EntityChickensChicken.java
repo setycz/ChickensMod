@@ -195,15 +195,8 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     protected Item getDropItem()
     {
-    	ItemStack dropItemStack = getChickenDescription().createLayItem();
-    	Item dropItem = dropItemStack.getItem();
-    	
-    	if(dropItem == Items.string) {
-    		dropItem = Items.spider_eye;
-    	} else if(dropItem == Items.dye && dropItemStack.getMetadata() == 15) {
-    		dropItem = Items.bone;
-    	}
-    	return dropItem;
+        ChickensRegistryItem chicken = getChickenDescription();
+        return chicken.createDropItem();
     }
 
     /**

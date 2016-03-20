@@ -75,6 +75,19 @@ public class ChickensRegistryItem {
         return layItem.copy();
     }
 
+    public ItemStack createDropItem() {
+
+        ItemStack dropItemStack = createLayItem();
+        Item dropItem = dropItemStack.getItem();
+        
+        if(dropItem == Items.string) {
+            dropItem = Items.spider_eye;
+        } else if(dropItem == Items.dye && dropItemStack.getMetadata() == EnumDyeColor.WHITE.getDyeDamage()) {
+            dropItem = Items.bone;
+        }
+        return dropItem;
+    }
+
     public int getTier() {
         if (parent1 == null || parent2 == null) {
             return 1;
