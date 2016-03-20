@@ -1,6 +1,7 @@
 package com.setycz.chickens;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.item.EnumDyeColor;
@@ -75,7 +76,7 @@ public class ChickensRegistryItem {
         return layItem.copy();
     }
 
-    public ItemStack createDropItem() {
+    public Item createDropItem() {
 
         ItemStack dropItemStack = createLayItem();
         Item dropItem = dropItemStack.getItem();
