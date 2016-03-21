@@ -128,6 +128,8 @@ public class ChickensMod {
     public void init(FMLInitializationEvent event) {
         proxy.init();
 
+        MinecraftForge.EVENT_BUS.register(new ChickenTeachHanhler());
+
         List<BiomeGenBase> biomesForSpawning = getAllSpawnBiomes();
         if (biomesForSpawning.size() > 0) {
             EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
@@ -196,6 +198,11 @@ public class ChickensMod {
     }
 
     private void registerChickens() {
+        ChickensRegistry.register(new ChickensRegistryItem(
+                50, "SmartChicken", new ResourceLocation("chickens", "textures/entity/SmartChicken.png"),
+                new ItemStack(Items.egg),
+                0xffffff, 0xffff00));
+
         // dye chickens
         ChickensRegistryItem whiteChicken = new ChickensRegistryItem(
                 0, "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
