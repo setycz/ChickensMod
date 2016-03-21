@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by setyc on 21.03.2016.
  */
 public class ChickenTeachHanhler {
+
     @SubscribeEvent
     public void handleInteraction(EntityInteractEvent event) {
         ItemStack item = event.entityPlayer.getCurrentEquippedItem();
@@ -24,14 +25,16 @@ public class ChickenTeachHanhler {
         EntityChicken chicken = (EntityChicken) event.target;
 
         World worldObj = event.entityPlayer.worldObj;
-        EntityChickensChicken smartChicken = new EntityChickensChicken(worldObj);
-        smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
-        smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
-        smartChicken.setChickenType(50);
-        worldObj.removeEntity(chicken);
-        worldObj.spawnEntityInWorld(smartChicken);
-        smartChicken.spawnExplosionParticle();
+        if (!worldObj.isRemote) {
+            EntityChickensChicken smartChicken = new EntityChickensChicken(worldObj);
+            smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
+            smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
+            smartChicken.setChickenType(50);
+            worldObj.removeEntity(chicken);
+            worldObj.spawnEntityInWorld(smartChicken);
+            smartChicken.spawnExplosionParticle();
 
-        event.setCanceled(true);
+            event.setCanceled(true);
+        }
     }
 }
