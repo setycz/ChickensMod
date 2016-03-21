@@ -19,7 +19,7 @@ public class ChickenTeachHanhler {
         if (item == null || item.getItem() != Items.book) {
             return;
         }
-        if (!(event.target instanceof EntityChicken)) {
+        if (!(event.target.getClass() == EntityChicken.class)) {
             return;
         }
         EntityChicken chicken = (EntityChicken) event.target;
