@@ -9,6 +9,7 @@ import java.util.*;
  */
 public final class ChickensRegistry {
     private static final Map<Integer, ChickensRegistryItem> items = new HashMap<Integer, ChickensRegistryItem>();
+    public static final int SMART_CHICKEN_ID = 50;
     private static Random rand = new Random();
 
     public static void register(ChickensRegistryItem entity) {
@@ -141,5 +142,9 @@ public final class ChickensRegistry {
             }
         }
         return false;
+    }
+
+    public static ChickensRegistryItem getSmartChicken() {
+        return items.get(SMART_CHICKEN_ID);
     }
 }

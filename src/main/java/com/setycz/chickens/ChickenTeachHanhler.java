@@ -22,23 +22,36 @@ public class ChickenTeachHanhler {
         if (!(event.target.getClass() == EntityChicken.class)) {
             return;
         }
-        EntityChicken chicken = (EntityChicken) event.target;
 
         World worldObj = event.entityPlayer.worldObj;
-        if (!worldObj.isRemote) {
-            EntityChickensChicken smartChicken = new EntityChickensChicken(worldObj);
-            smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
-            smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
-            smartChicken.setChickenType(50);
-            if (chicken.hasCustomName()) {
-                smartChicken.setCustomNameTag(chicken.getCustomNameTag());
-            }
-
-            worldObj.removeEntity(chicken);
-            worldObj.spawnEntityInWorld(smartChicken);
-            smartChicken.spawnExplosionParticle();
-
-            event.setCanceled(true);
+        if (worldObj.isRemote) {
+            return;
         }
+
+        ChickensRegistryItem smartChickenDescription = ChickensRegistry.getSmartChicken();
+        if (smartChickenDescription == null || !smartChickenDescription.isEnabled()) {
+            return;
+        }
+
+        EntityChicken chicken = (EntityChicken) event.target;
+        EntityChickensChicken smartChicken = convertToSmart(chicken, worldObj, smartChickenDescription);
+
+        worldObj.removeEntity(chicken);
+        worldObj.spawnEntityInWorld(smartChicken);
+        smartChicken.spawnExplosionParticle();
+
+        event.setCanceled(true);
+    }
+
+    private EntityChickensChicken convertToSmart(EntityChicken chicken, World worldObj, ChickensRegistryItem smartChickenDescription) {
+        EntityChickensChicken smartChicken = new EntityChickensChicken(worldObj);
+        smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
+        smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
+        smartChicken.setChickenType(smartChickenDescription.getId());
+        if (chicken.hasCustomName()) {
+            smartChicken.setCustomNameTag(chicken.getCustomNameTag());
+        }
+        smartChicken.setGrowingAge(chicken.getGrowingAge());
+        return smartChicken;
     }
 }

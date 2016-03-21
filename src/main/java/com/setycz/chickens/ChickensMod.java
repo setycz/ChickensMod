@@ -199,7 +199,7 @@ public class ChickensMod {
 
     private void registerChickens() {
         ChickensRegistry.register(new ChickensRegistryItem(
-                50, "SmartChicken", new ResourceLocation("chickens", "textures/entity/SmartChicken.png"),
+                ChickensRegistry.SMART_CHICKEN_ID, "SmartChicken", new ResourceLocation("chickens", "textures/entity/SmartChicken.png"),
                 new ItemStack(Items.egg),
                 0xffffff, 0xffff00));
 
