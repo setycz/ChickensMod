@@ -30,6 +30,10 @@ public class ChickenTeachHanhler {
             smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
             smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
             smartChicken.setChickenType(50);
+            if (chicken.hasCustomName()) {
+                smartChicken.setCustomNameTag(chicken.getCustomNameTag());
+            }
+
             worldObj.removeEntity(chicken);
             worldObj.spawnEntityInWorld(smartChicken);
             smartChicken.spawnExplosionParticle();
