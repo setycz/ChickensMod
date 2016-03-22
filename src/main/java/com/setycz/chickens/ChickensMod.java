@@ -201,7 +201,7 @@ public class ChickensMod {
         ChickensRegistry.register(new ChickensRegistryItem(
                 ChickensRegistry.SMART_CHICKEN_ID, "SmartChicken", new ResourceLocation("chickens", "textures/entity/SmartChicken.png"),
                 new ItemStack(Items.egg),
-                0xffffff, 0xffff00));
+                0xffffff, 0xffff00).setSpawnType(SpawnType.NONE));
 
         // dye chickens
         ChickensRegistryItem whiteChicken = new ChickensRegistryItem(
