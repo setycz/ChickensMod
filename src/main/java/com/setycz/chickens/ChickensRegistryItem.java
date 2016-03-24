@@ -98,7 +98,7 @@ public class ChickensRegistryItem {
     }
 
     public boolean canSpawn() {
-        return getTier() == 1 && !isDye() && spawnType != SpawnType.NONE;
+        return getTier() == 1 && spawnType != SpawnType.NONE;
     }
 
     public int getId() {

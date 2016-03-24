@@ -4,11 +4,13 @@ import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
 import com.setycz.chickens.SpawnType;
 import com.setycz.chickens.henhouse.TileEntityHenhouse;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
@@ -170,5 +172,18 @@ public class EntityChickensChicken extends EntityChicken {
     public void readFromNBT(NBTTagCompound tagCompund) {
         super.readFromNBT(tagCompund);
         setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
+    }
+
+    @Override
+    public int getTalkInterval() {
+        return 20*60;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn) {
+        if(this.rand.nextFloat() > 0.1) {
+            return;
+        }
+        super.playStepSound(pos, blockIn);
     }
 }
