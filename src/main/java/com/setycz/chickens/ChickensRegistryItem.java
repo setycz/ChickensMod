@@ -14,8 +14,8 @@ public class ChickensRegistryItem {
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
-    private final ChickensRegistryItem parent1;
-    private final ChickensRegistryItem parent2;
+    private ChickensRegistryItem parent1;
+    private ChickensRegistryItem parent2;
     private SpawnType spawnType;
     private boolean isEnabled = true;
     private float layCoefficient = 1.0f;
@@ -133,5 +133,15 @@ public class ChickensRegistryItem {
 
     public void setLayItem(ItemStack itemStack) {
         layItem = itemStack;
+    }
+
+    public void setNoParents() {
+        parent1 = null;
+        parent2 = null;
+    }
+
+    public void setParents(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+        this.parent1 = parent1;
+        this.parent2 = parent2;
     }
 }

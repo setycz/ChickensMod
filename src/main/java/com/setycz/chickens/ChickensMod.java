@@ -16,7 +16,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,11 +29,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -98,16 +97,45 @@ public class ChickensMod {
 
         chickenEntityId = configuration.getInt("entityId", "general", 30000, Integer.MIN_VALUE, Integer.MAX_VALUE, "Chicken Entity ID");
 
-        for (ChickensRegistryItem chicken : ChickensRegistry.getAllItems()) {
+        Collection<ChickensRegistryItem> allChickens = ChickensRegistry.getAllItems();
+        for (ChickensRegistryItem chicken : allChickens) {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
+
             float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
             chicken.setLayCoefficient(layCoefficient);
+
             ItemStack itemStack = getLayItemStack(configuration, chicken);
             chicken.setLayItem(itemStack);
+
+            ChickensRegistryItem parent1 = getChickenParent(configuration, "parent1", allChickens, chicken, chicken.getParent1());
+            ChickensRegistryItem parent2 = getChickenParent(configuration, "parent2", allChickens, chicken, chicken.getParent2());
+            if (parent1 != null && parent2 != null) {
+                chicken.setParents(parent1, parent2);
+            }
+            else {
+                chicken.setNoParents();
+            }
+
+            SpawnType spawnType = SpawnType.valueOf(configuration.getString("spawnType", chicken.getEntityName(), chicken.getSpawnType().toString(), "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
+            chicken.setSpawnType(spawnType);
         }
 
         configuration.save();
+    }
+
+    private ChickensRegistryItem getChickenParent(Configuration configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
+        String parentName = configuration.getString(propertyName, chicken.getEntityName(), parent != null ? parent.getEntityName() : "", "First parent, empty if it's base chicken.");
+        return findChicken(allChickens, parentName);
+    }
+
+    private ChickensRegistryItem findChicken(Collection<ChickensRegistryItem> chickens, String name) {
+        for (ChickensRegistryItem chicken : chickens) {
+            if (chicken.getEntityName().compareToIgnoreCase(name) == 0) {
+                return chicken;
+            }
+        }
+        return null;
     }
 
     private ItemStack getLayItemStack(Configuration configuration, ChickensRegistryItem chicken) {
