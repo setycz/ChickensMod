@@ -12,9 +12,20 @@ public final class ChickensRegistry {
     public static final int SMART_CHICKEN_ID = 50;
     private static Random rand = new Random();
 
-    public static ChickensRegistryItem register(ChickensRegistryItem entity) {
+    public static void register(ChickensRegistryItem entity) {
+        validate(entity);
         items.put(entity.getId(), entity);
-        return entity;
+    }
+
+    private static void validate(ChickensRegistryItem entity) {
+        for (ChickensRegistryItem item : items.values()) {
+            if (entity.getId() == item.getId()) {
+                throw new RuntimeException("Duplicated ID!");
+            }
+            if (entity.getEntityName().compareToIgnoreCase(item.getEntityName()) == 0) {
+                throw new RuntimeException("Duplicated name!");
+            }
+        }
     }
 
     public static ChickensRegistryItem getByType(int type) {

@@ -74,11 +74,9 @@ public class ChickensMod {
 
         EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
 
-        registerChickens();
         GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
         GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
 
-        registerLiquidEggs();
         GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
@@ -89,6 +87,7 @@ public class ChickensMod {
         GameRegistry.registerBlock(henhouse_jungle, getBlockName(henhouse_jungle));
         GameRegistry.registerBlock(henhouse_spruce, getBlockName(henhouse_spruce));
 
+        registerLiquidEggs();
         loadConfiguration(event.getSuggestedConfigurationFile());
     }
 
@@ -97,7 +96,7 @@ public class ChickensMod {
 
         chickenEntityId = configuration.getInt("entityId", "general", 30000, Integer.MIN_VALUE, Integer.MAX_VALUE, "Chicken Entity ID");
 
-        Collection<ChickensRegistryItem> allChickens = ChickensRegistry.getAllItems();
+        Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
         for (ChickensRegistryItem chicken : allChickens) {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
@@ -119,6 +118,8 @@ public class ChickensMod {
 
             SpawnType spawnType = SpawnType.valueOf(configuration.getString("spawnType", chicken.getEntityName(), chicken.getSpawnType().toString(), "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
             chicken.setSpawnType(spawnType);
+
+            ChickensRegistry.register(chicken);
         }
 
         configuration.save();
@@ -225,169 +226,189 @@ public class ChickensMod {
         LiquidEggRegistry.register(new LiquidEggRegistryItem(1, Blocks.flowing_lava, 0xff0000));
     }
 
-    private void registerChickens() {
-        ChickensRegistry.register(new ChickensRegistryItem(
+    private List<ChickensRegistryItem> generateDefaultChickens() {
+        List<ChickensRegistryItem> chickens = new ArrayList<ChickensRegistryItem>();
+
+        chickens.add(new ChickensRegistryItem(
                 ChickensRegistry.SMART_CHICKEN_ID, "SmartChicken", new ResourceLocation("chickens", "textures/entity/SmartChicken.png"),
                 new ItemStack(Items.egg),
                 0xffffff, 0xffff00).setSpawnType(SpawnType.NONE));
 
         // dye chickens
-        ChickensRegistryItem whiteChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem whiteChicken = new ChickensRegistryItem(
                 0, "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.WHITE.getDyeDamage()),
-                0xf2f2f2, 0xffffff));
+                0xf2f2f2, 0xffffff);
+        chickens.add(whiteChicken);
 
-        ChickensRegistryItem yellowChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem yellowChicken = new ChickensRegistryItem(
                 4, "YellowChicken", new ResourceLocation("chickens", "textures/entity/YellowChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.YELLOW.getDyeDamage()),
-                0xffff00, 0xcccc00).setSpawnType(SpawnType.NONE));
+                0xffff00, 0xcccc00).setSpawnType(SpawnType.NONE);
+        chickens.add(yellowChicken);
 
-        ChickensRegistryItem blueChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem blueChicken = new ChickensRegistryItem(
                 11, "BlueChicken", new ResourceLocation("chickens", "textures/entity/BlueChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage()),
-                0x000066, 0x000033).setSpawnType(SpawnType.NONE));
+                0x000066, 0x000033).setSpawnType(SpawnType.NONE);
+        chickens.add(blueChicken);
 
-        ChickensRegistryItem brownChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem brownChicken = new ChickensRegistryItem(
                 12, "BrownChicken", new ResourceLocation("chickens", "textures/entity/BrownChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.BROWN.getDyeDamage()),
-                0x663300, 0x1a0d00).setSpawnType(SpawnType.NONE));
+                0x663300, 0x1a0d00).setSpawnType(SpawnType.NONE);
+        chickens.add(brownChicken);
 
-        ChickensRegistryItem greenChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem greenChicken = new ChickensRegistryItem(
                 13, "GreenChicken", new ResourceLocation("chickens", "textures/entity/GreenChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.GREEN.getDyeDamage()),
-                0x006600, 0x003300).setSpawnType(SpawnType.NONE));
+                0x006600, 0x003300).setSpawnType(SpawnType.NONE);
+        chickens.add(greenChicken);
 
-        ChickensRegistryItem redChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem redChicken = new ChickensRegistryItem(
                 14, "RedChicken", new ResourceLocation("chickens", "textures/entity/RedChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.RED.getDyeDamage()),
-                0x660000, 0x330000).setSpawnType(SpawnType.NONE));
+                0x660000, 0x330000).setSpawnType(SpawnType.NONE);
+        chickens.add(redChicken);
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 15, "BlackChicken", new ResourceLocation("chickens", "textures/entity/BlackChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage()),
                 0x666666, 0x333333).setSpawnType(SpawnType.NONE));
 
         // base chickens
-        ChickensRegistryItem gunpowderChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem gunpowderChicken = new ChickensRegistryItem(
                 100, "GunpowderChicken", new ResourceLocation("chickens", "textures/entity/GunpowderChicken.png"),
                 new ItemStack(Items.gunpowder),
-                0x999999, 0x404040));
+                0x999999, 0x404040);
+        chickens.add(gunpowderChicken);
 
-        ChickensRegistryItem flintChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem flintChicken = new ChickensRegistryItem(
                 101, "FlintChicken", new ResourceLocation("chickens", "textures/entity/FlintChicken.png"),
                 new ItemStack(Items.flint),
-                0x6b6b47, 0xa3a375));
+                0x6b6b47, 0xa3a375);
+        chickens.add(flintChicken);
 
-        ChickensRegistryItem snowballChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem snowballChicken = new ChickensRegistryItem(
                 102, "SnowballChicken", new ResourceLocation("chickens", "textures/entity/SnowballChicken.png"),
                 new ItemStack(Items.snowball),
-                0x33bbff, 0x0088cc).setSpawnType(SpawnType.SNOW));
+                0x33bbff, 0x0088cc).setSpawnType(SpawnType.SNOW);
+        chickens.add(snowballChicken);
 
-        ChickensRegistryItem lavaChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem lavaChicken = new ChickensRegistryItem(
                 103, "LavaChicken", new ResourceLocation("chickens", "textures/entity/LavaChicken.png"),
                 new ItemStack(liquidEgg, 1, 1),
-                0xcc3300, 0xffff00).setSpawnType(SpawnType.HELL));
+                0xcc3300, 0xffff00).setSpawnType(SpawnType.HELL);
+        chickens.add(lavaChicken);
 
-        ChickensRegistryItem quartzChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem quartzChicken = new ChickensRegistryItem(
                 104, "QuartzChicken", new ResourceLocation("chickens", "textures/entity/QuartzChicken.png"),
                 new ItemStack(Items.quartz),
-                0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL));
+                0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL);
+        chickens.add(quartzChicken);
 
         // chicken tier 2
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 200, "ClayChicken", new ResourceLocation("chickens", "textures/entity/ClayChicken.png"),
                 new ItemStack(Items.clay_ball),
                 0xcccccc, 0xbfbfbf,
                 flintChicken,
                 snowballChicken));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 201, "RedstoneChicken", new ResourceLocation("chickens", "textures/entity/RedstoneChicken.png"),
                 new ItemStack(Items.redstone),
                 0xe60000, 0x800000,
                 redChicken,
                 gunpowderChicken));
 
-        ChickensRegistryItem glowstoneChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem glowstoneChicken = new ChickensRegistryItem(
                 202, "GlowstoneChicken", new ResourceLocation("chickens", "textures/entity/GlowstoneChicken.png"),
                 new ItemStack(Items.glowstone_dust),
                 0xffff66, 0xffff00,
-                yellowChicken, gunpowderChicken));
+                yellowChicken, gunpowderChicken);
+        chickens.add(glowstoneChicken);
 
-        ChickensRegistryItem ironChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem ironChicken = new ChickensRegistryItem(
                 203, "IronChicken", new ResourceLocation("chickens", "textures/entity/IronChicken.png"),
                 new ItemStack(Items.iron_ingot),
                 0xffffcc, 0xffcccc,
-                flintChicken, whiteChicken));
+                flintChicken, whiteChicken);
+        chickens.add(ironChicken);
 
-        ChickensRegistryItem coalChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem coalChicken = new ChickensRegistryItem(
                 204, "CoalChicken", new ResourceLocation("chickens", "textures/entity/CoalChicken.png"),
                 new ItemStack(Items.coal),
                 0x262626, 0x000000,
-                flintChicken, lavaChicken));
+                flintChicken, lavaChicken);
+        chickens.add(coalChicken);
 
-        ChickensRegistryItem slimeChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem slimeChicken = new ChickensRegistryItem(
                 205, "SlimeChicken", new ResourceLocation("chickens", "textures/entity/SlimeChicken.png"),
                 new ItemStack(Items.slime_ball),
                 0x009933, 0x99ffbb,
-                snowballChicken, greenChicken));
+                snowballChicken, greenChicken);
+        chickens.add(slimeChicken);
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 206, "WaterChicken", new ResourceLocation("chickens", "textures/entity/WaterChicken.png"),
                 new ItemStack(liquidEgg, 1, 0),
                 0x000099, 0x8080ff,
                 snowballChicken, lavaChicken));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 207, "NetherwartChicken", new ResourceLocation("chickens", "textures/entity/NetherwartChicken.png"),
                 new ItemStack(Items.nether_wart),
                 0x800000, 0x331a00,
                 brownChicken, quartzChicken));
 
         // tier 3
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 300, "GoldChicken", new ResourceLocation("chickens", "textures/entity/GoldChicken.png"),
                 new ItemStack(Items.gold_nugget),
                 0xcccc00, 0xffff80,
                 ironChicken, yellowChicken));
 
-        ChickensRegistryItem diamondChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem diamondChicken = new ChickensRegistryItem(
                 301, "DiamondChicken", new ResourceLocation("chickens", "textures/entity/DiamondChicken.png"),
                 new ItemStack(Items.diamond),
                 0x99ccff, 0xe6f2ff,
-                coalChicken, blueChicken));
+                coalChicken, blueChicken);
+        chickens.add(diamondChicken);
 
-        ChickensRegistryItem blazeChicken = ChickensRegistry.register(new ChickensRegistryItem(
+        ChickensRegistryItem blazeChicken = new ChickensRegistryItem(
                 302, "BlazeChicken", new ResourceLocation("chickens", "textures/entity/BlazeChicken.png"),
                 new ItemStack(Items.blaze_rod),
                 0xffff66, 0xff3300,
-                glowstoneChicken, quartzChicken));
+                glowstoneChicken, quartzChicken);
+        chickens.add(blazeChicken);
 
         // tier 4
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 400, "EmeraldChicken", new ResourceLocation("chickens", "textures/entity/EmeraldChicken.png"),
                 new ItemStack(Items.emerald),
                 0x00cc00, 0x003300,
                 diamondChicken, greenChicken));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 401, "EnderChicken", new ResourceLocation("chickens", "textures/entity/EnderChicken.png"),
                 new ItemStack(Items.ender_pearl),
                 0x001a00, 0x001a33,
                 diamondChicken, blazeChicken));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 402, "GhastChicken", new ResourceLocation("chickens", "textures/entity/GhastChicken.png"),
                 new ItemStack(Items.ghast_tear),
                 0xffffcc, 0xffffff,
                 diamondChicken, quartzChicken));
 
-        ChickensRegistry.register(new ChickensRegistryItem(
+        chickens.add(new ChickensRegistryItem(
                 403, "MagmaChicken", new ResourceLocation("chickens", "textures/entity/MagmaChicken.png"),
                 new ItemStack(Items.magma_cream),
                 0x1a0500, 0x000000,
                 slimeChicken, blazeChicken));
 
+        return chickens;
     }
 
     public static String getItemName(Item item) {
