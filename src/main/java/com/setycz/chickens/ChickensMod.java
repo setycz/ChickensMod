@@ -336,7 +336,7 @@ public class ChickensMod {
                 0xe60000, 0x800000,
                 redChicken,
                 sandChicken);
-        chickens.add(redstoneChicken)
+        chickens.add(redstoneChicken);
 
         ChickensRegistryItem ironChicken = new ChickensRegistryItem(
                 203, "IronChicken", new ResourceLocation("chickens", "textures/entity/IronChicken.png"),
@@ -388,7 +388,7 @@ public class ChickensMod {
                 coalChicken, waterChicken).setSpawnType(SpawnType.HELL);
         chickens.add(lavaChicken);
         
-        ChickensRegistryItm clayChicken = new ChickensRegistryItem(
+        ChickensRegistryItem clayChicken = new ChickensRegistryItem(
                 200, "ClayChicken", new ResourceLocation("chickens", "textures/entity/ClayChicken.png"),
                 new ItemStack(Items.clay_ball),
                 0xcccccc, 0xbfbfbf,
@@ -408,7 +408,7 @@ public class ChickensMod {
                 new ItemStack(Items.nether_wart),
                 0x800000, 0x331a00,
                 brownChicken, redstoneChicken);
-        chickens.add(netherwartChicken)
+        chickens.add(netherwartChicken);
 
         // Tier 4
         ChickensRegistryItem diamondChicken = new ChickensRegistryItem(
@@ -454,7 +454,7 @@ public class ChickensMod {
                 diamondChicken, greenChicken);
         chickens.add(emeraldChicken);
 
-        magmaChicken = new ChickensRegistryItem(
+        ChickensRegistryItem magmaChicken = new ChickensRegistryItem(
                 403, "MagmaChicken", new ResourceLocation("chickens", "textures/entity/MagmaChicken.png"),
                 new ItemStack(Items.magma_cream),
                 0x1a0500, 0x000000,

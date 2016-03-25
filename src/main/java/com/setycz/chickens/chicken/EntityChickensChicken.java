@@ -177,7 +177,7 @@ public class EntityChickensChicken extends EntityChicken {
         super.readFromNBT(tagCompund);
         setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
     }
-**    
+
     @Override
     public int getTalkInterval()
     {
