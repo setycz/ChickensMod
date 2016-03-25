@@ -169,7 +169,7 @@ public class ChickensMod {
                     biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()])
             );
             if (biomesForSpawning.contains(Biomes.hell)) {
-                MinecraftForge.EVENT_BUS.register(new ChickenNetherPopulateHandler());
+                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler());
             }
         }
 
