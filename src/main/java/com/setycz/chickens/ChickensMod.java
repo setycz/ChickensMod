@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -164,7 +165,7 @@ public class ChickensMod {
             EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
                     biomesForSpawning.toArray(new BiomeGenBase[biomesForSpawning.size()])
             );
-            if (biomesForSpawning.contains(BiomeGenBase.hell)) {
+            if (biomesForSpawning.contains(Biomes.hell)) {
                 MinecraftForge.EVENT_BUS.register(new ChickenNetherPopulateHandler());
             }
         }
@@ -186,7 +187,8 @@ public class ChickensMod {
         registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
 
         // waila integration
-        FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+        // TODO: Waila not ported yet
+        //FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
     }
 
     private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
@@ -203,14 +205,14 @@ public class ChickensMod {
     private List<BiomeGenBase> getAllSpawnBiomes() {
         // chicken entity spawning
         BiomeGenBase[] allPossibleBiomes = {
-                BiomeGenBase.plains, BiomeGenBase.extremeHills, BiomeGenBase.forest,
-                BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.icePlains,
-                BiomeGenBase.iceMountains, BiomeGenBase.forestHills, BiomeGenBase.taigaHills,
-                BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills,
-                BiomeGenBase.jungleEdge, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills,
-                BiomeGenBase.roofedForest, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills,
-                BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills, BiomeGenBase.extremeHillsPlus,
-                BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.hell};
+                Biomes.plains, Biomes.extremeHills, Biomes.forest,
+                Biomes.taiga, Biomes.swampland, Biomes.icePlains,
+                Biomes.iceMountains, Biomes.forestHills, Biomes.taigaHills,
+                Biomes.extremeHillsEdge, Biomes.jungle, Biomes.jungleHills,
+                Biomes.jungleEdge, Biomes.birchForest, Biomes.birchForestHills,
+                Biomes.roofedForest, Biomes.coldTaiga, Biomes.coldTaigaHills,
+                Biomes.megaTaiga, Biomes.megaTaigaHills, Biomes.extremeHillsPlus,
+                Biomes.savanna, Biomes.savannaPlateau, Biomes.hell};
 
         List<BiomeGenBase> biomesForSpawning = new ArrayList<BiomeGenBase>();
         for (BiomeGenBase biome: allPossibleBiomes) {

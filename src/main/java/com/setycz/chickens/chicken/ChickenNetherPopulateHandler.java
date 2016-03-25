@@ -2,9 +2,9 @@ package com.setycz.chickens.chicken;
 
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.SpawnerAnimals;
+import net.minecraft.init.Biomes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
@@ -15,11 +15,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * Created by setyc on 05.03.2016.
  */
 public class ChickenNetherPopulateHandler {
+    /*
     @SubscribeEvent
     public void populateChunk(PopulateChunkEvent.Post event) {
         BlockPos chunkCentrePos = new BlockPos(event.chunkX * 16 + 8, 0, event.chunkZ * 16 + 8);
         BiomeGenBase biome = event.world.getBiomeGenForCoords(chunkCentrePos);
-        if (biome != BiomeGenBase.hell) {
+        if (biome != Biomes.hell) {
             return;
         }
 
@@ -65,5 +66,5 @@ public class ChickenNetherPopulateHandler {
         int l = worldIn.rand.nextInt(k > 0 ? k : chunk.getTopFilledSegment() + 16 - 1);
         return new BlockPos(i, l, j);
     }
-
+*/
 }

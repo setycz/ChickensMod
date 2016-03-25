@@ -4,17 +4,20 @@ import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 
 /**
  * Created by setyc on 18.02.2016.
  */
 public class ClientProxy extends CommonProxy {
+
     @Override
     public void init() {
         super.init();
+
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHandler(), ChickensMod.spawnEgg, ChickensMod.coloredEgg);
 
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();

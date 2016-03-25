@@ -15,11 +15,11 @@ public class ChickenTeachHanhler {
 
     @SubscribeEvent
     public void handleInteraction(EntityInteractEvent event) {
-        ItemStack item = event.entityPlayer.getCurrentEquippedItem();
+        ItemStack item = event.entityPlayer.getHeldItemMainhand();
         if (item == null || item.getItem() != Items.book) {
             return;
         }
-        if (!(event.target.getClass() == EntityChicken.class)) {
+        if (!(event.getTarget().getClass() == EntityChicken.class)) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class ChickenTeachHanhler {
             return;
         }
 
-        EntityChicken chicken = (EntityChicken) event.target;
+        EntityChicken chicken = (EntityChicken) event.getTarget();
         EntityChickensChicken smartChicken = convertToSmart(chicken, worldObj, smartChickenDescription);
 
         worldObj.removeEntity(chicken);

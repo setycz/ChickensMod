@@ -20,20 +20,10 @@ import java.util.List;
  */
 @JEIPlugin
 public class ChickensJeiPlugin implements IModPlugin {
-    private IJeiHelpers jeiHelpers;
-
-    @Override
-    public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers) {
-        this.jeiHelpers = jeiHelpers;
-    }
-
-    @Override
-    public void onItemRegistryAvailable(IItemRegistry itemRegistry) {
-
-    }
 
     @Override
     public void register(IModRegistry registry) {
+        IJeiHelpers jeiHelpers = registry.getJeiHelpers();
         registry.addRecipeCategories(
                 new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new BreedingRecipeCategory(jeiHelpers.getGuiHelper())
@@ -44,11 +34,6 @@ public class ChickensJeiPlugin implements IModPlugin {
         );
         registry.addRecipes(getLayingRecipes());
         registry.addRecipes(getBreedingRecipes());
-    }
-
-    @Override
-    public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry) {
-
     }
 
     @Override

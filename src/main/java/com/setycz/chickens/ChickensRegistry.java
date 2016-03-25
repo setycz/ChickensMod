@@ -1,5 +1,6 @@
 package com.setycz.chickens;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.*;
@@ -82,11 +83,11 @@ public final class ChickensRegistry {
     }
 
     public static SpawnType getSpawnType(BiomeGenBase biome) {
-        if (biome == BiomeGenBase.hell) {
+        if (biome == Biomes.hell) {
             return SpawnType.HELL;
         }
 
-        if (biome == BiomeGenBase.extremeHills || biome.isSnowyBiome()) {
+        if (biome == Biomes.extremeHills || biome.isSnowyBiome()) {
             return SpawnType.SNOW;
         }
 

@@ -3,15 +3,19 @@ package com.setycz.chickens.spawnEgg;
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
+import com.setycz.chickens.IColorSource;
 import com.setycz.chickens.chicken.EntityChickensChicken;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
 /**
  * Created by setyc on 12.02.2016.
  */
-public class ItemSpawnEgg extends Item {
+public class ItemSpawnEgg extends Item implements IColorSource {
     public ItemSpawnEgg() {
         setHasSubtypes(true);
     }
@@ -34,8 +38,9 @@ public class ItemSpawnEgg extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         ChickensRegistryItem chickenDescription = ChickensRegistry.getByType(stack.getMetadata());
-        return StatCollector.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
+        return I18n.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
     }
+
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int renderPass) {
@@ -44,15 +49,15 @@ public class ItemSpawnEgg extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            BlockPos corelatedPos = correctPosition(pos, side);
+            BlockPos corelatedPos = correctPosition(pos, facing);
             activate(worldIn, corelatedPos, stack.getMetadata());
             if (!playerIn.capabilities.isCreativeMode) {
                 stack.stackSize--;
             }
         }
-        return true;
+        return EnumActionResult.SUCCESS;
     }
 
     private BlockPos correctPosition(BlockPos pos, EnumFacing side) {

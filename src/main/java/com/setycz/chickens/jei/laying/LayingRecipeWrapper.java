@@ -37,7 +37,7 @@ public class LayingRecipeWrapper extends BlankRecipeWrapper{
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         String message = Translator.translateToLocalFormatted("gui.laying.time", minTime, maxTime);
         minecraft.fontRendererObj.drawString(message, 24, 7, Color.gray.getRGB());
     }

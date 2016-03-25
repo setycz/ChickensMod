@@ -8,12 +8,17 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.init.Biomes;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -24,8 +29,7 @@ import java.util.List;
  * Created by setyc on 12.02.2016.
  */
 public class EntityChickensChicken extends EntityChicken {
-
-    public static final int TYPE_ID = 19;
+    private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     public static final String TYPE_NBT = "Type";
 
     public EntityChickensChicken(World worldIn) {
@@ -52,7 +56,7 @@ public class EntityChickensChicken extends EntityChicken {
         }
 
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        return StatCollector.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
+        return I18n.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
     }
 
     @Override
@@ -76,10 +80,10 @@ public class EntityChickensChicken extends EntityChicken {
             ChickensRegistryItem chickenDescription = getChickenDescription();
             ItemStack itemToLay = chickenDescription.createLayItem();
 
-            itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
+            itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
 
             if (itemToLay != null) {
-                this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                this.playSound(SoundEvents.entity_chicken_egg, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                 this.entityDropItem(chickenDescription.createLayItem(), 0);
             }
 
@@ -99,7 +103,7 @@ public class EntityChickensChicken extends EntityChicken {
         boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
-        return anyInNether && biome == BiomeGenBase.hell || anyInOverworld && super.getCanSpawnHere();
+        return anyInNether && biome == Biomes.hell || anyInOverworld && super.getCanSpawnHere();
     }
 
     @Override
@@ -149,17 +153,17 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private void setChickenTypeInternal(int type) {
-        this.dataWatcher.updateObject(TYPE_ID, type);
+        this.dataWatcher.set(CHICKEN_TYPE, type);
     }
 
     private int getChickenTypeInternal() {
-        return this.dataWatcher.getWatchableObjectInt(TYPE_ID);
+        return this.dataWatcher.get(CHICKEN_TYPE);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(TYPE_ID, 0);
+        dataWatcher.register(CHICKEN_TYPE, 0);
     }
 
     @Override

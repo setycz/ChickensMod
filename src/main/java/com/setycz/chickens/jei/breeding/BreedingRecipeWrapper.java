@@ -38,7 +38,7 @@ public class BreedingRecipeWrapper extends BlankRecipeWrapper {
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         String message = Translator.translateToLocalFormatted("gui.breeding.time", chance);
         minecraft.fontRendererObj.drawString(message, 32, 25, Color.gray.getRGB());
     }

@@ -2,14 +2,20 @@ package com.setycz.chickens.coloredEgg;
 
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
+import com.setycz.chickens.IColorSource;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -17,7 +23,7 @@ import java.util.List;
 /**
  * Created by setyc on 13.02.2016.
  */
-public class ItemColoredEgg extends ItemEgg {
+public class ItemColoredEgg extends ItemEgg implements IColorSource {
     public ItemColoredEgg() {
         setHasSubtypes(true);
     }
@@ -25,7 +31,7 @@ public class ItemColoredEgg extends ItemEgg {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         EnumDyeColor color = EnumDyeColor.byDyeDamage(stack.getMetadata());
-        return StatCollector.translateToLocal(getUnlocalizedName() + "." + color.getUnlocalizedName() + ".name");
+        return I18n.translateToLocal(getUnlocalizedName() + "." + color.getUnlocalizedName() + ".name");
     }
 
     @Override
@@ -43,14 +49,16 @@ public class ItemColoredEgg extends ItemEgg {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-        if (!playerIn.capabilities.isCreativeMode) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        if (!playerIn.capabilities.isCreativeMode)
+        {
             --itemStackIn.stackSize;
         }
 
-        worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.entity_egg_throw, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-        if (!worldIn.isRemote) {
+        if (!worldIn.isRemote)
+        {
             int chickenType = getChickenType(itemStackIn);
             if (chickenType != -1) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
@@ -59,8 +67,8 @@ public class ItemColoredEgg extends ItemEgg {
             }
         }
 
-        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-        return itemStackIn;
+        playerIn.addStat(StatList.func_188057_b(this));
+        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     private int getChickenType(ItemStack itemStack) {
