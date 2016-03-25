@@ -62,6 +62,7 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
             int chickenType = getChickenType(itemStackIn);
             if (chickenType != -1) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
+                entityIn.func_184538_a(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
                 entityIn.setChickenType(chickenType);
                 worldIn.spawnEntityInWorld(entityIn);
             }
