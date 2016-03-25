@@ -15,7 +15,7 @@ public class ChickenTeachHanhler {
 
     @SubscribeEvent
     public void handleInteraction(EntityInteractEvent event) {
-        ItemStack item = event.entityPlayer.getHeldItemMainhand();
+        ItemStack item = event.getEntityPlayer().getHeldItemMainhand();
         if (item == null || item.getItem() != Items.book) {
             return;
         }
@@ -23,7 +23,7 @@ public class ChickenTeachHanhler {
             return;
         }
 
-        World worldObj = event.entityPlayer.worldObj;
+        World worldObj = event.getEntityPlayer().worldObj;
         if (worldObj.isRemote) {
             return;
         }
