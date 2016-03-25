@@ -17,7 +17,9 @@ public class ClientProxy extends CommonProxy {
     public void init() {
         super.init();
 
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemColorHandler(), ChickensMod.spawnEgg, ChickensMod.coloredEgg);
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(
+                new ItemColorHandler(),
+                ChickensMod.spawnEgg, ChickensMod.coloredEgg, ChickensMod.liquidEgg);
 
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();

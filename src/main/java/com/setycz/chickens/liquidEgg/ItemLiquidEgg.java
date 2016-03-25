@@ -1,5 +1,6 @@
 package com.setycz.chickens.liquidEgg;
 
+import com.setycz.chickens.IColorSource;
 import com.setycz.chickens.LiquidEggRegistry;
 import com.setycz.chickens.LiquidEggRegistryItem;
 import net.minecraft.block.Block;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Created by setyc on 14.02.2016.
  */
-public class ItemLiquidEgg extends ItemEgg {
+public class ItemLiquidEgg extends ItemEgg implements IColorSource{
     public ItemLiquidEgg() {
         setHasSubtypes(true);
     }
@@ -36,12 +37,10 @@ public class ItemLiquidEgg extends ItemEgg {
         }
     }
 
-    /*
     @Override
     public int getColorFromItemStack(ItemStack stack, int renderPass) {
         return LiquidEggRegistry.findById(stack.getMetadata()).getEggColor();
     }
-    */
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
