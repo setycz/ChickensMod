@@ -43,10 +43,10 @@ import java.util.List;
 @Mod(modid = ChickensMod.MODID,
         version = ChickensMod.VERSION,
         acceptedMinecraftVersions = "[1.9]",
-        dependencies = "required-after:Forge@[12.16.0.1805,);")
+        dependencies = "required-after:Forge@[12.16.0.1821,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
-    public static final String VERSION = "2.0";
+    public static final String VERSION = "2.0.1";
     public static final String CHICKEN = "ChickensChicken";
 
     @Mod.Instance(MODID)
@@ -145,7 +145,7 @@ public class ChickensMod {
 
     private ItemStack getLayItemStack(Configuration configuration, ChickensRegistryItem chicken) {
         ItemStack defaultItemStack = chicken.createLayItem();
-        String eggItemName = configuration.getString("eggItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName(), "Item name to be laid.");
+        String eggItemName = configuration.getString("eggItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName().toString(), "Item name to be laid.");
         int eggItemAmount = configuration.getInt("eggItemAmount", chicken.getEntityName(), defaultItemStack.stackSize, 1, 64, "Item amount to be laid.");
         int eggItemMeta = configuration.getInt("eggItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid.");
 
