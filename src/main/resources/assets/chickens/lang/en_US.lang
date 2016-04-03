@@ -38,6 +38,11 @@ entity.EmeraldChicken.name=Emerald Chicken
 entity.EnderChicken.name=Ender Pearl Chicken
 entity.GhastChicken.name=Ghast Tear Chicken
 entity.MagmaChicken.name=Magma Cream Chicken
+entity.StringChicken.name=String Chicken
+entity.LogChicken.name=Log Chicken
+entity.SandChicken.name=Sand Chicken
+entity.GlassChicken.name=Glass Chicken
+entity.LeatherChicken.name=Leather Chicken
 
 entity.ChickensChicken.tier=Tier: %1$s
 gui.laying=Laying Egg

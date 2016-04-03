@@ -3,11 +3,15 @@ package com.setycz.chickens.chicken;
 import com.setycz.chickens.ChickensRegistry;
 import com.setycz.chickens.ChickensRegistryItem;
 import com.setycz.chickens.SpawnType;
+
 import com.setycz.chickens.henhouse.TileEntityHenhouse;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
@@ -175,15 +179,38 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public int getTalkInterval() {
-        return 20*60;
+    public int getTalkInterval()
+    {
+        return 20 * 60;
     }
-
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
-        if(this.rand.nextFloat() > 0.1) {
-            return;
+    	if(this.rand.nextFloat() > 0.1) {
+    		return;
+    	}
+    	super.playStepSound(pos,  blockIn);
+    }
+    
+    
+    @Override
+    protected Item getDropItem()
+    {
+        ChickensRegistryItem chicken = getChickenDescription();
+        return chicken.createDropItem();
+    }
+
+    /**
+     * Drop 0-2 items of this living's type
+     */
+    @Override
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    {
+        int i = this.rand.nextInt(3) + this.rand.nextInt(1 + p_70628_2_);
+
+        for (int j = 0; j < i; ++j)
+        {
+            this.dropItem(getDropItem(), 1);
         }
-        super.playStepSound(pos, blockIn);
+
     }
 }
