@@ -116,8 +116,11 @@ public class ChickensMod {
             float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
             chicken.setLayCoefficient(layCoefficient);
 
-            ItemStack itemStack = getLayItemStack(configuration, chicken);
+            ItemStack itemStack = loadItemStack(configuration, chicken, "egg", chicken.createLayItem());
             chicken.setLayItem(itemStack);
+
+            ItemStack dropItemStack = loadItemStack(configuration, chicken, "drop", chicken.createDropItem());
+            chicken.setDropItem(dropItemStack);
 
             ChickensRegistryItem parent1 = getChickenParent(configuration, "parent1", allChickens, chicken, chicken.getParent1());
             ChickensRegistryItem parent2 = getChickenParent(configuration, "parent2", allChickens, chicken, chicken.getParent2());
@@ -151,18 +154,17 @@ public class ChickensMod {
         return null;
     }
 
-    private ItemStack getLayItemStack(Configuration configuration, ChickensRegistryItem chicken) {
-        ItemStack defaultItemStack = chicken.createLayItem();
-        String eggItemName = configuration.getString("eggItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName(), "Item name to be laid.");
-        int eggItemAmount = configuration.getInt("eggItemAmount", chicken.getEntityName(), defaultItemStack.stackSize, 1, 64, "Item amount to be laid.");
-        int eggItemMeta = configuration.getInt("eggItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid.");
+    private ItemStack loadItemStack(Configuration configuration, ChickensRegistryItem chicken, String prefix, ItemStack defaultItemStack) {
+        String itemName = configuration.getString(prefix + "ItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName(), "Item name to be laid/dropped.");
+        int itemAmount = configuration.getInt(prefix + "ItemAmount", chicken.getEntityName(), defaultItemStack.stackSize, 1, 64, "Item amount to be laid/dropped.");
+        int itemMeta = configuration.getInt(prefix + "ItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid/dropped.");
 
-        ResourceLocation itemResourceLocation = new ResourceLocation(eggItemName);
+        ResourceLocation itemResourceLocation = new ResourceLocation(itemName);
         Item item = GameRegistry.findItem(itemResourceLocation.getResourceDomain(), itemResourceLocation.getResourcePath());
         if (item == null) {
-            throw new RuntimeException("Cannot find egg item with name: " + eggItemName);
+            throw new RuntimeException("Cannot find egg item with name: " + itemName);
         }
-        return new ItemStack(item, eggItemAmount, eggItemMeta);
+        return new ItemStack(item, itemAmount, itemMeta);
     }
 
     @EventHandler
