@@ -12,6 +12,7 @@ public class ChickensRegistryItem {
     private final int id;
     private final String entityName;
     private ItemStack layItem;
+    private ItemStack dropItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
@@ -35,6 +36,11 @@ public class ChickensRegistryItem {
         this.spawnType = SpawnType.NORMAL;
         this.parent1 = parent1;
         this.parent2 = parent2;
+    }
+
+    public ChickensRegistryItem setDropItem(ItemStack stack) {
+        dropItem = stack;
+        return this;
     }
 
     public ChickensRegistryItem setSpawnType(SpawnType type) {
@@ -76,13 +82,10 @@ public class ChickensRegistryItem {
     }
 
     public ItemStack createDropItem() {
-        ItemStack dropItemStack = createLayItem();
-        if(dropItemStack.getItem() == Items.string) {
-            return new ItemStack(Items.spider_eye);
-        } else if(dropItemStack.getItem() == Items.dye && dropItemStack.getMetadata() == EnumDyeColor.WHITE.getDyeDamage()) {
-            return new ItemStack(Items.bone);
+        if (dropItem != null) {
+            return dropItem.copy();
         }
-        return dropItemStack;
+        return createLayItem();
     }
 
     public int getTier() {

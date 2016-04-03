@@ -294,7 +294,7 @@ public class ChickensMod {
         ChickensRegistryItem whiteChicken = new ChickensRegistryItem(
                 0, "WhiteChicken", new ResourceLocation("chickens", "textures/entity/WhiteChicken.png"),
                 new ItemStack(Items.dye, 1, EnumDyeColor.WHITE.getDyeDamage()),
-                0xf2f2f2, 0xffffff);
+                0xf2f2f2, 0xffffff).setDropItem(new ItemStack(Items.bone));
         chickens.add(whiteChicken);
 
 
@@ -306,7 +306,7 @@ public class ChickensMod {
                 new ItemStack(Items.string),
                 0x331a00, 0x800000,
                 blackChicken, quartzChicken
-                );
+                ).setDropItem(new ItemStack(Items.spider_eye));
         chickens.add(stringChicken);
 
         ChickensRegistryItem glassChicken = new ChickensRegistryItem(
