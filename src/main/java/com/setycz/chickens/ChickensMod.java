@@ -30,6 +30,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +46,8 @@ public class ChickensMod {
     public static final String MODID = "chickens";
     public static final String VERSION = "1.3";
     public static final String CHICKEN = "ChickensChicken";
+
+    public static final Logger log = LogManager.getLogger(MODID);
 
     @Mod.Instance(MODID)
     public static ChickensMod instance;
@@ -89,6 +93,14 @@ public class ChickensMod {
 
         registerLiquidEggs();
         loadConfiguration(event.getSuggestedConfigurationFile());
+
+        log.info("[{}] chickens registeren in total, [{}] enabled.",
+                ChickensRegistry.getChickenCount(), ChickensRegistry.getEnabledChickenCount());
+        for (SpawnType spawnType : SpawnType.values()) {
+            log.info("[{}] chickens will be spawned in [{}] biomes.",
+                    ChickensRegistry.getPossibleChickensToSpawn(spawnType).size(), spawnType);
+        }
+
     }
 
     private void loadConfiguration(File configFile) {
@@ -297,10 +309,7 @@ public class ChickensMod {
                 0xf2f2f2, 0xffffff).setDropItem(new ItemStack(Items.bone));
         chickens.add(whiteChicken);
 
-
-
         // Tier 2
-
         ChickensRegistryItem stringChicken = new ChickensRegistryItem(
                 303, "StringChicken", new ResourceLocation("chickens", "textures/entity/StringChicken.png"),
                 new ItemStack(Items.string),
@@ -460,10 +469,6 @@ public class ChickensMod {
                 0x1a0500, 0x000000,
                 slimeChicken, blazeChicken);
         chickens.add(magmaChicken);
-
-
-
-
 
         return chickens;
 

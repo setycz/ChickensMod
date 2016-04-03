@@ -12,10 +12,9 @@ public final class ChickensRegistry {
     public static final int SMART_CHICKEN_ID = 50;
     private static Random rand = new Random();
 
-    public static ChickensRegistryItem register(ChickensRegistryItem entity) {
+    public static void register(ChickensRegistryItem entity) {
         validate(entity);
         items.put(entity.getId(), entity);
-        return entity;
     }
 
     private static void validate(ChickensRegistryItem entity) {
@@ -159,5 +158,19 @@ public final class ChickensRegistry {
 
     public static ChickensRegistryItem getSmartChicken() {
         return items.get(SMART_CHICKEN_ID);
+    }
+
+    public static int getChickenCount() {
+        return items.size();
+    }
+
+    public static int getEnabledChickenCount() {
+        int size = 0;
+        for (ChickensRegistryItem chicken : items.values()) {
+            if (chicken.isEnabled()) {
+                size++;
+            }
+        }
+        return size;
     }
 }
