@@ -1,10 +1,9 @@
 package com.setycz.chickens;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.item.EnumDyeColor;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -76,17 +75,14 @@ public class ChickensRegistryItem {
         return layItem.copy();
     }
 
-    public Item createDropItem() {
-
+    public ItemStack createDropItem() {
         ItemStack dropItemStack = createLayItem();
-        Item dropItem = dropItemStack.getItem();
-        
-        if(dropItem == Items.string) {
-            dropItem = Items.spider_eye;
-        } else if(dropItem == Items.dye && dropItemStack.getMetadata() == EnumDyeColor.WHITE.getDyeDamage()) {
-            dropItem = Items.bone;
+        if(dropItemStack.getItem() == Items.string) {
+            return new ItemStack(Items.spider_eye);
+        } else if(dropItemStack.getItem() == Items.dye && dropItemStack.getMetadata() == EnumDyeColor.WHITE.getDyeDamage()) {
+            return new ItemStack(Items.bone);
         }
-        return dropItem;
+        return dropItemStack;
     }
 
     public int getTier() {
