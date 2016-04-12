@@ -25,7 +25,7 @@ group= "com.setycz.chickens" // http://maven.apache.org/guides/mini/guide-naming
 archivesBaseName = "chickens"
 
 minecraft {
-    version = "1.9-12.16.0.1826-1.9"
+    version = "1.9-12.16.0.1863-1.9"
     runDir = "run"
 
     // the mappings can be changed at any time, and must be in the following format.
@@ -66,7 +66,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    deobfCompile "mezz.jei:jei_1.9:3.2.4.177"
+    deobfCompile "mezz.jei:jei_1.9:3.2.10.185"
     //compile "mcp.mobius.waila:Waila:1.6.0-B3_1.8.8"
 }
 

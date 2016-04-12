@@ -5,7 +5,7 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -14,8 +14,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ChickenTeachHanhler {
 
     @SubscribeEvent
-    public void handleInteraction(EntityInteractEvent event) {
-        ItemStack item = event.getEntityPlayer().getHeldItemMainhand();
+    public void handleInteraction(PlayerInteractEvent.EntityInteract event) {
+        ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
         if (item == null || item.getItem() != Items.book) {
             return;
         }
