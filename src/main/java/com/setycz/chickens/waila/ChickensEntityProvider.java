@@ -1,9 +1,21 @@
 package com.setycz.chickens.waila;
 
+import com.setycz.chickens.chicken.EntityChickensChicken;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaEntityAccessor;
+import mcp.mobius.waila.api.IWailaEntityProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
+
+import java.util.List;
+
 /**
  * Created by setyc on 20.02.2016.
  */
-/*
 // TODO: Waila not ported yet
 public class ChickensEntityProvider implements IWailaEntityProvider {
 
@@ -40,4 +52,3 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
         return null;
     }
 }
-*/
