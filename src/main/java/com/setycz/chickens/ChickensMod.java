@@ -49,7 +49,7 @@ import java.util.List;
         dependencies = "required-after:Forge@[11.15.1.1722,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.4";
     public static final String CHICKEN = "ChickensChicken";
 
     public static final Logger log = LogManager.getLogger(MODID);
@@ -217,6 +217,12 @@ public class ChickensMod {
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
     }
 
+    private boolean requiresWisitingNether(ChickensRegistryItem chicken) {
+        return chicken.getTier() == 1
+                ? chicken.getSpawnType() == SpawnType.HELL
+                : requiresWisitingNether(chicken.getParent1()) || requiresWisitingNether(chicken.getParent2());
+    }
+
     private void dumpChickens(Collection<ChickensRegistryItem> items) {
         try {
             FileWriter file = new FileWriter("logs\\chickens.gml");
@@ -226,6 +232,11 @@ public class ChickensMod {
                 file.write("\tnode [\n");
                 file.write("\t\tid " + item.getId() +"\n");
                 file.write("\t\tlabel \"" + item.getEntityName() +"\"\n");
+                if (requiresWisitingNether(item)) {
+                    file.write("\t\tgraphics [\n");
+                    file.write("\t\t\tfill \"#FF6600\"\n");
+                    file.write("\t\t]\n");
+                }
                 file.write("\t]\n");
             }
             for (ChickensRegistryItem item : items) {
