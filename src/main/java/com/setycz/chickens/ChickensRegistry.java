@@ -160,4 +160,14 @@ public final class ChickensRegistry {
     public static ChickensRegistryItem getSmartChicken() {
         return items.get(SMART_CHICKEN_ID);
     }
+
+    public static Collection<ChickensRegistryItem> getDisabledItems() {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
+        for (ChickensRegistryItem chicken : items.values()) {
+            if (!chicken.isEnabled()) {
+                result.add(chicken);
+            }
+        }
+        return result;
+    }
 }

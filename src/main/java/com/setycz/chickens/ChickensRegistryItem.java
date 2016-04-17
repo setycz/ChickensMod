@@ -1,6 +1,7 @@
 package com.setycz.chickens;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -11,6 +12,7 @@ public class ChickensRegistryItem {
     private final int id;
     private final String entityName;
     private ItemStack layItem;
+    private ItemStack dropItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
@@ -34,6 +36,11 @@ public class ChickensRegistryItem {
         this.spawnType = SpawnType.NORMAL;
         this.parent1 = parent1;
         this.parent2 = parent2;
+    }
+
+    public ChickensRegistryItem setDropItem(ItemStack stack) {
+        dropItem = stack;
+        return this;
     }
 
     public ChickensRegistryItem setSpawnType(SpawnType type) {
@@ -72,6 +79,13 @@ public class ChickensRegistryItem {
 
     public ItemStack createLayItem() {
         return layItem.copy();
+    }
+
+    public ItemStack createDropItem() {
+        if (dropItem != null) {
+            return dropItem.copy();
+        }
+        return createLayItem();
     }
 
     public int getTier() {

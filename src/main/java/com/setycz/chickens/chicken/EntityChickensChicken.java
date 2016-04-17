@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -179,15 +180,31 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public int getTalkInterval() {
-        return 20*60;
+    public int getTalkInterval()
+    {
+        return 20 * 60;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
-        if(this.rand.nextFloat() > 0.1) {
-            return;
+    	if(this.rand.nextFloat() > 0.1) {
+    		return;
+    	}
+    	super.playStepSound(pos,  blockIn);
+    }
+
+    @Override
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
+        ItemStack itemsToDrop = getChickenDescription().createDropItem();
+        int count = 1 + rand.nextInt(1 + p_70628_2_);
+        itemsToDrop.stackSize *= count;
+        entityDropItem(itemsToDrop, 0);
+
+        if (this.isBurning()) {
+            this.dropItem(Items.cooked_chicken, 1);
         }
-        super.playStepSound(pos, blockIn);
+        else {
+            this.dropItem(Items.chicken, 1);
+        }
     }
 }
