@@ -6,6 +6,9 @@ import com.setycz.chickens.ChickensRegistryItem;
 import com.setycz.chickens.jei.breeding.BreedingRecipeCategory;
 import com.setycz.chickens.jei.breeding.BreedingRecipeHandler;
 import com.setycz.chickens.jei.breeding.BreedingRecipeWrapper;
+import com.setycz.chickens.jei.drop.DropRecipeCategory;
+import com.setycz.chickens.jei.drop.DropRecipeHandler;
+import com.setycz.chickens.jei.drop.DropRecipeWrapper;
 import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import com.setycz.chickens.jei.laying.LayingRecipeHandler;
 import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
@@ -36,14 +39,17 @@ public class ChickensJeiPlugin implements IModPlugin {
     public void register(IModRegistry registry) {
         registry.addRecipeCategories(
                 new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
-                new BreedingRecipeCategory(jeiHelpers.getGuiHelper())
+                new BreedingRecipeCategory(jeiHelpers.getGuiHelper()),
+                new DropRecipeCategory(jeiHelpers.getGuiHelper())
         );
         registry.addRecipeHandlers(
                 new LayingRecipeHandler(),
-                new BreedingRecipeHandler()
+                new BreedingRecipeHandler(),
+                new DropRecipeHandler()
         );
         registry.addRecipes(getLayingRecipes());
         registry.addRecipes(getBreedingRecipes());
+        registry.addRecipes(getDropRecipes());
     }
 
     @Override
@@ -63,6 +69,17 @@ public class ChickensJeiPlugin implements IModPlugin {
                     new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
                     chicken.createLayItem(),
                     chicken.getMinLayTime(), chicken.getMaxLayTime()
+            ));
+        }
+        return result;
+    }
+
+    private List<DropRecipeWrapper> getDropRecipes() {
+        List<DropRecipeWrapper> result = new ArrayList<DropRecipeWrapper>();
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            result.add(new DropRecipeWrapper(
+                    new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
+                    chicken.createDropItem()
             ));
         }
         return result;

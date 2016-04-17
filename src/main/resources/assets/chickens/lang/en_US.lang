@@ -49,6 +49,7 @@ gui.laying=Laying Egg
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Chicken Breeding
 gui.breeding.time=%1$s%%
+gui.drops=Chicken Drops
 
 container.henhouse=Henhouse
 tile.henhouse.name=Henhouse
