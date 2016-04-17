@@ -160,17 +160,13 @@ public final class ChickensRegistry {
         return items.get(SMART_CHICKEN_ID);
     }
 
-    public static int getChickenCount() {
-        return items.size();
-    }
-
-    public static int getEnabledChickenCount() {
-        int size = 0;
+    public static Collection<ChickensRegistryItem> getDisabledItems() {
+        List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         for (ChickensRegistryItem chicken : items.values()) {
-            if (chicken.isEnabled()) {
-                size++;
+            if (!chicken.isEnabled()) {
+                result.add(chicken);
             }
         }
-        return size;
+        return result;
     }
 }

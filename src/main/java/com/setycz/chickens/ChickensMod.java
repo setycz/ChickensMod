@@ -41,7 +41,10 @@ import java.util.List;
 /**
  * Created by setyc on 12.02.2016.
  */
-@Mod(modid = ChickensMod.MODID, version = ChickensMod.VERSION)
+@Mod(modid = ChickensMod.MODID,
+        version = ChickensMod.VERSION,
+        acceptedMinecraftVersions = "[1.8.9]",
+        dependencies = "required-after:Forge@[11.15.1.1722,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
     public static final String VERSION = "1.3";
@@ -94,13 +97,20 @@ public class ChickensMod {
         registerLiquidEggs();
         loadConfiguration(event.getSuggestedConfigurationFile());
 
-        log.info("[{}] chickens registeren in total, [{}] enabled.",
-                ChickensRegistry.getChickenCount(), ChickensRegistry.getEnabledChickenCount());
+        log.info("Enabled chickens: {}", getChickenNames(ChickensRegistry.getItems()));
+        log.info("Disabled chickens: {}", getChickenNames(ChickensRegistry.getDisabledItems()));
         for (SpawnType spawnType : SpawnType.values()) {
-            log.info("[{}] chickens will be spawned in [{}] biomes.",
-                    ChickensRegistry.getPossibleChickensToSpawn(spawnType).size(), spawnType);
+            log.info("[{}] biome type will spawn {} ({})",
+                    spawnType, getChickenNames(ChickensRegistry.getPossibleChickensToSpawn(spawnType)));
         }
+    }
 
+    private List<String> getChickenNames(Collection<ChickensRegistryItem> chickens) {
+        List<String> result = new ArrayList<String>();
+        for (ChickensRegistryItem chicken : chickens) {
+            result.add(chicken.getEntityName());
+        }
+        return result;
     }
 
     private void loadConfiguration(File configFile) {
