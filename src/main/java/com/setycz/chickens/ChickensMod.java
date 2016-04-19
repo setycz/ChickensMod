@@ -215,8 +215,7 @@ public class ChickensMod {
         registerHenhouse(henhouse, BlockPlanks.EnumType.OAK);
 
         // waila integration
-        // TODO: Waila not ported yet
-        //FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+        FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
     }
 
     private boolean requiresWisitingNether(ChickensRegistryItem chicken) {

@@ -116,11 +116,13 @@ public class EntityChickensChicken extends EntityChicken {
         } else {
             SpawnType spawnType = getSpawnType();
             List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn(spawnType);
-            ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
+            if (possibleChickens.size() > 0) {
+                ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
 
-            int type = chickenToSpawn.getId();
-            setChickenType(type);
-            livingData = new GroupData(type);
+                int type = chickenToSpawn.getId();
+                setChickenType(type);
+                livingData = new GroupData(type);
+            }
         }
 
         if (rand.nextInt(5) == 0) {
@@ -194,9 +196,14 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
+    protected ResourceLocation getLootTable() {
+        return null;
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
         ItemStack itemsToDrop = getChickenDescription().createDropItem();
-        int count = 1 + rand.nextInt(1 + p_70628_2_);
+        int count = 1 + rand.nextInt(1 + lootingModifier);
         itemsToDrop.stackSize *= count;
         entityDropItem(itemsToDrop, 0);
 
