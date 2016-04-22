@@ -26,8 +26,9 @@ import java.util.List;
 public class EntityChickensChicken extends EntityChicken {
 
     public static final int TYPE_ID = 19;
-    public static final int FOOD_LEVEL_ID = 20;
     public static final String TYPE_NBT = "Type";
+    public static final int FOOD_LEVEL_ID = 20;
+    public static final String FOOD_LEVEL_NBT = "FoodLevel";
     public int foodTimer = 80;
 
     public EntityChickensChicken(World worldIn) {
@@ -42,10 +43,6 @@ public class EntityChickensChicken extends EntityChicken {
 
     private ChickensRegistryItem getChickenDescription() {
         return ChickensRegistry.getByType(getChickenTypeInternal());
-    }
-
-    public int getTier() {
-        return getChickenDescription().getTier();
     }
 
     @Override
@@ -78,13 +75,19 @@ public class EntityChickensChicken extends EntityChicken {
         if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey()) {
             if (--this.timeUntilNextEgg <= 1) {
                 ChickensRegistryItem chickenDescription = getChickenDescription();
-                ItemStack itemToLay = chickenDescription.createLayItem();
+                int foodRequiredToLay = chickenDescription.getTier();
+                int foodLevel = getFoodLevel();
+                if (foodLevel >= foodRequiredToLay) {
+                    ItemStack itemToLay = chickenDescription.createLayItem();
 
-                itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
+                    itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
+                    if (itemToLay != null) {
+                        this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                        this.entityDropItem(chickenDescription.createLayItem(), 0);
+                    }
 
-                if (itemToLay != null) {
-                    this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-                    this.entityDropItem(chickenDescription.createLayItem(), 0);
+                    foodLevel -= foodRequiredToLay;
+                    setFoodLevel(foodLevel);
                 }
 
                 resetTimeUntilNextEgg();
@@ -219,12 +222,14 @@ public class EntityChickensChicken extends EntityChicken {
     public void writeToNBT(NBTTagCompound tagCompund) {
         super.writeToNBT(tagCompund);
         tagCompund.setInteger(TYPE_NBT, getChickenTypeInternal());
+        tagCompund.setInteger(FOOD_LEVEL_NBT, getFoodLevel());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompund) {
         super.readFromNBT(tagCompund);
         setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
+        setFoodLevel(tagCompund.getInteger(FOOD_LEVEL_NBT));
     }
 
     @Override
