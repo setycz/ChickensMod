@@ -29,7 +29,8 @@ public class EntityChickensChicken extends EntityChicken {
     public static final String TYPE_NBT = "Type";
     public static final int FOOD_LEVEL_ID = 20;
     public static final String FOOD_LEVEL_NBT = "FoodLevel";
-    public int foodTimer = 80;
+    public static final int FOOD_TIMER_MAX = 1200;
+    public int foodTimer = FOOD_TIMER_MAX;
 
     public EntityChickensChicken(World worldIn) {
         super(worldIn);
@@ -101,7 +102,7 @@ public class EntityChickensChicken extends EntityChicken {
                     attackEntityFrom(new DamageSource("Hunger"), 1);
                 }
 
-                foodTimer = 80;
+                foodTimer = FOOD_TIMER_MAX;
             }
         }
 
@@ -183,6 +184,10 @@ public class EntityChickensChicken extends EntityChicken {
     private SpawnType getSpawnType() {
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
         return ChickensRegistry.getSpawnType(biome);
+    }
+
+    public int getTier() {
+        return getChickenDescription().getTier();
     }
 
     private static class GroupData implements IEntityLivingData {
