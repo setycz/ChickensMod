@@ -37,6 +37,9 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         EntityChickensChicken chicken = (EntityChickensChicken)entity;
+
+        currenttip.add(StatCollector.translateToLocalFormatted("entity.ChickensChicken.hunger", chicken.getFoodLevel(), chicken.getMaxFoodLevel()));
+
         currenttip.add(StatCollector.translateToLocalFormatted("entity.ChickensChicken.tier", chicken.getTier()));
         return currenttip;
     }

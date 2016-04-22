@@ -45,6 +45,7 @@ entity.GlassChicken.name=Glass Chicken
 entity.LeatherChicken.name=Leather Chicken
 
 entity.ChickensChicken.tier=Tier: %1$s
+entity.ChickensChicken.hunger=Hunger: %1$s/%2$s
 gui.laying=Laying Egg
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Chicken Breeding

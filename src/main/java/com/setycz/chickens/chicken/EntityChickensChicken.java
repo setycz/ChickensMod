@@ -7,14 +7,13 @@ import com.setycz.chickens.henhouse.TileEntityHenhouse;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -27,10 +26,13 @@ import java.util.List;
 public class EntityChickensChicken extends EntityChicken {
 
     public static final int TYPE_ID = 19;
+    public static final int FOOD_LEVEL_ID = 20;
     public static final String TYPE_NBT = "Type";
+    public int foodTimer = 80;
 
     public EntityChickensChicken(World worldIn) {
         super(worldIn);
+        this.tasks.addTask(3, new EntityAIHungry(this));
     }
 
     public ResourceLocation getTexture() {
@@ -73,20 +75,69 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public void onLivingUpdate() {
-        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 1) {
-            ChickensRegistryItem chickenDescription = getChickenDescription();
-            ItemStack itemToLay = chickenDescription.createLayItem();
+        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey()) {
+            if (--this.timeUntilNextEgg <= 1) {
+                ChickensRegistryItem chickenDescription = getChickenDescription();
+                ItemStack itemToLay = chickenDescription.createLayItem();
 
-            itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
+                itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3(posX, posY, posZ));
 
-            if (itemToLay != null) {
-                this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-                this.entityDropItem(chickenDescription.createLayItem(), 0);
+                if (itemToLay != null) {
+                    this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                    this.entityDropItem(chickenDescription.createLayItem(), 0);
+                }
+
+                resetTimeUntilNextEgg();
             }
 
-            resetTimeUntilNextEgg();
+            if (--foodTimer <= 0) {
+                int foodLevel = getFoodLevel();
+                if (foodLevel > 1) {
+                    setFoodLevel(foodLevel - 1);
+                } else {
+                    attackEntityFrom(new DamageSource("Hunger"), 1);
+                }
+
+                foodTimer = 80;
+            }
         }
+
         super.onLivingUpdate();
+    }
+
+    public int getFoodLevel() {
+        return dataWatcher.getWatchableObjectInt(FOOD_LEVEL_ID);
+    }
+
+    public void setFoodLevel(int level) {
+        dataWatcher.updateObject(FOOD_LEVEL_ID, level);
+    }
+
+    public int getMaxFoodLevel() {
+        return 20;
+    }
+
+    public boolean isHungry() {
+        return getFoodLevel() * 100 / getMaxFoodLevel() <= 50;
+    }
+
+    public void consume(EntityItem entityItem) {
+        if (!worldObj.isRemote) {
+            ItemStack itemStackToConsume = entityItem.getEntityItem();
+            int itemHungerAmount = ((ItemFood) itemStackToConsume.getItem()).getHealAmount(itemStackToConsume);
+
+            int currentFoodLevel = getFoodLevel();
+            int canEat = getMaxFoodLevel() - currentFoodLevel;
+            int canEatItems = (int)Math.ceil(canEat / (double)itemHungerAmount);
+            int willConsumeItems = Math.min(canEatItems, itemStackToConsume.stackSize);
+
+            int newFoodLevel = Math.min(getMaxFoodLevel(), currentFoodLevel + willConsumeItems*itemHungerAmount);
+            setFoodLevel(newFoodLevel);
+            itemStackToConsume.stackSize -= willConsumeItems;
+            if (itemStackToConsume.stackSize == 0) {
+                worldObj.removeEntity(entityItem);
+            }
+        }
     }
 
     private void resetTimeUntilNextEgg() {
@@ -161,6 +212,7 @@ public class EntityChickensChicken extends EntityChicken {
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.addObject(TYPE_ID, 0);
+        this.dataWatcher.addObject(FOOD_LEVEL_ID, getMaxFoodLevel());
     }
 
     @Override
