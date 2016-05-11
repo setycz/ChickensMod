@@ -137,7 +137,14 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public boolean canConsume(EntityItem entityItem) {
+        // chickens won't eat items they lay
+        ChickensRegistryItem chickenDescription = getChickenDescription();
         ItemStack itemStackToConsume = entityItem.getEntityItem();
+        if (chickenDescription.isItemEqual(itemStackToConsume)) {
+            return false;
+        }
+
+        // chickens won't overeat
         int itemHungerAmount = ((ItemFood) itemStackToConsume.getItem()).getHealAmount(itemStackToConsume);
         int currentFoodLevel = getFoodLevel();
         int canEat = getMaxFoodLevel() - currentFoodLevel;

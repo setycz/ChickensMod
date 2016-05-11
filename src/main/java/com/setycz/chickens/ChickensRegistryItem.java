@@ -161,4 +161,8 @@ public class ChickensRegistryItem {
     public boolean canStarveToDeath() {
         return true;
     }
+
+    public boolean isItemEqual(ItemStack itemStack) {
+        return layItem.isItemEqual(itemStack);
+    }
 }
