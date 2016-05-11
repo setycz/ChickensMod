@@ -157,4 +157,8 @@ public class ChickensRegistryItem {
         this.parent1 = parent1;
         this.parent2 = parent2;
     }
+
+    public boolean canStarveToDeath() {
+        return true;
+    }
 }

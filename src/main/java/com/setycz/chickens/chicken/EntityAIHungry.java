@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class EntityAIHungry extends EntityAIBase {
 
+    public static final double SEEK_RANGE = 10.0;
     private final EntityChickensChicken chicken;
     private EntityItem temptingItem;
 
@@ -24,27 +25,38 @@ public class EntityAIHungry extends EntityAIBase {
         if (!chicken.isHungry()) {
             return false;
         }
-        AxisAlignedBB range = new AxisAlignedBB(chicken.posX - 10.0, chicken.posY - 10.0, chicken.posZ - 10.0, chicken.posX + 10.0, chicken.posY + 10.0, chicken.posZ + 10.0);
+        temptingItem = findSomeFood();
+        return temptingItem != null;
+    }
+
+    private EntityItem findSomeFood() {
+        AxisAlignedBB range = new AxisAlignedBB(chicken.posX - SEEK_RANGE, chicken.posY - SEEK_RANGE, chicken.posZ - SEEK_RANGE, chicken.posX + SEEK_RANGE, chicken.posY + SEEK_RANGE, chicken.posZ + SEEK_RANGE);
         List<EntityItem> items = chicken.worldObj.getEntitiesWithinAABB(EntityItem.class, range);
         for (EntityItem item : items) {
-            if (item.getEntityItem().getItem() instanceof ItemFood) {
-                temptingItem = item;
-                return true;
+            if (item.isEntityAlive() && item.getEntityItem().getItem() instanceof ItemFood) {
+                if (chicken.canConsume(item)) {
+                    return item;
+                }
             }
         }
-        return false;
+        return null;
     }
 
     @Override
     public boolean continueExecuting() {
-        return temptingItem != null && temptingItem.isEntityAlive() && chicken.isHungry() && super.continueExecuting();
+        return temptingItem != null && temptingItem.isEntityAlive() && !chicken.isFed();
     }
 
     @Override
     public void updateTask() {
         if (chicken.getDistanceSqToEntity(temptingItem) <= 1.0) {
             chicken.consume(temptingItem);
-            temptingItem = null;
+            if (!chicken.isFed()) {
+                temptingItem = findSomeFood();
+            }
+            else {
+                temptingItem = null;
+            }
         }
         else {
             chicken.getNavigator().tryMoveToEntityLiving(temptingItem, 1.5);

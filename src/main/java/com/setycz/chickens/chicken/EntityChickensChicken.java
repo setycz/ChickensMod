@@ -27,9 +27,13 @@ public class EntityChickensChicken extends EntityChicken {
 
     public static final int TYPE_ID = 19;
     public static final String TYPE_NBT = "Type";
+
     public static final int FOOD_LEVEL_ID = 20;
     public static final String FOOD_LEVEL_NBT = "FoodLevel";
-    public static final int FOOD_TIMER_MAX = 1200;
+
+    public static final int FOOD_TIMER_MAX = 12000;
+    public static final int FOOD_TIMER_STARVING = 1200;
+    public static final String FOOD_TIMER_NBT ="FoodTimer";
     public int foodTimer = FOOD_TIMER_MAX;
 
     public EntityChickensChicken(World worldIn) {
@@ -74,8 +78,9 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey()) {
+            ChickensRegistryItem chickenDescription = getChickenDescription();
+
             if (--this.timeUntilNextEgg <= 1) {
-                ChickensRegistryItem chickenDescription = getChickenDescription();
                 int foodRequiredToLay = chickenDescription.getTier();
                 int foodLevel = getFoodLevel();
                 if (foodLevel >= foodRequiredToLay) {
@@ -98,11 +103,13 @@ public class EntityChickensChicken extends EntityChicken {
                 int foodLevel = getFoodLevel();
                 if (foodLevel > 1) {
                     setFoodLevel(foodLevel - 1);
+                    foodTimer = FOOD_TIMER_MAX;
                 } else {
-                    attackEntityFrom(new DamageSource("Hunger"), 1);
+                    if (chickenDescription.canStarveToDeath()) {
+                        attackEntityFrom(new DamageSource("Hunger"), 1);
+                    }
+                    foodTimer = FOOD_TIMER_STARVING;
                 }
-
-                foodTimer = FOOD_TIMER_MAX;
             }
         }
 
@@ -122,25 +129,39 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     public boolean isHungry() {
-        return getFoodLevel() * 100 / getMaxFoodLevel() <= 50;
+        return getFoodLevel() * 100 / getMaxFoodLevel() <= 25;
+    }
+
+    public boolean isFed() {
+        return getFoodLevel() * 100 / getMaxFoodLevel() >= 75;
+    }
+
+    public boolean canConsume(EntityItem entityItem) {
+        ItemStack itemStackToConsume = entityItem.getEntityItem();
+        int itemHungerAmount = ((ItemFood) itemStackToConsume.getItem()).getHealAmount(itemStackToConsume);
+        int currentFoodLevel = getFoodLevel();
+        int canEat = getMaxFoodLevel() - currentFoodLevel;
+        return canEat >= itemHungerAmount;
     }
 
     public void consume(EntityItem entityItem) {
-        if (!worldObj.isRemote) {
-            ItemStack itemStackToConsume = entityItem.getEntityItem();
-            int itemHungerAmount = ((ItemFood) itemStackToConsume.getItem()).getHealAmount(itemStackToConsume);
+        if (worldObj.isRemote) {
+            return;
+        }
 
-            int currentFoodLevel = getFoodLevel();
-            int canEat = getMaxFoodLevel() - currentFoodLevel;
-            int canEatItems = (int)Math.ceil(canEat / (double)itemHungerAmount);
-            int willConsumeItems = Math.min(canEatItems, itemStackToConsume.stackSize);
+        ItemStack itemStackToConsume = entityItem.getEntityItem();
+        int itemHungerAmount = ((ItemFood) itemStackToConsume.getItem()).getHealAmount(itemStackToConsume);
 
-            int newFoodLevel = Math.min(getMaxFoodLevel(), currentFoodLevel + willConsumeItems*itemHungerAmount);
-            setFoodLevel(newFoodLevel);
-            itemStackToConsume.stackSize -= willConsumeItems;
-            if (itemStackToConsume.stackSize == 0) {
-                worldObj.removeEntity(entityItem);
-            }
+        int currentFoodLevel = getFoodLevel();
+        int canEat = getMaxFoodLevel() - currentFoodLevel;
+        int canEatItems = (int)Math.ceil(canEat / (double)itemHungerAmount);
+        int willConsumeItems = Math.min(canEatItems, itemStackToConsume.stackSize);
+
+        int newFoodLevel = Math.min(getMaxFoodLevel(), currentFoodLevel + willConsumeItems*itemHungerAmount);
+        setFoodLevel(newFoodLevel);
+        itemStackToConsume.stackSize -= willConsumeItems;
+        if (itemStackToConsume.stackSize == 0) {
+            worldObj.removeEntity(entityItem);
         }
     }
 
@@ -228,6 +249,7 @@ public class EntityChickensChicken extends EntityChicken {
         super.writeToNBT(tagCompund);
         tagCompund.setInteger(TYPE_NBT, getChickenTypeInternal());
         tagCompund.setInteger(FOOD_LEVEL_NBT, getFoodLevel());
+        tagCompund.setInteger(FOOD_TIMER_NBT, foodTimer);
     }
 
     @Override
@@ -235,6 +257,7 @@ public class EntityChickensChicken extends EntityChicken {
         super.readFromNBT(tagCompund);
         setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
         setFoodLevel(tagCompund.getInteger(FOOD_LEVEL_NBT));
+        foodTimer = tagCompund.getInteger(FOOD_TIMER_NBT);
     }
 
     @Override
