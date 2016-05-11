@@ -127,6 +127,9 @@ public class ChickensMod {
             boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
             chicken.setEnabled(enabled);
 
+            boolean canStarveToDeath = configuration.getBoolean("canStarveToDeath", chicken.getEntityName(), chicken.canStarveToDeath(), "Can chicken starve to death?");
+            chicken.setCanStarveToDeath(canStarveToDeath);
+
             float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
             chicken.setLayCoefficient(layCoefficient);
 

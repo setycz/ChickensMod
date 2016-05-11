@@ -20,6 +20,7 @@ public class ChickensRegistryItem {
     private SpawnType spawnType;
     private boolean isEnabled = true;
     private float layCoefficient = 1.0f;
+    private boolean canStarveToDeath = true;
 
     public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
@@ -158,8 +159,12 @@ public class ChickensRegistryItem {
         this.parent2 = parent2;
     }
 
+    public void setCanStarveToDeath(boolean value) {
+        canStarveToDeath = value;
+    }
+
     public boolean canStarveToDeath() {
-        return true;
+        return canStarveToDeath;
     }
 
     public boolean isItemEqual(ItemStack itemStack) {
