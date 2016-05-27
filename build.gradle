@@ -32,7 +32,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20160312"
+    mappings = "snapshot_20160518"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 	
 	replace '@VERSION@', project.version
@@ -68,8 +68,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    deobfCompile "mezz.jei:jei_1.9:3.3.3.197"
-    compile "mcp.mobius.waila:Waila:1.7.0-B2_1.9"
+    deobfCompile "mezz.jei:jei_1.9.4-3.4.0.204"
+    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
 }
 
 processResources
@@ -98,7 +98,7 @@ curseforge {
 		id = curse_project_id
 		changelog = file('changelog.txt')
 		releaseType = project.releaseType
-		addGameVersion '1.9'
+		addGameVersion '1.9.4'
 		relations {
 			optionalLibrary 'waila'
 			optionalLibrary 'just-enough-items-jei'
