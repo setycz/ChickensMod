@@ -22,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.List;
 
@@ -84,7 +84,7 @@ public class EntityChickensChicken extends EntityChicken {
             itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
 
             if (itemToLay != null) {
-                this.playSound(SoundEvents.entity_chicken_egg, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                 this.entityDropItem(chickenDescription.createLayItem(), 0);
             }
 
@@ -103,8 +103,8 @@ public class EntityChickensChicken extends EntityChicken {
     public boolean getCanSpawnHere() {
         boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
-        BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
-        return anyInNether && biome == Biomes.hell || anyInOverworld && super.getCanSpawnHere();
+        Biome biome = worldObj.getBiomeGenForCoords(getPosition());
+        return anyInNether && biome == Biomes.HELL || anyInOverworld && super.getCanSpawnHere();
     }
 
     @Override
@@ -133,7 +133,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private SpawnType getSpawnType() {
-        BiomeGenBase biome = worldObj.getBiomeGenForCoords(getPosition());
+        Biome biome = worldObj.getBiomeGenForCoords(getPosition());
         return ChickensRegistry.getSpawnType(biome);
     }
 
@@ -156,28 +156,28 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private void setChickenTypeInternal(int type) {
-        this.dataWatcher.set(CHICKEN_TYPE, type);
+        this.dataManager.set(CHICKEN_TYPE, type);
     }
 
     private int getChickenTypeInternal() {
-        return this.dataWatcher.get(CHICKEN_TYPE);
+        return this.dataManager.get(CHICKEN_TYPE);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataWatcher.register(CHICKEN_TYPE, 0);
+        dataManager.register(CHICKEN_TYPE, 0);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompund) {
-        super.writeToNBT(tagCompund);
+    public void writeEntityToNBT(NBTTagCompound tagCompund) {
+        super.writeEntityToNBT(tagCompund);
         tagCompund.setInteger(TYPE_NBT, getChickenTypeInternal());
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompund) {
-        super.readFromNBT(tagCompund);
+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+        super.readEntityFromNBT(tagCompund);
         setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
     }
 
@@ -208,10 +208,10 @@ public class EntityChickensChicken extends EntityChicken {
         entityDropItem(itemsToDrop, 0);
 
         if (this.isBurning()) {
-            this.dropItem(Items.cooked_chicken, 1);
+            this.dropItem(Items.COOKED_CHICKEN, 1);
         }
         else {
-            this.dropItem(Items.chicken, 1);
+            this.dropItem(Items.CHICKEN, 1);
         }
     }
 }

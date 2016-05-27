@@ -25,8 +25,8 @@ public class RenderChickensChicken extends RenderLiving<EntityChickensChicken> {
 
     @Override
     protected float handleRotationFloat(EntityChickensChicken livingBase, float partialTicks) {
-        float f = livingBase.field_70888_h + (livingBase.wingRotation - livingBase.field_70888_h) * partialTicks;
-        float f1 = livingBase.field_70884_g + (livingBase.destPos - livingBase.field_70884_g) * partialTicks;
+        float f = livingBase.oFlap + (livingBase.wingRotation - livingBase.oFlap) * partialTicks;
+        float f1 = livingBase.oFlapSpeed + (livingBase.destPos - livingBase.oFlapSpeed) * partialTicks;
         return (MathHelper.sin(f) + 1.0F) * f1;
     }
 }

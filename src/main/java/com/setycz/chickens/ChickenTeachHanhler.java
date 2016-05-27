@@ -16,7 +16,7 @@ public class ChickenTeachHanhler {
     @SubscribeEvent
     public void handleInteraction(PlayerInteractEvent.EntityInteract event) {
         ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
-        if (item == null || item.getItem() != Items.book) {
+        if (item == null || item.getItem() != Items.BOOK) {
             return;
         }
         if (!(event.getTarget().getClass() == EntityChicken.class)) {

@@ -1,6 +1,5 @@
 package com.setycz.chickens.jei.drop;
 
-import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 

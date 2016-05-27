@@ -26,23 +26,24 @@ public class EntityColoredEgg extends EntityEgg {
     }
 
     public void setChickenType(int type) {
-        this.dataWatcher.set(CHICKEN_TYPE, type);
+        this.dataManager.set(CHICKEN_TYPE, type);
     }
 
     private int getChickenType() {
-        return this.dataWatcher.get(CHICKEN_TYPE);
+        return this.dataManager.get(CHICKEN_TYPE);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.register(CHICKEN_TYPE, 0);
+        this.dataManager.register(CHICKEN_TYPE, 0);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompund) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompund) {
         super.writeToNBT(tagCompund);
         tagCompund.setInteger(TYPE_NBT, getChickenType());
+        return tagCompund;
     }
 
     @Override
@@ -79,7 +80,7 @@ public class EntityColoredEgg extends EntityEgg {
 
         for (int k = 0; k < 8; ++k)
         {
-            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, new int[] {Item.getIdFromItem(Items.egg)});
+            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, new int[] {Item.getIdFromItem(Items.EGG)});
         }
 
         if (!this.worldObj.isRemote)

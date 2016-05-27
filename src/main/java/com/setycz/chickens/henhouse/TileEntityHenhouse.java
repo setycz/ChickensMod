@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -149,7 +149,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
 
             if (energy <= 0) {
                 if (slots[dirtSlotIndex] == null) {
-                    slots[dirtSlotIndex] = new ItemStack(Blocks.dirt, 1);
+                    slots[dirtSlotIndex] = new ItemStack(Blocks.DIRT, 1);
                 }
                 else {
                     slots[dirtSlotIndex].stackSize++;
@@ -179,7 +179,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         int potential = energy;
 
         ItemStack hayBaleStack = slots[hayBaleSlotIndex];
-        if (hayBaleStack != null && hayBaleStack.getItem() == Item.getItemFromBlock(Blocks.hay_block)) {
+        if (hayBaleStack != null && hayBaleStack.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK)) {
             potential += hayBaleStack.stackSize * hayBaleEnergy;
         }
 
@@ -191,14 +191,16 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         if (dirtStack == null) {
             return getInventoryStackLimit() * hayBaleEnergy;
         }
-        if (dirtStack.getItem() != Item.getItemFromBlock(Blocks.dirt)) {
+        if (dirtStack.getItem() != Item.getItemFromBlock(Blocks.DIRT)) {
             return 0;
         }
         return (getInventoryStackLimit() - dirtStack.stackSize) * hayBaleEnergy;
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+
         if (hasCustomName()) {
             compound.setString("customName", customName);
         }
@@ -219,7 +221,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
 
         compound.setInteger("energy", energy);
 
-        super.writeToNBT(compound);
+        return compound;
     }
 
     @Override
@@ -300,7 +302,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         if (index == hayBaleSlotIndex) {
-            return stack.getItem() == Item.getItemFromBlock(Blocks.hay_block);
+            return stack.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK);
         }
         if (index == dirtSlotIndex) {
             return false;

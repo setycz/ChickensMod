@@ -15,6 +15,6 @@ public class ChickensTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return Items.chicken;
+        return Items.CHICKEN;
     }
 }

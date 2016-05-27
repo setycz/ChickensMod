@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,8 +19,8 @@ public class ChickenNetherPopulateHandler {
     @SubscribeEvent
     public void populateChunk(PopulateChunkEvent.Populate event) {
         BlockPos chunkCentrePos = new BlockPos(event.getChunkX() * 16 + 8, 0, event.getChunkZ() * 16 + 8);
-        BiomeGenBase biome = event.getWorld().getBiomeGenForCoords(chunkCentrePos);
-        if (biome != Biomes.hell) {
+        Biome biome = event.getWorld().getBiomeGenForCoords(chunkCentrePos);
+        if (biome != Biomes.HELL) {
             return;
         }
 

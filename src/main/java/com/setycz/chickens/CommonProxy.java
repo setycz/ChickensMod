@@ -16,7 +16,7 @@ public class CommonProxy {
         if (chicken.isDye() && chicken.isEnabled()) {
             GameRegistry.addShapelessRecipe(
                     new ItemStack(ChickensMod.coloredEgg, 1, chicken.getDyeMetadata()),
-                    new ItemStack(Items.egg), new ItemStack(Items.dye, 1, chicken.getDyeMetadata())
+                    new ItemStack(Items.EGG), new ItemStack(Items.DYE, 1, chicken.getDyeMetadata())
             );
         }
     }
