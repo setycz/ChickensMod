@@ -12,14 +12,13 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
+
+plugins {
+	id "com.matthewprenger.cursegradle" version "1.0.7"
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
 version = mcversion + "-" + modversion
 group= "com.setycz.chickens" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "chickens"
@@ -91,4 +90,18 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+curseforge {
+	apiKey = curse_token
+	project {
+		id = curse_project_id
+		changelog = file('changelog.txt')
+		releaseType = project.releaseType
+		addGameVersion '1.9'
+		relations {
+			optionalLibrary 'waila'
+			optionalLibrary 'just-enough-items-jei'
+		}
+	}
 }
