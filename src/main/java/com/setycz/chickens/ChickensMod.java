@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -47,7 +48,7 @@ import java.util.List;
 @Mod(modid = ChickensMod.MODID,
         version = ChickensMod.VERSION,
         acceptedMinecraftVersions = "[1.9]",
-        dependencies = "required-after:Forge@[@FORGEVERSION@,);")
+        dependencies = "required-after:Forge@[12.16.1.1887,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
     public static final String VERSION = "@VERSION@";
@@ -62,16 +63,16 @@ public class ChickensMod {
 
     private int chickenEntityId = 0;
 
-    public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(tab);
-    public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg").setCreativeTab(tab);
-    public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg").setCreativeTab(tab);
+    public static final Item spawnEgg = new ItemSpawnEgg().setRegistryName("spawn_egg").setUnlocalizedName("spawn_egg").setCreativeTab(tab);
+    public static final Item coloredEgg = new ItemColoredEgg().setRegistryName("colored_egg").setUnlocalizedName("colored_egg").setCreativeTab(tab);
+    public static final Item liquidEgg = new ItemLiquidEgg().setRegistryName("liquid_egg").setUnlocalizedName("liquid_egg").setCreativeTab(tab);
 
-    public static final Block henhouse = new BlockHenhouse().setUnlocalizedName("henhouse").setCreativeTab(tab);
-    public static final Block henhouse_acacia = new BlockHenhouse().setUnlocalizedName("henhouse_acacia").setCreativeTab(tab);
-    public static final Block henhouse_birch = new BlockHenhouse().setUnlocalizedName("henhouse_birch").setCreativeTab(tab);
-    public static final Block henhouse_dark_oak = new BlockHenhouse().setUnlocalizedName("henhouse_dark_oak").setCreativeTab(tab);
-    public static final Block henhouse_jungle = new BlockHenhouse().setUnlocalizedName("henhouse_jungle").setCreativeTab(tab);
-    public static final Block henhouse_spruce = new BlockHenhouse().setUnlocalizedName("henhouse_spruce").setCreativeTab(tab);
+    public static final Block henhouse = new BlockHenhouse().setRegistryName("henhouse").setUnlocalizedName("henhouse").setCreativeTab(tab);
+    public static final Block henhouse_acacia = new BlockHenhouse().setRegistryName("henhouse_acacia").setUnlocalizedName("henhouse_acacia").setCreativeTab(tab);
+    public static final Block henhouse_birch = new BlockHenhouse().setRegistryName("henhouse_birch").setUnlocalizedName("henhouse_birch").setCreativeTab(tab);
+    public static final Block henhouse_dark_oak = new BlockHenhouse().setRegistryName("henhouse_dark_oak").setUnlocalizedName("henhouse_dark_oak").setCreativeTab(tab);
+    public static final Block henhouse_jungle = new BlockHenhouse().setRegistryName("henhouse_jungle").setUnlocalizedName("henhouse_jungle").setCreativeTab(tab);
+    public static final Block henhouse_spruce = new BlockHenhouse().setRegistryName("henhouse_spruce").setUnlocalizedName("henhouse_spruce").setCreativeTab(tab);
 
     public static TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
@@ -84,18 +85,18 @@ public class ChickensMod {
 
         EntityRegistry.registerModEntity(EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
 
-        GameRegistry.registerItem(coloredEgg, getItemName(coloredEgg));
-        GameRegistry.registerItem(spawnEgg, getItemName(spawnEgg));
+        GameRegistry.register(coloredEgg);
+        GameRegistry.register(spawnEgg);
 
-        GameRegistry.registerItem(liquidEgg, getItemName(liquidEgg));
+        GameRegistry.register(liquidEgg);
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
-        GameRegistry.registerBlock(henhouse, getBlockName(henhouse));
-        GameRegistry.registerBlock(henhouse_acacia, getBlockName(henhouse_acacia));
-        GameRegistry.registerBlock(henhouse_birch, getBlockName(henhouse_birch));
-        GameRegistry.registerBlock(henhouse_dark_oak, getBlockName(henhouse_dark_oak));
-        GameRegistry.registerBlock(henhouse_jungle, getBlockName(henhouse_jungle));
-        GameRegistry.registerBlock(henhouse_spruce, getBlockName(henhouse_spruce));
+        registerBlock(henhouse);
+        registerBlock(henhouse_acacia);
+        registerBlock(henhouse_birch);
+        registerBlock(henhouse_dark_oak);
+        registerBlock(henhouse_jungle);
+        registerBlock(henhouse_spruce);
 
         registerLiquidEggs();
         loadConfiguration(event.getSuggestedConfigurationFile());
@@ -108,6 +109,11 @@ public class ChickensMod {
         }
 
         dumpChickens(ChickensRegistry.getItems());
+    }
+
+    private void registerBlock(Block block) {
+        GameRegistry.register(block);
+        GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
     }
 
     private List<String> getChickenNames(Collection<ChickensRegistryItem> chickens) {
@@ -175,7 +181,7 @@ public class ChickensMod {
         int itemMeta = configuration.getInt(prefix + "ItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid/dropped.");
 
         ResourceLocation itemResourceLocation = new ResourceLocation(itemName);
-        Item item = GameRegistry.findItem(itemResourceLocation.getResourceDomain(), itemResourceLocation.getResourcePath());
+        Item item = Item.itemRegistry.getObject(itemResourceLocation);
         if (item == null) {
             throw new RuntimeException("Cannot find egg item with name: " + itemName);
         }

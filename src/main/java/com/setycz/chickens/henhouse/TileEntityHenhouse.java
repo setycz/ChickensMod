@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -136,6 +136,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     private void consumeEnergy(int amount) {
         while (amount > 0) {
             if (energy == 0) {
+                assert slots[hayBaleSlotIndex] != null;
                 slots[hayBaleSlotIndex].stackSize--;
                 if (slots[hayBaleSlotIndex].stackSize <= 0) {
                     slots[hayBaleSlotIndex] = null;
@@ -302,6 +303,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         if (index == hayBaleSlotIndex) {
             return stack.getItem() == Item.getItemFromBlock(Blocks.hay_block);
         }
+        //noinspection RedundantIfStatement
         if (index == dirtSlotIndex) {
             return false;
         }
