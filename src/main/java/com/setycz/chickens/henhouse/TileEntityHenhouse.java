@@ -136,6 +136,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     private void consumeEnergy(int amount) {
         while (amount > 0) {
             if (energy == 0) {
+                assert slots[hayBaleSlotIndex] != null;
                 slots[hayBaleSlotIndex].stackSize--;
                 if (slots[hayBaleSlotIndex].stackSize <= 0) {
                     slots[hayBaleSlotIndex] = null;
@@ -304,6 +305,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         if (index == hayBaleSlotIndex) {
             return stack.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK);
         }
+        //noinspection RedundantIfStatement
         if (index == dirtSlotIndex) {
             return false;
         }

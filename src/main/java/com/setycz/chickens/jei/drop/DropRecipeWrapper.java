@@ -3,6 +3,7 @@ package com.setycz.chickens.jei.drop;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class DropRecipeWrapper extends BlankRecipeWrapper{
     }
 
     @Override
+    @Nonnull
     public List getInputs() {
         return chicken;
     }
 
     @Override
+    @Nonnull
     public List getOutputs() {
         return egg;
     }

@@ -51,16 +51,16 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource{
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, false);
         if (raytraceresult == null) {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else {
             BlockPos blockpos = raytraceresult.getBlockPos();
             if (!worldIn.isBlockModifiable(playerIn, blockpos))
             {
-                return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             }
             else {
                 boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
@@ -69,16 +69,16 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource{
                 Block liquid = LiquidEggRegistry.findById(itemStackIn.getMetadata()).getLiquid();
                 if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
                 else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1, liquid))
                 {
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    return !playerIn.capabilities.isCreativeMode ? new ActionResult(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.stackSize - 1, itemStackIn.getMetadata())) : new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+                    return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.stackSize - 1, itemStackIn.getMetadata())) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
                 }
                 else
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
             }
         }
@@ -98,7 +98,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource{
                 worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
 
                 for (int l = 0; l < 8; ++l) {
-                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D);
                 }
             } else {
                 if (!worldIn.isRemote && flag && !material.isLiquid()) {
