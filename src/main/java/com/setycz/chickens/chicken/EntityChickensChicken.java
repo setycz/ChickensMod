@@ -103,7 +103,7 @@ public class EntityChickensChicken extends EntityChicken {
     public boolean getCanSpawnHere() {
         boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
-        Biome biome = worldObj.getBiomeGenForCoords(getPosition());
+        Biome biome = worldObj.getBiomeForCoordsBody(getPosition());
         return anyInNether && biome == Biomes.HELL || anyInOverworld && super.getCanSpawnHere();
     }
 
@@ -133,7 +133,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private SpawnType getSpawnType() {
-        Biome biome = worldObj.getBiomeGenForCoords(getPosition());
+        Biome biome = worldObj.getBiomeForCoordsBody(getPosition());
         return ChickensRegistry.getSpawnType(biome);
     }
 

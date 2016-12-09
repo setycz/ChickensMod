@@ -1,5 +1,4 @@
 
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -18,10 +17,16 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 version = mcversion + "-" + modversion
 group= "com.setycz.chickens" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "chickens"
+
+sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.6"
+}
 
 minecraft {
     version = mcversion + "-" + forgeversion + forgeversion_suffix
@@ -32,7 +37,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20161111"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 	
 	replace '@VERSION@', project.version
