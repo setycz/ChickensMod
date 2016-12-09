@@ -1,1 +1,2 @@
-updated to 1.9.4 ;]
+Fix linux and windows log write - thanks tgstyle
+Fixed Chicken Missing Chins - thanks Mattabase!
