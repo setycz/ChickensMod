@@ -232,7 +232,7 @@ public class ChickensMod {
 
     private void dumpChickens(Collection<ChickensRegistryItem> items) {
         try {
-            FileWriter file = new FileWriter("logs\\chickens.gml");
+            FileWriter file = new FileWriter("logs/chickens.gml");
             file.write("graph [\n");
             file.write("\tdirected 1\n");
             for (ChickensRegistryItem item : items) {
