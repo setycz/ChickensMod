@@ -13,6 +13,7 @@ import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import com.setycz.chickens.jei.laying.LayingRecipeHandler;
 import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -23,6 +24,16 @@ import java.util.List;
  */
 @JEIPlugin
 public class ChickensJeiPlugin implements IModPlugin {
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
+
+    }
 
     @Override
     public void register(IModRegistry registry) {

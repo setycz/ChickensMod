@@ -1,33 +1,24 @@
 package com.setycz.chickens.jei.drop;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by setyc on 21.02.2016.
  */
 public class DropRecipeWrapper extends BlankRecipeWrapper {
-    private final List<ItemStack> chicken;
-    private final List<ItemStack> egg;
+    private final ItemStack chicken;
+    private final ItemStack egg;
 
     public DropRecipeWrapper(ItemStack chicken, ItemStack drop) {
-        this.chicken = Collections.singletonList(chicken);
-        this.egg = Collections.singletonList(drop);
+        this.chicken = chicken;
+        this.egg = drop;
     }
 
     @Override
-    @Nonnull
-    public List getInputs() {
-        return chicken;
-    }
-
-    @Override
-    @Nonnull
-    public List getOutputs() {
-        return egg;
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInput(ItemStack.class, chicken);
+        ingredients.setOutput(ItemStack.class, egg);
     }
 }

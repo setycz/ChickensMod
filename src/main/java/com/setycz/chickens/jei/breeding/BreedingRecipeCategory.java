@@ -3,13 +3,14 @@ package com.setycz.chickens.jei.breeding;
 import com.setycz.chickens.ChickensMod;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by setyc on 21.02.2016.
@@ -31,48 +32,58 @@ public class BreedingRecipeCategory implements IRecipeCategory {
         arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
 
-    @Nonnull
     @Override
     public String getUid() {
         return UID;
     }
 
-    @Nonnull
     @Override
     public String getTitle() {
         return title;
     }
 
-    @Nonnull
     @Override
     public IDrawable getBackground() {
         return background;
     }
 
+    @Nullable
     @Override
-    public void drawExtras(Minecraft minecraft) {
-
+    public IDrawable getIcon() {
+        return null;
     }
 
     @Override
-    public void drawAnimations(Minecraft minecraft) {
+    public void drawExtras(Minecraft minecraft) {
         arrow.draw(minecraft, 37, 5);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+    @Deprecated
+    public void drawAnimations(Minecraft minecraft) {
+
+    }
+
+    @Override
+    @Deprecated
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
         IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
         int parent1Slot = 0;
         guiItemStacks.init(parent1Slot, true, 10, 15);
-        guiItemStacks.setFromRecipe(parent1Slot, recipeWrapper.getInputs().get(0));
+        guiItemStacks.set(ingredients);
 
         int parent2Slot = 1;
         guiItemStacks.init(parent2Slot, true, 53, 15);
-        guiItemStacks.setFromRecipe(parent2Slot, recipeWrapper.getInputs().get(1));
+        guiItemStacks.set(ingredients);
 
         int childrenSlot = 2;
         guiItemStacks.init(childrenSlot, false, 33, 30);
-        guiItemStacks.setFromRecipe(childrenSlot, recipeWrapper.getOutputs());
+        guiItemStacks.set(ingredients);
     }
 }
