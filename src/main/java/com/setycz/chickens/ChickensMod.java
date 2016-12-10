@@ -147,8 +147,7 @@ public class ChickensMod {
             ChickensRegistryItem parent2 = getChickenParent(configuration, "parent2", allChickens, chicken, chicken.getParent2());
             if (parent1 != null && parent2 != null) {
                 chicken.setParents(parent1, parent2);
-            }
-            else {
+            } else {
                 chicken.setNoParents();
             }
 
@@ -237,8 +236,8 @@ public class ChickensMod {
             file.write("\tdirected 1\n");
             for (ChickensRegistryItem item : items) {
                 file.write("\tnode [\n");
-                file.write("\t\tid " + item.getId() +"\n");
-                file.write("\t\tlabel \"" + item.getEntityName() +"\"\n");
+                file.write("\t\tid " + item.getId() + "\n");
+                file.write("\t\tlabel \"" + item.getEntityName() + "\"\n");
                 if (requiresWisitingNether(item)) {
                     file.write("\t\tgraphics [\n");
                     file.write("\t\t\tfill \"#FF6600\"\n");
@@ -249,21 +248,21 @@ public class ChickensMod {
             for (ChickensRegistryItem item : items) {
                 if (item.getParent1() != null) {
                     file.write("\tedge [\n");
-                    file.write("\t\tsource " + item.getParent1().getId() +"\n");
-                    file.write("\t\ttarget " + item.getId() +"\n");
+                    file.write("\t\tsource " + item.getParent1().getId() + "\n");
+                    file.write("\t\ttarget " + item.getId() + "\n");
                     file.write("\t]\n");
                 }
                 if (item.getParent2() != null) {
                     file.write("\tedge [\n");
-                    file.write("\t\tsource " + item.getParent2().getId() +"\n");
-                    file.write("\t\ttarget " + item.getId() +"\n");
+                    file.write("\t\tsource " + item.getParent2().getId() + "\n");
+                    file.write("\t\ttarget " + item.getId() + "\n");
                     file.write("\t]\n");
                 }
             }
             file.write("]\n");
             file.close();
+        } catch (IOException ignored) {
         }
-        catch (IOException ignored) {}
     }
 
     private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
@@ -290,7 +289,7 @@ public class ChickensMod {
                 Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.HELL};
 
         List<Biome> biomesForSpawning = new ArrayList<Biome>();
-        for (Biome biome: allPossibleBiomes) {
+        for (Biome biome : allPossibleBiomes) {
             if (ChickensRegistry.isAnyIn(ChickensRegistry.getSpawnType(biome))) {
                 biomesForSpawning.add(biome);
             }
@@ -380,7 +379,7 @@ public class ChickensMod {
                 new ItemStack(Items.STRING),
                 0x331a00, 0x800000,
                 blackChicken, logChicken
-                ).setDropItem(new ItemStack(Items.SPIDER_EYE));
+        ).setDropItem(new ItemStack(Items.SPIDER_EYE));
         chickens.add(stringChicken);
 
         ChickensRegistryItem glowstoneChicken = new ChickensRegistryItem(
@@ -461,7 +460,7 @@ public class ChickensMod {
                 0xcc3300, 0xffff00,
                 coalChicken, quartzChicken).setSpawnType(SpawnType.HELL);
         chickens.add(lavaChicken);
-        
+
         ChickensRegistryItem clayChicken = new ChickensRegistryItem(
                 200, "ClayChicken", new ResourceLocation("chickens", "textures/entity/ClayChicken.png"),
                 new ItemStack(Items.CLAY_BALL),
@@ -497,7 +496,7 @@ public class ChickensMod {
                 0xffff66, 0xff3300,
                 goldChicken, lavaChicken);
         chickens.add(blazeChicken);
-        
+
         ChickensRegistryItem slimeChicken = new ChickensRegistryItem(
                 205, "SlimeChicken", new ResourceLocation("chickens", "textures/entity/SlimeChicken.png"),
                 new ItemStack(Items.SLIME_BALL),

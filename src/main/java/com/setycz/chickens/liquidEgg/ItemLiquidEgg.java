@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by setyc on 14.02.2016.
  */
-public class ItemLiquidEgg extends ItemEgg implements IColorSource{
+public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     public ItemLiquidEgg() {
         setHasSubtypes(true);
     }
@@ -52,32 +52,23 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource{
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, false);
         if (raytraceresult == null) {
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-        }
-        else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
+        } else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-        }
-        else {
+        } else {
             BlockPos blockpos = raytraceresult.getBlockPos();
-            if (!worldIn.isBlockModifiable(playerIn, blockpos))
-            {
+            if (!worldIn.isBlockModifiable(playerIn, blockpos)) {
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-            }
-            else {
+            } else {
                 boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
                 BlockPos blockpos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
 
                 Block liquid = LiquidEggRegistry.findById(itemStackIn.getMetadata()).getLiquid();
-                if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
-                {
+                if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn)) {
                     return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-                }
-                else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1, liquid))
-                {
+                } else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1, liquid)) {
                     playerIn.addStat(StatList.getObjectUseStats(this));
                     return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.stackSize - 1, itemStackIn.getMetadata())) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-                }
-                else
-                {
+                } else {
                     return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
             }

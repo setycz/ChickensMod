@@ -13,15 +13,15 @@ import java.util.List;
 /**
  * Created by setyc on 21.02.2016.
  */
-public class LayingRecipeWrapper extends BlankRecipeWrapper{
+public class LayingRecipeWrapper extends BlankRecipeWrapper {
     private final List<ItemStack> chicken;
     private final List<ItemStack> egg;
     private final int minTime;
     private final int maxTime;
 
     public LayingRecipeWrapper(ItemStack chicken, ItemStack egg, int minTime, int maxTime) {
-        this.minTime = minTime/20/60;
-        this.maxTime = maxTime/20/60;
+        this.minTime = minTime / 20 / 60;
+        this.maxTime = maxTime / 20 / 60;
         this.chicken = Collections.singletonList(chicken);
         this.egg = Collections.singletonList(egg);
     }

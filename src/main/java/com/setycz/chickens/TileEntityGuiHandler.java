@@ -14,7 +14,7 @@ public class TileEntityGuiHandler implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-        if(te instanceof IInventoryGui) {
+        if (te instanceof IInventoryGui) {
             return ((IInventoryGui) te).createContainer(player.inventory, world, new BlockPos(x, y, z));
         }
         return null;
@@ -23,7 +23,7 @@ public class TileEntityGuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-        if(te instanceof IInventoryGui) {
+        if (te instanceof IInventoryGui) {
             return ((IInventoryGui) te).createGui(player.inventory, world, new BlockPos(x, y, z));
         }
         return null;

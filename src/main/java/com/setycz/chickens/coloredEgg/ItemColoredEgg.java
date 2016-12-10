@@ -50,15 +50,13 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if (!playerIn.capabilities.isCreativeMode)
-        {
+        if (!playerIn.capabilities.isCreativeMode) {
             --itemStackIn.stackSize;
         }
 
-        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((EntityPlayer) null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-        if (!worldIn.isRemote)
-        {
+        if (!worldIn.isRemote) {
             int chickenType = getChickenType(itemStackIn);
             if (chickenType != -1) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);

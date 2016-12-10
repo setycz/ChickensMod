@@ -63,7 +63,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        ChickensRegistryItem mateChickenDescription = ((EntityChickensChicken)ageable).getChickenDescription();
+        ChickensRegistryItem mateChickenDescription = ((EntityChickensChicken) ageable).getChickenDescription();
 
         ChickensRegistryItem childToBeBorn = ChickensRegistry.getRandomChild(chickenDescription, mateChickenDescription);
         if (childToBeBorn == null) {
@@ -96,7 +96,7 @@ public class EntityChickensChicken extends EntityChicken {
     private void resetTimeUntilNextEgg() {
         ChickensRegistryItem chickenDescription = getChickenDescription();
         this.timeUntilNextEgg = (chickenDescription.getMinLayTime()
-                + rand.nextInt(chickenDescription.getMaxLayTime()-chickenDescription.getMinLayTime())) * 2;
+                + rand.nextInt(chickenDescription.getMaxLayTime() - chickenDescription.getMinLayTime())) * 2;
     }
 
     @Override
@@ -182,17 +182,16 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public int getTalkInterval()
-    {
+    public int getTalkInterval() {
         return 20 * 60;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
-    	if(this.rand.nextFloat() > 0.1) {
-    		return;
-    	}
-    	super.playStepSound(pos,  blockIn);
+        if (this.rand.nextFloat() > 0.1) {
+            return;
+        }
+        super.playStepSound(pos, blockIn);
     }
 
     @Override
@@ -209,8 +208,7 @@ public class EntityChickensChicken extends EntityChicken {
 
         if (this.isBurning()) {
             this.dropItem(Items.COOKED_CHICKEN, 1);
-        }
-        else {
+        } else {
             this.dropItem(Items.CHICKEN, 1);
         }
     }

@@ -104,7 +104,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         ItemStack rest = stack.copy();
 
         int capacity = getEffectiveCapacity();
-        if (capacity <= 0){
+        if (capacity <= 0) {
             return rest;
         }
 
@@ -117,8 +117,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
 
                 if (slots[slotIndex] == null) {
                     slots[slotIndex] = rest.splitStack(willAdd);
-                }
-                else {
+                } else {
                     slots[slotIndex].stackSize += willAdd;
                     rest.stackSize -= willAdd;
                 }
@@ -151,8 +150,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
             if (energy <= 0) {
                 if (slots[dirtSlotIndex] == null) {
                     slots[dirtSlotIndex] = new ItemStack(Blocks.DIRT, 1);
-                }
-                else {
+                } else {
                     slots[dirtSlotIndex].stackSize++;
                 }
             }
@@ -235,7 +233,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
 
         Arrays.fill(slots, null);
         NBTTagList items = compound.getTagList("items", 10);
-        for (int itemIndex=0; itemIndex<items.tagCount(); itemIndex++) {
+        for (int itemIndex = 0; itemIndex < items.tagCount(); itemIndex++) {
             NBTTagCompound item = items.getCompoundTagAt(itemIndex);
             int slotIndex = item.getInteger("slot");
             ItemStack itemStack = ItemStack.loadItemStackFromNBT(item);
@@ -384,12 +382,12 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
                 int itemSlotCount = lastItemSlotIndex - firstItemSlotIndex + 1;
                 int[] itemSlots = new int[itemSlotCount + 1];
                 itemSlots[0] = dirtSlotIndex;
-                for (int resultIndex=0; resultIndex<itemSlotCount; resultIndex++) {
+                for (int resultIndex = 0; resultIndex < itemSlotCount; resultIndex++) {
                     itemSlots[resultIndex + 1] = firstItemSlotIndex + resultIndex;
                 }
                 return itemSlots;
             case UP:
-                return new int[] { hayBaleSlotIndex };
+                return new int[]{hayBaleSlotIndex};
             default:
                 return new int[0];
         }

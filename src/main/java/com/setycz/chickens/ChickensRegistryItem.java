@@ -119,11 +119,11 @@ public class ChickensRegistryItem {
     }
 
     public int getMinLayTime() {
-        return (int)Math.max(6000*getTier()*layCoefficient, 1.0f);
+        return (int) Math.max(6000 * getTier() * layCoefficient, 1.0f);
     }
 
     public int getMaxLayTime() {
-        return 2*getMinLayTime();
+        return 2 * getMinLayTime();
     }
 
     public SpawnType getSpawnType() {

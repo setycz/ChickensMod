@@ -24,7 +24,7 @@ public class ContainerHenhouse extends Container {
         this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
 
         for (int row = 0; row < 3; row++) {
-            for (int column=0; column <3; column++) {
+            for (int column = 0; column < 3; column++) {
                 this.addSlotToContainer(new Slot(
                         tileEntityHenhouse,
                         TileEntityHenhouse.firstItemSlotIndex + (row * 3) + column,
