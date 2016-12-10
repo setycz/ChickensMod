@@ -103,7 +103,7 @@ curseforge {
 		id = curse_project_id
 		changelog = file('changelog.txt')
 		releaseType = project.releaseType
-		addGameVersion '1.9.4'
+		addGameVersion '1.10.2'
 		relations {
 			optionalLibrary 'waila'
 			optionalLibrary 'just-enough-items-jei'
