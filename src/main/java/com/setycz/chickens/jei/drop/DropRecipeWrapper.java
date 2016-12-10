@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by setyc on 21.02.2016.
  */
-public class DropRecipeWrapper extends BlankRecipeWrapper{
+public class DropRecipeWrapper extends BlankRecipeWrapper {
     private final List<ItemStack> chicken;
     private final List<ItemStack> egg;
 

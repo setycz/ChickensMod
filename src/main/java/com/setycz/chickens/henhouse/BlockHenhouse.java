@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 /**
  * Created by setyc on 01.03.2016.
  */
-public class BlockHenhouse extends Block implements ITileEntityProvider{
+public class BlockHenhouse extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockHenhouse() {
@@ -39,7 +39,7 @@ public class BlockHenhouse extends Block implements ITileEntityProvider{
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TileEntityHenhouse) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHenhouse)tileEntity);
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHenhouse) tileEntity);
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -54,10 +54,10 @@ public class BlockHenhouse extends Block implements ITileEntityProvider{
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 
-        if(stack.hasDisplayName()){
+        if (stack.hasDisplayName()) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof TileEntityHenhouse) {
-                ((TileEntityHenhouse)tileEntity).setCustomName(stack.getDisplayName());
+                ((TileEntityHenhouse) tileEntity).setCustomName(stack.getDisplayName());
             }
         }
     }
@@ -65,8 +65,7 @@ public class BlockHenhouse extends Block implements ITileEntityProvider{
     @Override
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-        {
+        if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
             enumfacing = EnumFacing.NORTH;
         }
         return getDefaultState().withProperty(FACING, enumfacing);

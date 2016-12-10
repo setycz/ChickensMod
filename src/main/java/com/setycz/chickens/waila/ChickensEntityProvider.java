@@ -37,7 +37,7 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
 
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-        EntityChickensChicken chicken = (EntityChickensChicken)entity;
+        EntityChickensChicken chicken = (EntityChickensChicken) entity;
         currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.tier", chicken.getTier()));
         return currenttip;
     }
