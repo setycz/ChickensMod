@@ -22,6 +22,7 @@ public class DropRecipeCategory implements IRecipeCategory {
     private final IDrawableStatic background;
     private final IDrawableAnimated arrow;
     private final String title;
+    private final IDrawableStatic icon;
 
     public DropRecipeCategory(IGuiHelper guiHelper) {
         title = Translator.translateToLocal("gui.drops");
@@ -31,6 +32,9 @@ public class DropRecipeCategory implements IRecipeCategory {
 
         IDrawableStatic arrowDrawable = guiHelper.createDrawable(location, 82, 0, 13, 10);
         arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+
+        ResourceLocation iconLocation = new ResourceLocation(ChickensMod.MODID, "textures/gui/drops_icon.png");
+        icon = guiHelper.createDrawable(iconLocation, 0, 0, 16, 16);
     }
 
     @Override
@@ -51,7 +55,7 @@ public class DropRecipeCategory implements IRecipeCategory {
     @Nullable
     @Override
     public IDrawable getIcon() {
-        return null;
+        return icon;
     }
 
     @Override
