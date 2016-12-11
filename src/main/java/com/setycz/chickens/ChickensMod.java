@@ -47,8 +47,8 @@ import java.util.List;
  */
 @Mod(modid = ChickensMod.MODID,
         version = ChickensMod.VERSION,
-        acceptedMinecraftVersions = "[1.9.4]",
-        dependencies = "required-after:Forge@[12.16.1.1887,);")
+        acceptedMinecraftVersions = "[1.10.2]",
+        dependencies = "required-after:Forge@[12.18.3.2185,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
     public static final String VERSION = "@VERSION@";
