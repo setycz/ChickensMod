@@ -19,7 +19,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = mcversion + "-" + modversion
+version = modversion
 group= "com.setycz.chickens" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "chickens"
 
