@@ -1,7 +1,13 @@
 package com.setycz.chickens;
 
+import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -22,6 +28,20 @@ public class CommonProxy {
     }
 
     public void registerLiquidEgg(LiquidEggRegistryItem liquidEgg) {
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ChickensMod.liquidEgg, new DispenseLiquidEgg());
+    }
 
+    class DispenseLiquidEgg extends BehaviorDefaultDispenseItem {
+        @Override
+        protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+            ItemLiquidEgg itemLiquidEgg = (ItemLiquidEgg) stack.getItem();
+            BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
+            Block liquid = LiquidEggRegistry.findById(stack.getMetadata()).getLiquid();
+            if (!itemLiquidEgg.tryPlaceContainedLiquid(null, source.getWorld(), blockpos, liquid)) {
+                return super.dispenseStack(source, stack);
+            }
+            stack.stackSize--;
+            return stack;
+        }
     }
 }
