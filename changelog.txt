@@ -1,1 +1,4 @@
-Port to 1.10.2!
+Few changes mostly related to 1.10.2 port:
+* Mod ported to 1.10.2
+* JEI integration upgraded (categories now have proper icons)
+* Liquid eggs are dispensable now ;]
