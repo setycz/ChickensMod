@@ -17,8 +17,15 @@ import javax.annotation.Nullable;
 /**
  * Created by setyc on 05.03.2016.
  */
-@SuppressWarnings("unused")
 public class ChickenNetherPopulateHandler {
+    private final float chanceMultiplier;
+
+    public ChickenNetherPopulateHandler(float chanceMultiplier) {
+
+        this.chanceMultiplier = chanceMultiplier;
+    }
+
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void populateChunk(PopulateChunkEvent.Populate event) {
         BlockPos chunkCentrePos = new BlockPos(event.getChunkX() * 16 + 8, 0, event.getChunkZ() * 16 + 8);
@@ -27,7 +34,7 @@ public class ChickenNetherPopulateHandler {
             return;
         }
 
-        if (event.getWorld().rand.nextFloat() < biome.getSpawningChance()) {
+        if (event.getWorld().rand.nextFloat() < biome.getSpawningChance() * chanceMultiplier) {
 
             BlockPos basePosition = getRandomChunkPosition(event.getWorld(), event.getChunkX(), event.getChunkZ());
             BlockPos spawnPos = findFloor(event.getWorld(), basePosition);

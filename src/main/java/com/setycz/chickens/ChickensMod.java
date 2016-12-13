@@ -66,7 +66,11 @@ public class ChickensMod {
 
     private static final CreativeTabs tab = new ChickensTab();
 
-    private int chickenEntityId = 0;
+    private int chickenEntityId = 30000;
+    private int spawnProbability = 10;
+    private int minBroodSize = 3;
+    private int maxBroodSize = 5;
+    private float netherSpawnChanceMultiplier = 1.0f;
 
     public static final Item spawnEgg = new ItemSpawnEgg().setRegistryName("spawn_egg").setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setRegistryName("colored_egg").setUnlocalizedName("colored_egg").setCreativeTab(tab);
@@ -135,6 +139,10 @@ public class ChickensMod {
         Configuration configuration = new Configuration(configFile);
 
         chickenEntityId = configuration.getInt("entityId", "general", 30000, Integer.MIN_VALUE, Integer.MAX_VALUE, "Chicken Entity ID");
+        spawnProbability = configuration.getInt("spawnProbability", "general", 10, Integer.MIN_VALUE, Integer.MAX_VALUE, "Spawn probability");
+        minBroodSize = configuration.getInt("minBroodSize", "general", 3, 1, Integer.MAX_VALUE, "Minimal brood size");
+        maxBroodSize = configuration.getInt("maxBroodSize", "general", 5, 2, Integer.MAX_VALUE, "Maximal brood size, must be greater than the minimal size");
+        netherSpawnChanceMultiplier = configuration.getFloat("netherSpawnChanceMultiplier", "general", 1.0f, 0.f, Float.MAX_VALUE, "Nether chicken spawn chance multiplier, e.g. 0=no initial spawn, 2=two times more spawn rate");
 
         Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
         for (ChickensRegistryItem chicken : allChickens) {
@@ -217,11 +225,11 @@ public class ChickensMod {
 
         List<Biome> biomesForSpawning = getAllSpawnBiomes();
         if (biomesForSpawning.size() > 0) {
-            EntityRegistry.addSpawn(EntityChickensChicken.class, 10, 3, 5, EnumCreatureType.CREATURE,
+            EntityRegistry.addSpawn(EntityChickensChicken.class, spawnProbability, minBroodSize, maxBroodSize, EnumCreatureType.CREATURE,
                     biomesForSpawning.toArray(new Biome[biomesForSpawning.size()])
             );
             if (biomesForSpawning.contains(Biomes.HELL)) {
-                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler());
+                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler(netherSpawnChanceMultiplier));
             }
         }
 
