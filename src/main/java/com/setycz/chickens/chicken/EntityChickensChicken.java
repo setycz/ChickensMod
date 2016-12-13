@@ -24,6 +24,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ import java.util.List;
  */
 public class EntityChickensChicken extends EntityChicken {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    @SuppressWarnings("WeakerAccess")
     public static final String TYPE_NBT = "Type";
 
     public EntityChickensChicken(World worldIn) {
@@ -108,7 +110,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingData) {
         livingData = super.onInitialSpawn(difficulty, livingData);
         if (livingData instanceof GroupData) {
             GroupData groupData = (GroupData) livingData;
@@ -170,15 +172,15 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompund) {
-        super.writeEntityToNBT(tagCompund);
-        tagCompund.setInteger(TYPE_NBT, getChickenTypeInternal());
+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        tagCompound.setInteger(TYPE_NBT, getChickenTypeInternal());
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-        super.readEntityFromNBT(tagCompund);
-        setChickenTypeInternal(tagCompund.getInteger(TYPE_NBT));
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        setChickenTypeInternal(tagCompound.getInteger(TYPE_NBT));
     }
 
     @Override

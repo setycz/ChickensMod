@@ -12,9 +12,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by setyc on 05.03.2016.
  */
+@SuppressWarnings("unused")
 public class ChickenNetherPopulateHandler {
     @SubscribeEvent
     public void populateChunk(PopulateChunkEvent.Populate event) {
@@ -45,7 +48,8 @@ public class ChickenNetherPopulateHandler {
         return spawnPos;
     }
 
-    private IEntityLivingData spawn(World world, IEntityLivingData livingData, BlockPos spawnPos) {
+    @Nullable
+    private IEntityLivingData spawn(World world, @Nullable IEntityLivingData livingData, BlockPos spawnPos) {
         if (WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(EntityChickensChicken.class), world, spawnPos)) {
             EntityChickensChicken entity = new EntityChickensChicken(world);
             entity.setLocationAndAngles(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0.0F);
@@ -57,7 +61,7 @@ public class ChickenNetherPopulateHandler {
         return livingData;
     }
 
-    protected static BlockPos getRandomChunkPosition(World worldIn, int x, int z) {
+    private static BlockPos getRandomChunkPosition(World worldIn, int x, int z) {
         Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
         int i = x * 16 + worldIn.rand.nextInt(16);
         int j = z * 16 + worldIn.rand.nextInt(16);

@@ -5,12 +5,14 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by setyc on 06.03.2016.
  */
+@SuppressWarnings("WeakerAccess")
 @SideOnly(Side.CLIENT)
 public class GuiHenhouse extends GuiContainer {
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(ChickensMod.MODID, "textures/gui/henhouse.png");
@@ -40,10 +42,12 @@ public class GuiHenhouse extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String henouseName = tileEntityHenhouse.getDisplayName().getUnformattedText();
+        ITextComponent henhouseDisplayName = tileEntityHenhouse.getDisplayName();
+        assert henhouseDisplayName != null;
+        String henhouseName = henhouseDisplayName.getUnformattedText();
         this.fontRendererObj.drawString(
-                henouseName,
-                xSize / 2 - fontRendererObj.getStringWidth(henouseName) / 2, 6,
+                henhouseName,
+                xSize / 2 - fontRendererObj.getStringWidth(henhouseName) / 2, 6,
                 4210752);
         this.fontRendererObj.drawString(
                 playerInv.getDisplayName().getUnformattedText(),

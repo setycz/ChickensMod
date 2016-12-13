@@ -10,14 +10,13 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by setyc on 06.03.2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class ContainerHenhouse extends Container {
 
-    private final InventoryPlayer playerInventory;
     private final TileEntityHenhouse tileEntityHenhouse;
     private int energy;
 
     public ContainerHenhouse(InventoryPlayer playerInventory, TileEntityHenhouse tileEntityHenhouse) {
-        this.playerInventory = playerInventory;
         this.tileEntityHenhouse = tileEntityHenhouse;
 
         this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 25, 19));
@@ -56,18 +55,19 @@ public class ContainerHenhouse extends Container {
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+            ItemStack itemStack1 = slot.getStack();
+            assert itemStack1 != null;
+            itemstack = itemStack1.copy();
 
             if (index < this.tileEntityHenhouse.getSizeInventory()) {
-                if (!this.mergeItemStack(itemstack1, this.tileEntityHenhouse.getSizeInventory(), this.inventorySlots.size(), true)) {
+                if (!this.mergeItemStack(itemStack1, this.tileEntityHenhouse.getSizeInventory(), this.inventorySlots.size(), true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, this.tileEntityHenhouse.getSizeInventory(), false)) {
+            } else if (!this.mergeItemStack(itemStack1, 0, this.tileEntityHenhouse.getSizeInventory(), false)) {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0) {
+            if (itemStack1.stackSize == 0) {
                 slot.putStack(null);
             } else {
                 slot.onSlotChanged();
@@ -87,9 +87,9 @@ public class ContainerHenhouse extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (IContainerListener crafter : listeners) {
+        for (IContainerListener listener : listeners) {
             if (energy != tileEntityHenhouse.getField(0)) {
-                crafter.sendProgressBarUpdate(this, 0, tileEntityHenhouse.getField(0));
+                listener.sendProgressBarUpdate(this, 0, tileEntityHenhouse.getField(0));
             }
         }
 

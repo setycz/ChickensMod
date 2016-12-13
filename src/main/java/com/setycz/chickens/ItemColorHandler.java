@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by setyc on 25.03.2016.
  */
+@SuppressWarnings("WeakerAccess")
 @SideOnly(Side.CLIENT)
 public class ItemColorHandler implements IItemColor {
     @Override

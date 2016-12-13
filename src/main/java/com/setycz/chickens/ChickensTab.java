@@ -7,10 +7,11 @@ import net.minecraft.item.Item;
 /**
  * Created by setyc on 12.02.2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class ChickensTab extends CreativeTabs {
 
-    public ChickensTab(String label) {
-        super(label);
+    public ChickensTab() {
+        super("chickens");
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
@@ -24,6 +23,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,16 +37,17 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     public static final int hayBaleSlotIndex = 0;
     public static final int dirtSlotIndex = 1;
     public static final int firstItemSlotIndex = 2;
-    public static final int lastItemSlotIndex = 10;
-    public static final double HENHOUSE_RADIUS = 0.5;
-    public static final double FENCE_TRESHOLD = 0.5;
+    private static final int lastItemSlotIndex = 10;
+    private static final double HENHOUSE_RADIUS = 0.5;
+    private static final double FENCE_THRESHOLD = 0.5;
 
     private String customName;
     private final ItemStack[] slots = new ItemStack[11];
     private int energy = 0;
 
+    @Nullable
     public static ItemStack pushItemStack(ItemStack itemToLay, World worldObj, Vec3d pos) {
-        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 4 + HENHOUSE_RADIUS + FENCE_TRESHOLD);
+        List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 4 + HENHOUSE_RADIUS + FENCE_THRESHOLD);
         for (TileEntityHenhouse henhouse : henhouses) {
             itemToLay = henhouse.pushItemStack(itemToLay);
             if (itemToLay == null) {
@@ -100,7 +101,8 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         henhouses.add(henhouse);
     }
 
-    public ItemStack pushItemStack(ItemStack stack) {
+    @Nullable
+    private ItemStack pushItemStack(ItemStack stack) {
         ItemStack rest = stack.copy();
 
         int capacity = getEffectiveCapacity();
@@ -157,7 +159,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         }
     }
 
-    private int canAdd(ItemStack slotStack, ItemStack inputStack) {
+    private int canAdd(@Nullable ItemStack slotStack, ItemStack inputStack) {
         if (slotStack == null) {
             return Math.min(getInventoryStackLimit(), inputStack.stackSize);
         }
@@ -274,7 +276,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
         slots[index] = stack;
     }
 
@@ -361,13 +363,13 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     }
 
     @Override
-    public Container createContainer(InventoryPlayer inventoryplayer, World world, BlockPos pos) {
+    public Container createContainer(InventoryPlayer inventoryplayer) {
         return new ContainerHenhouse(inventoryplayer, this);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public GuiContainer createGui(InventoryPlayer inventoryplayer, World world, BlockPos pos) {
+    public GuiContainer createGui(InventoryPlayer inventoryplayer) {
         return new GuiHenhouse(inventoryplayer, this);
     }
 

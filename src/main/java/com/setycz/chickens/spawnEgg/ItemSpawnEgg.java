@@ -50,8 +50,8 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            BlockPos corelatedPos = correctPosition(pos, facing);
-            activate(worldIn, corelatedPos, stack.getMetadata());
+            BlockPos correlatedPos = correctPosition(pos, facing);
+            activate(worldIn, correlatedPos, stack.getMetadata());
             if (!playerIn.capabilities.isCreativeMode) {
                 stack.stackSize--;
             }
@@ -74,6 +74,9 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     private void activate(World worldIn, BlockPos pos, int metadata) {
         String entityName = ChickensMod.MODID + "." + ChickensMod.CHICKEN;
         EntityChickensChicken entity = (EntityChickensChicken) EntityList.createEntityByName(entityName, worldIn);
+        if (entity == null) {
+            return;
+        }
         if (!worldIn.isRemote) {
             entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             entity.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);

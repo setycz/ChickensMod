@@ -14,8 +14,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderChickensChicken extends RenderLiving<EntityChickensChicken> {
 
-    public RenderChickensChicken(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn) {
-        super(renderManagerIn, modelBaseIn, shadowSizeIn);
+    public RenderChickensChicken(RenderManager renderManagerIn, ModelBase modelBaseIn) {
+        super(renderManagerIn, modelBaseIn, 0.3F);
     }
 
     @Override

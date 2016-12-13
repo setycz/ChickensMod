@@ -66,8 +66,9 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
             }
         }
 
+        //noinspection ConstantConditions
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     private int getChickenType(ItemStack itemStack) {

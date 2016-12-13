@@ -3,6 +3,7 @@ package com.setycz.chickens;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ import java.util.*;
 public final class ChickensRegistry {
     private static final Map<Integer, ChickensRegistryItem> items = new HashMap<Integer, ChickensRegistryItem>();
     public static final int SMART_CHICKEN_ID = 50;
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
     public static void register(ChickensRegistryItem entity) {
         validate(entity);
@@ -43,11 +44,7 @@ public final class ChickensRegistry {
         return result;
     }
 
-    public static Collection<ChickensRegistryItem> getAllItems() {
-        return items.values();
-    }
-
-    public static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    private static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         if (parent1.isEnabled()) {
             result.add(parent1);
@@ -63,6 +60,7 @@ public final class ChickensRegistry {
         return result;
     }
 
+    @Nullable
     public static ChickensRegistryItem findDyeChicken(int dyeMetadata) {
         for (ChickensRegistryItem chicken : items.values()) {
             if (chicken.isDye(dyeMetadata)) {
@@ -99,6 +97,7 @@ public final class ChickensRegistry {
             return 0;
         }
 
+        //noinspection ConstantConditions
         List<ChickensRegistryItem> possibleChildren = getChildren(child.getParent1(), child.getParent2());
 
         int maxChance = getMaxChance(possibleChildren);
@@ -107,6 +106,7 @@ public final class ChickensRegistry {
         return ((maxChance - child.getTier()) * 100.0f) / maxDiceValue;
     }
 
+    @Nullable
     public static ChickensRegistryItem getRandomChild(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> possibleChildren = getChildren(parent1, parent2);
         if (possibleChildren.size() == 0) {
@@ -120,6 +120,7 @@ public final class ChickensRegistry {
         return getChickenToBeBorn(possibleChildren, maxChance, diceValue);
     }
 
+    @Nullable
     private static ChickensRegistryItem getChickenToBeBorn(List<ChickensRegistryItem> possibleChildren, int maxChance, int diceValue) {
         int currentVale = 0;
         for (ChickensRegistryItem child : possibleChildren) {
@@ -157,6 +158,7 @@ public final class ChickensRegistry {
         return false;
     }
 
+    @Nullable
     public static ChickensRegistryItem getSmartChicken() {
         return items.get(SMART_CHICKEN_ID);
     }

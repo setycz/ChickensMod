@@ -85,6 +85,7 @@ public class ChickensJeiPlugin implements IModPlugin {
         List<BreedingRecipeWrapper> result = new ArrayList<BreedingRecipeWrapper>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.getTier() > 1) {
+                //noinspection ConstantConditions
                 result.add(new BreedingRecipeWrapper(
                         new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent1().getId()),
                         new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent2().getId()),

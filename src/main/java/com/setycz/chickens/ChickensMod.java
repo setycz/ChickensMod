@@ -35,6 +35,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,21 +46,24 @@ import java.util.List;
 /**
  * Created by setyc on 12.02.2016.
  */
+@SuppressWarnings("unused")
 @Mod(modid = ChickensMod.MODID,
         version = ChickensMod.VERSION,
         acceptedMinecraftVersions = "[1.10.2]",
         dependencies = "required-after:Forge@[12.18.3.2185,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
+    @SuppressWarnings("WeakerAccess")
     public static final String VERSION = "@VERSION@";
     public static final String CHICKEN = "ChickensChicken";
 
-    public static final Logger log = LogManager.getLogger(MODID);
+    private static final Logger log = LogManager.getLogger(MODID);
 
+    @SuppressWarnings("CanBeFinal")
     @Mod.Instance(MODID)
     public static ChickensMod instance;
 
-    private static final CreativeTabs tab = new ChickensTab("chickens");
+    private static final CreativeTabs tab = new ChickensTab();
 
     private int chickenEntityId = 0;
 
@@ -74,8 +78,10 @@ public class ChickensMod {
     public static final Block henhouse_jungle = new BlockHenhouse().setRegistryName("henhouse_jungle").setUnlocalizedName("henhouse_jungle").setCreativeTab(tab);
     public static final Block henhouse_spruce = new BlockHenhouse().setRegistryName("henhouse_spruce").setUnlocalizedName("henhouse_spruce").setCreativeTab(tab);
 
-    public static TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
+    @SuppressWarnings("WeakerAccess")
+    public static final TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
+    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
 
@@ -151,7 +157,8 @@ public class ChickensMod {
                 chicken.setNoParents();
             }
 
-            SpawnType spawnType = SpawnType.valueOf(configuration.getString("spawnType", chicken.getEntityName(), chicken.getSpawnType().toString(), "Chicken spawn type, can be: " + String.join(",", SpawnType.names())));
+            String spawnTypes = getAllAvailableSpawnTypes();
+            SpawnType spawnType = SpawnType.valueOf(configuration.getString("spawnType", chicken.getEntityName(), chicken.getSpawnType().toString(), "Chicken spawn type, can be: " + spawnTypes));
             chicken.setSpawnType(spawnType);
 
             ChickensRegistry.register(chicken);
@@ -160,11 +167,25 @@ public class ChickensMod {
         configuration.save();
     }
 
-    private ChickensRegistryItem getChickenParent(Configuration configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
+    private String getAllAvailableSpawnTypes() {
+        String spawnTypes = "";
+        String[] spawnTypeNames = SpawnType.names();
+        for (int spawnTypeIndex = 0; spawnTypeIndex < spawnTypeNames.length; spawnTypeIndex++) {
+            if (spawnTypeIndex > 0) {
+                spawnTypes += ", ";
+            }
+            spawnTypes += spawnTypeNames[spawnTypeIndex];
+        }
+        return spawnTypes;
+    }
+
+    @Nullable
+    private ChickensRegistryItem getChickenParent(Configuration configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, @Nullable ChickensRegistryItem parent) {
         String parentName = configuration.getString(propertyName, chicken.getEntityName(), parent != null ? parent.getEntityName() : "", "First parent, empty if it's base chicken.");
         return findChicken(allChickens, parentName);
     }
 
+    @Nullable
     private ChickensRegistryItem findChicken(Collection<ChickensRegistryItem> chickens, String name) {
         for (ChickensRegistryItem chicken : chickens) {
             if (chicken.getEntityName().compareToIgnoreCase(name) == 0) {
@@ -191,7 +212,7 @@ public class ChickensMod {
     public void init(FMLInitializationEvent event) {
         proxy.init();
 
-        MinecraftForge.EVENT_BUS.register(new ChickenTeachHanhler());
+        MinecraftForge.EVENT_BUS.register(new ChickenTeachHandler());
 
         List<Biome> biomesForSpawning = getAllSpawnBiomes();
         if (biomesForSpawning.size() > 0) {
@@ -223,10 +244,11 @@ public class ChickensMod {
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
     }
 
-    private boolean requiresWisitingNether(ChickensRegistryItem chicken) {
+    private boolean requiresVisitingNether(ChickensRegistryItem chicken) {
+        //noinspection ConstantConditions
         return chicken.getTier() == 1
                 ? chicken.getSpawnType() == SpawnType.HELL
-                : requiresWisitingNether(chicken.getParent1()) || requiresWisitingNether(chicken.getParent2());
+                : requiresVisitingNether(chicken.getParent1()) || requiresVisitingNether(chicken.getParent2());
     }
 
     private void dumpChickens(Collection<ChickensRegistryItem> items) {
@@ -238,7 +260,7 @@ public class ChickensMod {
                 file.write("\tnode [\n");
                 file.write("\t\tid " + item.getId() + "\n");
                 file.write("\t\tlabel \"" + item.getEntityName() + "\"\n");
-                if (requiresWisitingNether(item)) {
+                if (requiresVisitingNether(item)) {
                     file.write("\t\tgraphics [\n");
                     file.write("\t\t\tfill \"#FF6600\"\n");
                     file.write("\t\t]\n");
@@ -266,6 +288,7 @@ public class ChickensMod {
     }
 
     private void registerHenhouse(Block henhouse, BlockPlanks.EnumType type) {
+        //noinspection ConstantConditions
         GameRegistry.addRecipe(new ShapedOreRecipe(
                 new ItemStack(Item.getItemFromBlock(henhouse)),
                 "PPP",

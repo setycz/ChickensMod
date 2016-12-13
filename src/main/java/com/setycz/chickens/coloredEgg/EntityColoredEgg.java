@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 /**
  * Created by setyc on 13.02.2016.
  */
+@SuppressWarnings("WeakerAccess")
 public class EntityColoredEgg extends EntityEgg {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityColoredEgg.class, DataSerializers.VARINT);
     public static final String TYPE_NBT = "Type";
@@ -40,16 +41,16 @@ public class EntityColoredEgg extends EntityEgg {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompund) {
-        super.writeToNBT(tagCompund);
-        tagCompund.setInteger(TYPE_NBT, getChickenType());
-        return tagCompund;
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+        super.writeToNBT(tagCompound);
+        tagCompound.setInteger(TYPE_NBT, getChickenType());
+        return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompund) {
-        super.readFromNBT(tagCompund);
-        setChickenType(tagCompund.getInteger(TYPE_NBT));
+    public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
+        setChickenType(tagCompound.getInteger(TYPE_NBT));
     }
 
     @Override
@@ -66,11 +67,11 @@ public class EntityColoredEgg extends EntityEgg {
             }
 
             for (int j = 0; j < i; ++j) {
-                EntityChickensChicken entitychicken = new EntityChickensChicken(this.worldObj);
-                entitychicken.setChickenType(getChickenType());
-                entitychicken.setGrowingAge(-24000);
-                entitychicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-                this.worldObj.spawnEntityInWorld(entitychicken);
+                EntityChickensChicken entityChicken = new EntityChickensChicken(this.worldObj);
+                entityChicken.setChickenType(getChickenType());
+                entityChicken.setGrowingAge(-24000);
+                entityChicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+                this.worldObj.spawnEntityInWorld(entityChicken);
             }
         }
 

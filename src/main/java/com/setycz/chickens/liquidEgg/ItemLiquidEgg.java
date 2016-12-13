@@ -19,6 +19,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -50,9 +51,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, false);
-        if (raytraceresult == null) {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-        } else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
+        if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         } else {
             BlockPos blockpos = raytraceresult.getBlockPos();
@@ -60,12 +59,13 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
                 return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             } else {
                 boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
-                BlockPos blockpos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
+                BlockPos blockPos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
 
                 Block liquid = LiquidEggRegistry.findById(itemStackIn.getMetadata()).getLiquid();
-                if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn)) {
+                if (!playerIn.canPlayerEdit(blockPos1, raytraceresult.sideHit, itemStackIn)) {
                     return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-                } else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1, liquid)) {
+                } else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockPos1, liquid)) {
+                    //noinspection ConstantConditions
                     playerIn.addStat(StatList.getObjectUseStats(this));
                     return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.stackSize - 1, itemStackIn.getMetadata())) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
                 } else {
@@ -75,7 +75,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
         }
     }
 
-    public boolean tryPlaceContainedLiquid(EntityPlayer playerIn, World worldIn, BlockPos pos, Block liquid) {
+    public boolean tryPlaceContainedLiquid(@Nullable EntityPlayer playerIn, World worldIn, BlockPos pos, Block liquid) {
         Material material = worldIn.getBlockState(pos).getMaterial();
         boolean flag = !material.isSolid();
 

@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 /**
  * Created by setyc on 18.02.2016.
  */
+@SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
     @Override
@@ -23,13 +24,19 @@ public class ClientProxy extends CommonProxy {
 
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-        renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken(), 0.3F));
+        renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken()));
 
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse), 0);
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_acacia), 0);
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_birch), 0);
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_dark_oak), 0);
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_jungle), 0);
+        //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_spruce), 0);
     }
 

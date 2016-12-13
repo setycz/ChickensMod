@@ -4,6 +4,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by setyc on 12.02.2016.
  */
@@ -25,7 +27,7 @@ public class ChickensRegistryItem {
         this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
     }
 
-    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this.id = id;
         this.entityName = entityName;
         this.layItem = layItem;
@@ -47,6 +49,7 @@ public class ChickensRegistryItem {
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public ChickensRegistryItem setLayCoefficient(float coef) {
         layCoefficient = coef;
         return this;
@@ -56,10 +59,12 @@ public class ChickensRegistryItem {
         return entityName;
     }
 
+    @Nullable
     public ChickensRegistryItem getParent1() {
         return parent1;
     }
 
+    @Nullable
     public ChickensRegistryItem getParent2() {
         return parent2;
     }
