@@ -53,7 +53,11 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, false);
-        if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
+
+        //noinspection ConstantConditions
+        if (raytraceresult == null) {
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        } else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         } else {
             BlockPos blockpos = raytraceresult.getBlockPos();
