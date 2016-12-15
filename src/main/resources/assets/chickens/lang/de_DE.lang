@@ -45,6 +45,8 @@ entity.GlassChicken.name=Glashuhn
 entity.LeatherChicken.name=Lederhuhn
 
 entity.ChickensChicken.tier=Stufe: %1$s
+entity.ChickensChicken.layProgress=Folgenden Ei für 5 %1$smin.
+entity.ChickensChicken.nextEggSoon=Folgenden Ei für 5 <1min.
 gui.laying=Legt Ei
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Hühnerzucht

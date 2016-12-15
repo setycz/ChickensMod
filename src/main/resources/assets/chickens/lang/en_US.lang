@@ -45,6 +45,8 @@ entity.GlassChicken.name=Glass Chicken
 entity.LeatherChicken.name=Leather Chicken
 
 entity.ChickensChicken.tier=Tier: %1$s
+entity.ChickensChicken.layProgress=Next egg in ~%1$smin.
+entity.ChickensChicken.nextEggSoon=Next egg in <1min.
 gui.laying=Laying Egg
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Chicken Breeding

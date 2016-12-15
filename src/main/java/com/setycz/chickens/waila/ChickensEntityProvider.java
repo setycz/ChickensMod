@@ -38,7 +38,18 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         EntityChickensChicken chicken = (EntityChickensChicken) entity;
+
         currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.tier", chicken.getTier()));
+
+        if (!chicken.isChild()) {
+            int layProgress = chicken.getLayProgress();
+            if (layProgress <= 0) {
+                currenttip.add(I18n.translateToLocal("entity.ChickensChicken.nextEggSoon"));
+            } else {
+                currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.layProgress", layProgress));
+            }
+        }
+
         return currenttip;
     }
 

@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class EntityChickensChicken extends EntityChicken {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> LAY_PROGRESS = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     @SuppressWarnings("WeakerAccess")
     public static final String TYPE_NBT = "Type";
 
@@ -39,7 +40,7 @@ public class EntityChickensChicken extends EntityChicken {
         super(worldIn);
     }
 
-    public ResourceLocation getTexture() {
+    ResourceLocation getTexture() {
         ChickensRegistryItem chickenDescription = getChickenDescription();
         return chickenDescription.getTexture();
     }
@@ -79,26 +80,44 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public void onLivingUpdate() {
-        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 1) {
-            ChickensRegistryItem chickenDescription = getChickenDescription();
-            ItemStack itemToLay = chickenDescription.createLayItem();
+        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey()) {
+            int newTimeUntilNextEgg = timeUntilNextEgg - 1;
+            setTimeUntilNextEgg(newTimeUntilNextEgg);
+            if (newTimeUntilNextEgg <= 1) {
+                ChickensRegistryItem chickenDescription = getChickenDescription();
+                ItemStack itemToLay = chickenDescription.createLayItem();
 
-            itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
+                itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
 
-            if (itemToLay != null) {
-                this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-                this.entityDropItem(chickenDescription.createLayItem(), 0);
+                if (itemToLay != null) {
+                    this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                    this.entityDropItem(chickenDescription.createLayItem(), 0);
+                }
+
+                resetTimeUntilNextEgg();
             }
-
-            resetTimeUntilNextEgg();
         }
         super.onLivingUpdate();
     }
 
+    private void setTimeUntilNextEgg(int value) {
+        timeUntilNextEgg = value;
+        updateLayProgress();
+    }
+
+    public int getLayProgress() {
+        return dataManager.get(LAY_PROGRESS);
+    }
+
+    private void updateLayProgress() {
+        dataManager.set(LAY_PROGRESS, timeUntilNextEgg/60/20/2);
+    }
+
     private void resetTimeUntilNextEgg() {
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        this.timeUntilNextEgg = (chickenDescription.getMinLayTime()
+        int newTimeUntilNextEgg = (chickenDescription.getMinLayTime()
                 + rand.nextInt(chickenDescription.getMaxLayTime() - chickenDescription.getMinLayTime())) * 2;
+        setTimeUntilNextEgg(newTimeUntilNextEgg);
     }
 
     @Override
@@ -169,6 +188,7 @@ public class EntityChickensChicken extends EntityChicken {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(CHICKEN_TYPE, 0);
+        this.dataManager.register(LAY_PROGRESS, 0);
     }
 
     @Override
@@ -181,6 +201,7 @@ public class EntityChickensChicken extends EntityChicken {
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         setChickenTypeInternal(tagCompound.getInteger(TYPE_NBT));
+        updateLayProgress();
     }
 
     @Override
