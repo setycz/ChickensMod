@@ -1,4 +1,11 @@
-Few changes mostly related to 1.10.2 port:
-* Mod ported to 1.10.2
-* JEI integration upgraded (categories now have proper icons)
-* Liquid eggs are dispensable now ;]
+Main improvements:
+* DNA!!! Chickens have stats which makes breeding even more fun.
+** With higher 'growth' stat, time to lay an egg is decreased, chicken grows faster and they reproduce sooner.
+** 'Gain' will double or even triple the production!
+** Higher 'strength' gives better change for genes to affect child stats.
+* Liquid eggs can be 'pumped' into tanks, e.g. imagine smeltery fueled by Chickens!
+* Spawn rate can be fully configured. Nether spawn rate can be manually reduced/increased.
+
+Minor improvements/fixes:
+* German translation added.
+* Approximate lay progress in WAILA.
