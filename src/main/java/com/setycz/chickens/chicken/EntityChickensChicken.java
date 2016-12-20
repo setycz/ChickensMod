@@ -32,12 +32,42 @@ import java.util.List;
  */
 public class EntityChickensChicken extends EntityChicken {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> CHICKEN_GROWTH = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> CHICKEN_GAIN = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> CHICKEN_STRENGTH = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> LAY_PROGRESS = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
-    @SuppressWarnings("WeakerAccess")
-    public static final String TYPE_NBT = "Type";
+
+    private static final String TYPE_NBT = "Type";
+    private static final String CHICKEN_GROWTH_NBT = "Growth";
+    private static final String CHICKEN_GAIN_NBT = "Gain";
+    private static final String CHICKEN_STRENGTH_NBT = "Strength";
 
     public EntityChickensChicken(World worldIn) {
         super(worldIn);
+    }
+
+    public int getGain() {
+        return dataManager.get(CHICKEN_GAIN);
+    }
+
+    private void setGain(int gain) {
+        dataManager.set(CHICKEN_GAIN, gain);
+    }
+
+    public int getGrowth() {
+        return dataManager.get(CHICKEN_GROWTH);
+    }
+
+    private void setGrowth(int growth) {
+        dataManager.set(CHICKEN_GROWTH, growth);
+    }
+
+    public int getStrength() {
+        return dataManager.get(CHICKEN_STRENGTH);
+    }
+
+    private void setStrength(int strength) {
+        dataManager.set(CHICKEN_STRENGTH, strength);
     }
 
     ResourceLocation getTexture() {
@@ -65,8 +95,10 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public EntityChicken createChild(EntityAgeable ageable) {
+        EntityChickensChicken mateChicken = (EntityChickensChicken) ageable;
+
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        ChickensRegistryItem mateChickenDescription = ((EntityChickensChicken) ageable).getChickenDescription();
+        ChickensRegistryItem mateChickenDescription = mateChicken.getChickenDescription();
 
         ChickensRegistryItem childToBeBorn = ChickensRegistry.getRandomChild(chickenDescription, mateChickenDescription);
         if (childToBeBorn == null) {
@@ -75,7 +107,23 @@ public class EntityChickensChicken extends EntityChicken {
 
         EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
         newChicken.setChickenType(childToBeBorn.getId());
+
+        int thisStrength = getStrength();
+        int mateStrength = mateChicken.getStrength();
+        boolean sameType = chickenDescription.getId() == mateChickenDescription.getId() && childToBeBorn.getId() == chickenDescription.getId();
+        newChicken.setGrowth(calculateNewStat(thisStrength, mateStrength, getGrowth(), mateChicken.getGrowth(), sameType));
+        newChicken.setGain(calculateNewStat(thisStrength, mateStrength, getGain(), mateChicken.getGain(), sameType));
+        newChicken.setStrength(calculateNewStat(thisStrength, mateStrength, thisStrength, mateStrength, sameType));
+
         return newChicken;
+    }
+
+    private int calculateNewStat(int thisStrength, int mateStrength, int stat1, int stat2, boolean sameType) {
+        int mutation = sameType ? rand.nextInt(2) + 1 : 0;
+        int newStatValue = (stat1 * thisStrength + stat2 * mateStrength) / (thisStrength + mateStrength) + mutation;
+        if (newStatValue <= 1) return 1;
+        if (newStatValue >= 10) return 10;
+        return newStatValue;
     }
 
     @Override
@@ -90,8 +138,15 @@ public class EntityChickensChicken extends EntityChicken {
                 itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
 
                 if (itemToLay != null) {
-                    this.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-                    this.entityDropItem(chickenDescription.createLayItem(), 0);
+                    entityDropItem(chickenDescription.createLayItem(), 0);
+                    int gain = getGain();
+                    if (gain >= 5) {
+                        entityDropItem(chickenDescription.createLayItem(), 0);
+                    }
+                    if (gain >= 10) {
+                        entityDropItem(chickenDescription.createLayItem(), 0);
+                    }
+                    playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                 }
 
                 resetTimeUntilNextEgg();
@@ -110,14 +165,15 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private void updateLayProgress() {
-        dataManager.set(LAY_PROGRESS, timeUntilNextEgg/60/20/2);
+        dataManager.set(LAY_PROGRESS, timeUntilNextEgg / 60 / 20 / 2);
     }
 
     private void resetTimeUntilNextEgg() {
         ChickensRegistryItem chickenDescription = getChickenDescription();
-        int newTimeUntilNextEgg = (chickenDescription.getMinLayTime()
-                + rand.nextInt(chickenDescription.getMaxLayTime() - chickenDescription.getMinLayTime())) * 2;
-        setTimeUntilNextEgg(newTimeUntilNextEgg);
+        int newBaseTimeUntilNextEgg = (chickenDescription.getMinLayTime()
+                + rand.nextInt(chickenDescription.getMaxLayTime() - chickenDescription.getMinLayTime()));
+        int newTimeUntilNextEgg = (int) Math.max(1.0f, (newBaseTimeUntilNextEgg * (10.f - getGrowth() + 1.f)) / 10.f);
+        setTimeUntilNextEgg(newTimeUntilNextEgg * 2);
     }
 
     @Override
@@ -188,20 +244,33 @@ public class EntityChickensChicken extends EntityChicken {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(CHICKEN_TYPE, 0);
-        this.dataManager.register(LAY_PROGRESS, 0);
+        dataManager.register(CHICKEN_GROWTH, 1);
+        dataManager.register(CHICKEN_GAIN, 1);
+        dataManager.register(CHICKEN_STRENGTH, 1);
+        dataManager.register(LAY_PROGRESS, 0);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setInteger(TYPE_NBT, getChickenTypeInternal());
+        tagCompound.setInteger(CHICKEN_GROWTH_NBT, getGrowth());
+        tagCompound.setInteger(CHICKEN_GAIN_NBT, getGain());
+        tagCompound.setInteger(CHICKEN_STRENGTH_NBT, getStrength());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         setChickenTypeInternal(tagCompound.getInteger(TYPE_NBT));
+        setGrowth(getStatusValue(tagCompound, CHICKEN_GROWTH_NBT));
+        setGain(getStatusValue(tagCompound, CHICKEN_GAIN_NBT));
+        setStrength(getStatusValue(tagCompound, CHICKEN_STRENGTH_NBT));
         updateLayProgress();
+    }
+
+    private int getStatusValue(NBTTagCompound compound, String statusName) {
+        return compound.hasKey(statusName) ? compound.getInteger(statusName) : 1;
     }
 
     @Override
@@ -234,5 +303,22 @@ public class EntityChickensChicken extends EntityChicken {
         } else {
             this.dropItem(Items.CHICKEN, 1);
         }
+    }
+
+    @Override
+    public void setGrowingAge(int age) {
+        int childAge = -24000;
+        boolean resetToChild = age == childAge;
+        if (resetToChild) {
+            age = Math.min(-1, (childAge * (10 - getGrowth() + 1)) / 10);
+        }
+
+        int loveAge = 6000;
+        boolean resetLoveAfterBreeding = age == loveAge;
+        if (resetLoveAfterBreeding) {
+            age = Math.max(1, (loveAge * (10 - getGrowth() + 1)) / 10);
+        }
+
+        super.setGrowingAge(age);
     }
 }

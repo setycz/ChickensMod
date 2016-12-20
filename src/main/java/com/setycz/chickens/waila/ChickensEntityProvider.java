@@ -41,6 +41,10 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
 
         currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.tier", chicken.getTier()));
 
+        currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.growth", chicken.getGrowth()));
+        currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.gain", chicken.getGain()));
+        currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.strength", chicken.getStrength()));
+
         if (!chicken.isChild()) {
             int layProgress = chicken.getLayProgress();
             if (layProgress <= 0) {
