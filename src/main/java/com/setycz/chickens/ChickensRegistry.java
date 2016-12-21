@@ -44,6 +44,12 @@ public final class ChickensRegistry {
         return result;
     }
 
+    @Deprecated
+    @SuppressWarnings("unused")
+    public static Collection<ChickensRegistryItem> getAllItems() {
+        return items.values();
+    }
+
     private static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
         if (parent1.isEnabled()) {
