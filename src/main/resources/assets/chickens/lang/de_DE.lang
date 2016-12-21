@@ -1,7 +1,10 @@
 itemGroup.chickens=Chickens
 
+item.liquid_egg.tooltip=Es ist wie Einmal-Eimer.
 item.liquid_egg.water.name=Wasser-Ei
 item.liquid_egg.lava.name=Lava-Ei
+
+item.colored_egg.tooltip=Wirf es, um eine Chance zu haben, das Huhn zu erzeugen.
 
 entity.SmartChicken.name=Schlaues Huhn
 entity.WhiteChicken.name=Weißes Huhn
@@ -58,6 +61,7 @@ gui.drops=Hühnerdrops
 
 container.henhouse=Hühnerhaus
 tile.henhouse.name=Hühnerhaus
+tile.henhouse.tooltip=Es sammelt automatisch Sachen von Hühnern im 9x9x9 Radius, wenn mit Heuballen versehen.
 tile.henhouse_acacia.name=Akazienhühnerhaus
 tile.henhouse_birch.name=Birkenhühnerhaus
 tile.henhouse_dark_oak.name=Schwarzeichenhühnerhaus
