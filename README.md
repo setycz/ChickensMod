@@ -33,4 +33,9 @@ Affects the amount of items (eggs) the chicken will lay:
 
 ### Strength
 
-The ability for a chicken to carry its stats over to the children chickens, i.e. the chicken will most likely has stats based on the stronger parent.  
+The ability for a chicken to carry its stats over to the children chickens, i.e. the chicken will most likely has stats based on the stronger parent.
+  
+## Addon developers
+
+Please assign yourself some high random offset for your chicken IDs in order to avoid conflict with other contributors.
+E.g. 1 000 000 (your addon base ID) + 5 (your amazing fire breathing chicken) = 1 000 005.
