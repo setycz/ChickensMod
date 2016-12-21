@@ -1,7 +1,10 @@
 itemGroup.chickens=Chickens
 
+item.liquid_egg.tooltip=It's like one-off bucket.
 item.liquid_egg.water.name=Water Egg
 item.liquid_egg.lava.name=Lava Egg
+
+item.colored_egg.tooltip=Throw it to have a chance to spawn the chicken.
 
 entity.SmartChicken.name=Smart Chicken
 entity.WhiteChicken.name=White Chicken
@@ -57,6 +60,7 @@ gui.breeding.time=%1$s%%
 gui.drops=Chicken Drops
 
 container.henhouse=Henhouse
+tile.henhouse.tooltip=It will automatically collect items from chickens in 9x9x9 radius when provided with hay bale.
 tile.henhouse.name=Henhouse
 tile.henhouse_acacia.name=Acacia Henhouse
 tile.henhouse_birch.name=Birch Henhouse

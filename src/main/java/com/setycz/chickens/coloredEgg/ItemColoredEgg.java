@@ -29,6 +29,12 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        tooltip.add(I18n.translateToLocal("item.colored_egg.tooltip"));
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack stack) {
         EnumDyeColor color = EnumDyeColor.byDyeDamage(stack.getMetadata());
         return I18n.translateToLocal(getUnlocalizedName() + "." + color.getUnlocalizedName() + ".name");

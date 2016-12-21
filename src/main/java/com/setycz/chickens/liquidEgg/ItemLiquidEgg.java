@@ -33,6 +33,12 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        tooltip.add(I18n.translateToLocal("item.liquid_egg.tooltip"));
+    }
+
+    @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
         for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
             subItems.add(new ItemStack(itemIn, 1, liquid.getId()));
