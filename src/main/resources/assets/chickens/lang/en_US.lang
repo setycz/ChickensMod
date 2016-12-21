@@ -3,6 +3,9 @@ itemGroup.chickens=Chickens
 item.liquid_egg.tooltip=It's like one-off bucket.
 item.liquid_egg.water.name=Water Egg
 item.liquid_egg.lava.name=Lava Egg
+item.analyzer.name=Chicken Analyzer
+item.analyzer.tooltip1=Use it on chickens to determine their stats.
+item.analyzer.tooltip2= - "Which day of the week do chickens hate most? Fry-day!"
 
 item.colored_egg.tooltip=Throw it to have a chance to spawn the chicken.
 

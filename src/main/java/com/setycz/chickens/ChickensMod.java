@@ -1,5 +1,6 @@
 package com.setycz.chickens;
 
+import com.setycz.chickens.analyzer.ItemAnalyzer;
 import com.setycz.chickens.chicken.ChickenNetherPopulateHandler;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
@@ -75,6 +76,7 @@ public class ChickensMod {
     public static final Item spawnEgg = new ItemSpawnEgg().setRegistryName("spawn_egg").setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setRegistryName("colored_egg").setUnlocalizedName("colored_egg").setCreativeTab(tab);
     public static final Item liquidEgg = new ItemLiquidEgg().setRegistryName("liquid_egg").setUnlocalizedName("liquid_egg").setCreativeTab(tab);
+    public static final Item analyzer = new ItemAnalyzer().setRegistryName("analyzer").setUnlocalizedName("analyzer").setCreativeTab(tab);
 
     public static final Block henhouse = new BlockHenhouse().setRegistryName("henhouse").setUnlocalizedName("henhouse").setCreativeTab(tab);
     public static final Block henhouse_acacia = new BlockHenhouse().setRegistryName("henhouse_acacia").setUnlocalizedName("henhouse_acacia").setCreativeTab(tab);
@@ -100,6 +102,7 @@ public class ChickensMod {
         GameRegistry.register(spawnEgg);
 
         GameRegistry.register(liquidEgg);
+        GameRegistry.register(analyzer);
 
         GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
         registerBlock(henhouse);
@@ -241,6 +244,11 @@ public class ChickensMod {
         for (LiquidEggRegistryItem liquidEgg : LiquidEggRegistry.getAll()) {
             proxy.registerLiquidEgg(liquidEgg);
         }
+
+        GameRegistry.addShapelessRecipe(
+                new ItemStack(ChickensMod.analyzer, 1),
+                new ItemStack(Items.EGG), new ItemStack(Items.COMPASS)
+        );
 
         registerHenhouse(henhouse_acacia, BlockPlanks.EnumType.ACACIA);
         registerHenhouse(henhouse_birch, BlockPlanks.EnumType.BIRCH);

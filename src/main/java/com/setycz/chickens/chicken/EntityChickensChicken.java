@@ -32,18 +32,28 @@ import java.util.List;
  */
 public class EntityChickensChicken extends EntityChicken {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> CHICKEN_STATS_ANALYZED = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> CHICKEN_GROWTH = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CHICKEN_GAIN = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CHICKEN_STRENGTH = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> LAY_PROGRESS = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
 
     private static final String TYPE_NBT = "Type";
+    private static final String CHICKEN_STATS_ANALYZED_NBT = "Analyzed";
     private static final String CHICKEN_GROWTH_NBT = "Growth";
     private static final String CHICKEN_GAIN_NBT = "Gain";
     private static final String CHICKEN_STRENGTH_NBT = "Strength";
 
     public EntityChickensChicken(World worldIn) {
         super(worldIn);
+    }
+
+    public boolean getStatsAnalyzed() {
+        return dataManager.get(CHICKEN_STATS_ANALYZED);
+    }
+
+    public void setStatsAnalyzed(boolean statsAnalyzed) {
+        dataManager.set(CHICKEN_STATS_ANALYZED, statsAnalyzed);
     }
 
     public int getGain() {
@@ -248,12 +258,14 @@ public class EntityChickensChicken extends EntityChicken {
         dataManager.register(CHICKEN_GAIN, 1);
         dataManager.register(CHICKEN_STRENGTH, 1);
         dataManager.register(LAY_PROGRESS, 0);
+        dataManager.register(CHICKEN_STATS_ANALYZED, false);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setInteger(TYPE_NBT, getChickenTypeInternal());
+        tagCompound.setBoolean(CHICKEN_STATS_ANALYZED_NBT, getStatsAnalyzed());
         tagCompound.setInteger(CHICKEN_GROWTH_NBT, getGrowth());
         tagCompound.setInteger(CHICKEN_GAIN_NBT, getGain());
         tagCompound.setInteger(CHICKEN_STRENGTH_NBT, getStrength());
@@ -263,6 +275,7 @@ public class EntityChickensChicken extends EntityChicken {
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         setChickenTypeInternal(tagCompound.getInteger(TYPE_NBT));
+        setStatsAnalyzed(tagCompound.getBoolean(CHICKEN_STATS_ANALYZED_NBT));
         setGrowth(getStatusValue(tagCompound, CHICKEN_GROWTH_NBT));
         setGain(getStatusValue(tagCompound, CHICKEN_GAIN_NBT));
         setStrength(getStatusValue(tagCompound, CHICKEN_STRENGTH_NBT));

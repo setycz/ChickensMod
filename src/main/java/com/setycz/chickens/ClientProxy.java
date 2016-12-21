@@ -38,6 +38,8 @@ public class ClientProxy extends CommonProxy {
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_jungle), 0);
         //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_spruce), 0);
+
+        registerItemModel(ChickensMod.analyzer, 0);
     }
 
     private void registerItemModel(Item item, int meta) {
