@@ -58,8 +58,7 @@ public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider
             return null;
         }
 
-        container.stackSize--;
-        return fluidStack;
+        return drain(resource.amount, doDrain);
     }
 
     private FluidStack getFluid() {
