@@ -1,10 +1,10 @@
 itemGroup.chickens=Chickens
 
-item.liquid_egg.tooltip=Es ist wie Einmal-Eimer.
+item.liquid_egg.tooltip=Es ist wie ein Einwegeimer.
 item.liquid_egg.water.name=Wasser-Ei
 item.liquid_egg.lava.name=Lava-Ei
 
-item.colored_egg.tooltip=Wirf es, um eine Chance zu haben, das Huhn zu erzeugen.
+item.colored_egg.tooltip=Wirf es, um eine Chance zu haben, ein Huhn zu erzeugen.
 
 entity.SmartChicken.name=Schlaues Huhn
 entity.WhiteChicken.name=Weißes Huhn
@@ -48,10 +48,10 @@ entity.GlassChicken.name=Glashuhn
 entity.LeatherChicken.name=Lederhuhn
 
 entity.ChickensChicken.tier=Stufe: %1$s
-entity.ChickensChicken.layProgress=Folgenden Ei für 5 %1$smin.
-entity.ChickensChicken.nextEggSoon=Folgenden Ei für 5 <1min.
+entity.ChickensChicken.layProgress=Nächstes Ei in ~%1$smin.
+entity.ChickensChicken.nextEggSoon=Nächstes Ei in <1min.
 entity.ChickensChicken.growth=Wachstum: %1$s
-entity.ChickensChicken.gain=Gewinnen: %1$s
+entity.ChickensChicken.gain=Ertrag: %1$s
 entity.ChickensChicken.strength=Stärke: %1$s
 gui.laying=Legt Ei
 gui.laying.time=%1$s-%2$smin.
@@ -61,7 +61,7 @@ gui.drops=Hühnerdrops
 
 container.henhouse=Hühnerhaus
 tile.henhouse.name=Hühnerhaus
-tile.henhouse.tooltip=Es sammelt automatisch Sachen von Hühnern im 9x9x9 Radius, wenn mit Heuballen versehen.
+tile.henhouse.tooltip=Sammelt automatisch Items von Hühnern in einem 9x9x9-Radius, wenn es mit einem Heuballen ausgestattet wird.
 tile.henhouse_acacia.name=Akazienhühnerhaus
 tile.henhouse_birch.name=Birkenhühnerhaus
 tile.henhouse_dark_oak.name=Schwarzeichenhühnerhaus
