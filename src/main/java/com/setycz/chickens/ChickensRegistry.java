@@ -22,7 +22,7 @@ public final class ChickensRegistry {
     private static void validate(ChickensRegistryItem entity) {
         for (ChickensRegistryItem item : items.values()) {
             if (entity.getId() == item.getId()) {
-                throw new RuntimeException("Duplicated ID!");
+                throw new RuntimeException("Duplicated ID [" + entity.getId() + "] of [" + entity.getEntityName() + "] with [" + item.getEntityName() + "]!");
             }
             if (entity.getEntityName().compareToIgnoreCase(item.getEntityName()) == 0) {
                 throw new RuntimeException("Duplicated name!");
