@@ -1,5 +1,6 @@
 package com.setycz.chickens.waila;
 
+import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
@@ -41,7 +42,7 @@ public class ChickensEntityProvider implements IWailaEntityProvider {
 
         currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.tier", chicken.getTier()));
 
-        if (chicken.getStatsAnalyzed()) {
+        if (chicken.getStatsAnalyzed() || ChickensMod.instance.getAlwaysShowStats()) {
             currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.growth", chicken.getGrowth()));
             currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.gain", chicken.getGain()));
             currenttip.add(I18n.translateToLocalFormatted("entity.ChickensChicken.strength", chicken.getStrength()));

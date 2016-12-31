@@ -72,6 +72,7 @@ public class ChickensMod {
     private int minBroodSize = 3;
     private int maxBroodSize = 5;
     private float netherSpawnChanceMultiplier = 1.0f;
+    private boolean alwaysShowStats = false;
 
     public static final Item spawnEgg = new ItemSpawnEgg().setRegistryName("spawn_egg").setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setRegistryName("colored_egg").setUnlocalizedName("colored_egg").setCreativeTab(tab);
@@ -91,6 +92,10 @@ public class ChickensMod {
     @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
+
+    public boolean getAlwaysShowStats() {
+        return alwaysShowStats;
+    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -146,6 +151,7 @@ public class ChickensMod {
         minBroodSize = configuration.getInt("minBroodSize", "general", 3, 1, Integer.MAX_VALUE, "Minimal brood size");
         maxBroodSize = configuration.getInt("maxBroodSize", "general", 5, 2, Integer.MAX_VALUE, "Maximal brood size, must be greater than the minimal size");
         netherSpawnChanceMultiplier = configuration.getFloat("netherSpawnChanceMultiplier", "general", 1.0f, 0.f, Float.MAX_VALUE, "Nether chicken spawn chance multiplier, e.g. 0=no initial spawn, 2=two times more spawn rate");
+        alwaysShowStats = configuration.getBoolean("alwaysShowStats", "general", false, "Stats will be always shown in WAILA without the need to analyze chickens first when enabled.");
 
         Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
         for (ChickensRegistryItem chicken : allChickens) {
