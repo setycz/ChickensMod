@@ -1,4 +1,15 @@
-HOTFIX:
-- compatibility for MoreChickens:
-        net.minecraftforge.fml.common.LoaderExceptionModCrash: Caught exception from More Chickens (morechickens)
-        Caused by: java.lang.NoSuchMethodError: com.setycz.chickens.ChickensRegistry.getAllItems()Ljava/util/Collection;
+Main improvements:
+* analyzer added
+** a new item which can analyze chicken stats and other properties
+** stats are not shown in WAILA until chicken was analyzed (this can ve overwritten in the configuration file)
+** solves problems in modpacks without WAILA where stats could not be determined
+* chicken for all dyes added
+** you can breed color chickens to create new color
+** or you can craft a color eggs and throw them to have a chance to spawn the chicken
+
+Bugfixes:
+* EnderIO tank overflow caused by liquid eggs fixed
+** tank capacity is respected
+
+Minor improvements:
+*
