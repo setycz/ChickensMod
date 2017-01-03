@@ -388,7 +388,7 @@ public class ChickensMod {
         chickens.add(grayChicken);
         chickens.add(createDyeChicken(EnumDyeColor.CYAN, "CyanChicken").setParentsNew(blueChicken, greenChicken));
 
-        chickens.add(createDyeChicken(EnumDyeColor.SILVER, "SilverChicken").setParentsNew(grayChicken, whiteChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.SILVER, "SilverDyeChicken").setParentsNew(grayChicken, whiteChicken));
         chickens.add(createDyeChicken(EnumDyeColor.MAGENTA, "MagentaChicken").setParentsNew(purpleChicken, pinkChicken));
 
         // base chickens

@@ -4,7 +4,8 @@ Main improvements:
 Bugfixes:
 * Compatibility with More Chickens:
     Caught exception from More Chickens (morechickens)
-        Caused by: java.lang.NoSuchMethodError: com.setycz.chickens.ChickensRegistryItem.setParents
+        Caused by: java.lang.RuntimeException: Duplicated name!
 
 Minor improvements:
-*
+* DE translation updated
+* log messages improved
