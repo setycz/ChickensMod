@@ -170,7 +170,7 @@ public class ChickensMod {
             ChickensRegistryItem parent1 = getChickenParent(configuration, "parent1", allChickens, chicken, chicken.getParent1());
             ChickensRegistryItem parent2 = getChickenParent(configuration, "parent2", allChickens, chicken, chicken.getParent2());
             if (parent1 != null && parent2 != null) {
-                chicken.setParents(parent1, parent2);
+                chicken.setParentsNew(parent1, parent2);
             } else {
                 chicken.setNoParents();
             }
@@ -377,19 +377,19 @@ public class ChickensMod {
         ChickensRegistryItem blackChicken = createDyeChicken(EnumDyeColor.BLACK, "BlackChicken");
         chickens.add(blackChicken);
 
-        ChickensRegistryItem pinkChicken = createDyeChicken(EnumDyeColor.PINK, "PinkChicken").setParents(redChicken, whiteChicken);
+        ChickensRegistryItem pinkChicken = createDyeChicken(EnumDyeColor.PINK, "PinkChicken").setParentsNew(redChicken, whiteChicken);
         chickens.add(pinkChicken);
-        ChickensRegistryItem purpleChicken = createDyeChicken(EnumDyeColor.PURPLE, "PurpleChicken").setParents(blueChicken, redChicken);
+        ChickensRegistryItem purpleChicken = createDyeChicken(EnumDyeColor.PURPLE, "PurpleChicken").setParentsNew(blueChicken, redChicken);
         chickens.add(purpleChicken);
-        chickens.add(createDyeChicken(EnumDyeColor.ORANGE, "OrangeChicken").setParents(redChicken, yellowChicken));
-        chickens.add(createDyeChicken(EnumDyeColor.LIGHT_BLUE, "LightBlueChicken").setParents(whiteChicken, blueChicken));
-        chickens.add(createDyeChicken(EnumDyeColor.LIME, "LimeChicken").setParents(greenChicken, whiteChicken));
-        ChickensRegistryItem grayChicken = createDyeChicken(EnumDyeColor.GRAY, "GrayChicken").setParents(blackChicken, whiteChicken);
+        chickens.add(createDyeChicken(EnumDyeColor.ORANGE, "OrangeChicken").setParentsNew(redChicken, yellowChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.LIGHT_BLUE, "LightBlueChicken").setParentsNew(whiteChicken, blueChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.LIME, "LimeChicken").setParentsNew(greenChicken, whiteChicken));
+        ChickensRegistryItem grayChicken = createDyeChicken(EnumDyeColor.GRAY, "GrayChicken").setParentsNew(blackChicken, whiteChicken);
         chickens.add(grayChicken);
-        chickens.add(createDyeChicken(EnumDyeColor.CYAN, "CyanChicken").setParents(blueChicken, greenChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.CYAN, "CyanChicken").setParentsNew(blueChicken, greenChicken));
 
-        chickens.add(createDyeChicken(EnumDyeColor.SILVER, "SilverChicken").setParents(grayChicken, whiteChicken));
-        chickens.add(createDyeChicken(EnumDyeColor.MAGENTA, "MagentaChicken").setParents(purpleChicken, pinkChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.SILVER, "SilverChicken").setParentsNew(grayChicken, whiteChicken));
+        chickens.add(createDyeChicken(EnumDyeColor.MAGENTA, "MagentaChicken").setParentsNew(purpleChicken, pinkChicken));
 
         // base chickens
         ChickensRegistryItem flintChicken = new ChickensRegistryItem(
@@ -469,7 +469,7 @@ public class ChickensMod {
                 flintChicken, logChicken);
         chickens.add(coalChicken);
 
-        ChickensRegistryItem brownChicken = createDyeChicken(EnumDyeColor.BROWN, "BrownChicken").setParents(redChicken, greenChicken);
+        ChickensRegistryItem brownChicken = createDyeChicken(EnumDyeColor.BROWN, "BrownChicken").setParentsNew(redChicken, greenChicken);
         chickens.add(brownChicken);
 
         // tier 3

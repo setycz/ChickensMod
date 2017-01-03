@@ -158,9 +158,16 @@ public class ChickensRegistryItem {
         parent2 = null;
     }
 
-    public ChickensRegistryItem setParents(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+    public ChickensRegistryItem setParentsNew(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         this.parent1 = parent1;
         this.parent2 = parent2;
         return this;
+    }
+
+    @Deprecated
+    @SuppressWarnings("UnusedReturnValue")
+    public void setParents(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
+        this.parent1 = parent1;
+        this.parent2 = parent2;
     }
 }
