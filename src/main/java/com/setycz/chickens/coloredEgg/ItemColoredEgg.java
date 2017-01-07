@@ -85,7 +85,7 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 
-    private int getChickenType(ItemStack itemStack) {
+    public int getChickenType(ItemStack itemStack) {
         ChickensRegistryItem chicken = ChickensRegistry.findDyeChicken(itemStack.getMetadata());
         if (chicken == null) {
             return -1;

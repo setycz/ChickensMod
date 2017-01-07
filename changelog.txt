@@ -1,11 +1,8 @@
 Main improvements:
-*
+* color eggs are dispensable now
 
 Bugfixes:
-* Compatibility with More Chickens:
-    Caught exception from More Chickens (morechickens)
-        Caused by: java.lang.RuntimeException: Duplicated name!
+*
 
 Minor improvements:
-* DE translation updated
-* log messages improved
+*

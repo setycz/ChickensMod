@@ -26,6 +26,10 @@ public class EntityColoredEgg extends EntityEgg {
         super(worldIn, throwerIn);
     }
 
+    public EntityColoredEgg(World worldIn, double x, double y, double z) {
+        super(worldIn, x, y, z);
+    }
+
     public void setChickenType(int type) {
         this.dataManager.set(CHICKEN_TYPE, type);
     }
