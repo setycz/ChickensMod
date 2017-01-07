@@ -3,6 +3,7 @@ Main improvements:
 
 Minor improvements:
 * color chicken spawn by throwing an egg recipes shown in JEI
+* Henhouse in JEI so its clear that dirt blocks can be produced here
 
 Bugfixes:
 *
