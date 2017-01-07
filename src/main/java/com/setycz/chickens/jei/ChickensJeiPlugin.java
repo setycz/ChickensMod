@@ -12,6 +12,9 @@ import com.setycz.chickens.jei.drop.DropRecipeWrapper;
 import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import com.setycz.chickens.jei.laying.LayingRecipeHandler;
 import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
+import com.setycz.chickens.jei.throwing.ThrowingRecipeCategory;
+import com.setycz.chickens.jei.throwing.ThrowingRecipeHandler;
+import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.item.ItemStack;
@@ -41,16 +44,19 @@ public class ChickensJeiPlugin implements IModPlugin {
         registry.addRecipeCategories(
                 new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new BreedingRecipeCategory(jeiHelpers.getGuiHelper()),
-                new DropRecipeCategory(jeiHelpers.getGuiHelper())
+                new DropRecipeCategory(jeiHelpers.getGuiHelper()),
+                new ThrowingRecipeCategory(jeiHelpers.getGuiHelper())
         );
         registry.addRecipeHandlers(
                 new LayingRecipeHandler(),
                 new BreedingRecipeHandler(),
-                new DropRecipeHandler()
+                new DropRecipeHandler(),
+                new ThrowingRecipeHandler()
         );
         registry.addRecipes(getLayingRecipes());
         registry.addRecipes(getBreedingRecipes());
         registry.addRecipes(getDropRecipes());
+        registry.addRecipes(getThrowRecipes());
     }
 
     @Override
@@ -92,6 +98,18 @@ public class ChickensJeiPlugin implements IModPlugin {
                         new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
                         ChickensRegistry.getChildChance(chicken)
                 ));
+            }
+        }
+        return result;
+    }
+
+    private List<ThrowingRecipeWrapper> getThrowRecipes() {
+        List<ThrowingRecipeWrapper> result = new ArrayList<ThrowingRecipeWrapper>();
+        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+            if (chicken.isDye()) {
+                result.add(new ThrowingRecipeWrapper(
+                        new ItemStack(ChickensMod.coloredEgg, 1, chicken.getDyeMetadata()),
+                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId())));
             }
         }
         return result;

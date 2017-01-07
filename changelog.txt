@@ -1,8 +1,9 @@
 Main improvements:
 * color eggs are dispensable now
 
+Minor improvements:
+* color chicken spawn by throwing an egg recipes shown in JEI
+
 Bugfixes:
 *
 
-Minor improvements:
-*
