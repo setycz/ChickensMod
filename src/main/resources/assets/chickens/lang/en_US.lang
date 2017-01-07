@@ -80,6 +80,7 @@ gui.breeding=Chicken Breeding
 gui.breeding.time=%1$s%%
 gui.drops=Chicken Drops
 gui.throws=Color Egg Throwing
+gui.henhousing=Henhouse Byproduct
 
 container.henhouse=Henhouse
 tile.henhouse.tooltip=It will automatically collect items from chickens in 9x9x9 radius when provided with hay bale.

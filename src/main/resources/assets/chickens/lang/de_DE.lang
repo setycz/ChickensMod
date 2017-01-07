@@ -80,6 +80,7 @@ gui.breeding=Hühnerzucht
 gui.breeding.time=%1$s%%
 gui.drops=Hühnerdrops
 gui.throws=Farbe Egg Werfen
+gui.henhousing=Henhouse Nebenprodukt
 
 container.henhouse=Hühnerhaus
 tile.henhouse.name=Hühnerhaus

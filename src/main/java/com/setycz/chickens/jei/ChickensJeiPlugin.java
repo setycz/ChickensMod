@@ -9,6 +9,9 @@ import com.setycz.chickens.jei.breeding.BreedingRecipeWrapper;
 import com.setycz.chickens.jei.drop.DropRecipeCategory;
 import com.setycz.chickens.jei.drop.DropRecipeHandler;
 import com.setycz.chickens.jei.drop.DropRecipeWrapper;
+import com.setycz.chickens.jei.henhousing.HenhousingRecipeCategory;
+import com.setycz.chickens.jei.henhousing.HenhousingRecipeHandler;
+import com.setycz.chickens.jei.henhousing.HenhousingRecipeWrapper;
 import com.setycz.chickens.jei.laying.LayingRecipeCategory;
 import com.setycz.chickens.jei.laying.LayingRecipeHandler;
 import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
@@ -17,6 +20,7 @@ import com.setycz.chickens.jei.throwing.ThrowingRecipeHandler;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -45,18 +49,21 @@ public class ChickensJeiPlugin implements IModPlugin {
                 new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new BreedingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new DropRecipeCategory(jeiHelpers.getGuiHelper()),
-                new ThrowingRecipeCategory(jeiHelpers.getGuiHelper())
+                new ThrowingRecipeCategory(jeiHelpers.getGuiHelper()),
+                new HenhousingRecipeCategory(jeiHelpers.getGuiHelper())
         );
         registry.addRecipeHandlers(
                 new LayingRecipeHandler(),
                 new BreedingRecipeHandler(),
                 new DropRecipeHandler(),
-                new ThrowingRecipeHandler()
+                new ThrowingRecipeHandler(),
+                new HenhousingRecipeHandler()
         );
         registry.addRecipes(getLayingRecipes());
         registry.addRecipes(getBreedingRecipes());
         registry.addRecipes(getDropRecipes());
         registry.addRecipes(getThrowRecipes());
+        registry.addRecipes(getHenhouseRecipes());
     }
 
     @Override
@@ -113,5 +120,11 @@ public class ChickensJeiPlugin implements IModPlugin {
             }
         }
         return result;
+    }
+
+    private List<HenhousingRecipeWrapper> getHenhouseRecipes() {
+        List<HenhousingRecipeWrapper> henhouseRecipes = new ArrayList<HenhousingRecipeWrapper>();
+        henhouseRecipes.add(new HenhousingRecipeWrapper(new ItemStack(Blocks.HAY_BLOCK), new ItemStack(Blocks.DIRT)));
+        return henhouseRecipes;
     }
 }
