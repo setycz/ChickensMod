@@ -2,8 +2,8 @@ Main improvements:
 *
 
 Minor improvements:
-* API for addons enhanced
+*
 
 Bugfixes:
-*
+* short lay time fixed
 
