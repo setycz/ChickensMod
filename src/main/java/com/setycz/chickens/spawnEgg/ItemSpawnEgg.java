@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -51,7 +52,7 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             BlockPos correlatedPos = correctPosition(pos, facing);
-            activate(worldIn, correlatedPos, stack.getMetadata());
+            activate(stack, worldIn, correlatedPos, stack.getMetadata());
             if (!playerIn.capabilities.isCreativeMode) {
                 stack.stackSize--;
             }
@@ -71,17 +72,23 @@ public class ItemSpawnEgg extends Item implements IColorSource {
         return new BlockPos(posX, posY, posZ);
     }
 
-    private void activate(World worldIn, BlockPos pos, int metadata) {
+    private void activate(ItemStack stack, World worldIn, BlockPos pos, int metadata) {
         String entityName = ChickensMod.MODID + "." + ChickensMod.CHICKEN;
         EntityChickensChicken entity = (EntityChickensChicken) EntityList.createEntityByName(entityName, worldIn);
         if (entity == null) {
             return;
         }
-        if (!worldIn.isRemote) {
-            entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            entity.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
-            entity.setChickenType(metadata);
-            worldIn.spawnEntityInWorld(entity);
+        entity.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        entity.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
+        entity.setChickenType(metadata);
+
+        NBTTagCompound stackNBT = stack.getTagCompound();
+        if (stackNBT != null) {
+            NBTTagCompound entityNBT = entity.writeToNBT(new NBTTagCompound());
+            entityNBT.merge(stackNBT);
+            entity.readEntityFromNBT(entityNBT);
         }
+
+        worldIn.spawnEntityInWorld(entity);
     }
 }

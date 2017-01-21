@@ -34,6 +34,14 @@ Affects the amount of items (eggs) the chicken will lay:
 ### Strength
 
 The ability for a chicken to carry its stats over to the children chickens, i.e. the chicken will most likely has stats based on the stronger parent.
+
+## Tips
+
+You can spawn chicken with desired stats by command:
+```
+/give @p chickens:spawn_egg 1 201 {Analyzed:1,Strength:10,Gain:10,Growth:10}
+```
+where ```201``` is chicken ID.
   
 ## Addon developers
 
