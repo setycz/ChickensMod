@@ -26,6 +26,7 @@ import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -118,18 +119,34 @@ public class EntityChickensChicken extends EntityChicken {
         EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
         newChicken.setChickenType(childToBeBorn.getId());
 
-        int thisStrength = getStrength();
-        int mateStrength = mateChicken.getStrength();
-        boolean sameType = chickenDescription.getId() == mateChickenDescription.getId() && childToBeBorn.getId() == chickenDescription.getId();
-        newChicken.setGrowth(calculateNewStat(thisStrength, mateStrength, getGrowth(), mateChicken.getGrowth(), sameType));
-        newChicken.setGain(calculateNewStat(thisStrength, mateStrength, getGain(), mateChicken.getGain(), sameType));
-        newChicken.setStrength(calculateNewStat(thisStrength, mateStrength, thisStrength, mateStrength, sameType));
+        boolean mutatingStats = chickenDescription.getId() == mateChickenDescription.getId() && childToBeBorn.getId() == chickenDescription.getId();
+        if (mutatingStats) {
+            increaseStats(newChicken, this, mateChicken, rand);
+        } else if (chickenDescription.getId() == childToBeBorn.getId()) {
+            inheritStats(newChicken, this);
+        } else if (mateChickenDescription.getId() == childToBeBorn.getId()) {
+            inheritStats(newChicken, mateChicken);
+        }
 
         return newChicken;
     }
 
-    private int calculateNewStat(int thisStrength, int mateStrength, int stat1, int stat2, boolean sameType) {
-        int mutation = sameType ? rand.nextInt(2) + 1 : 0;
+    private static void inheritStats(EntityChickensChicken newChicken, EntityChickensChicken parent) {
+        newChicken.setGrowth(parent.getGrowth());
+        newChicken.setGain(parent.getGain());
+        newChicken.setStrength(parent.getStrength());
+    }
+
+    private static void increaseStats(EntityChickensChicken newChicken, EntityChickensChicken parent1, EntityChickensChicken parent2, Random rand) {
+        int parent1Strength = parent1.getStrength();
+        int parent2Strength = parent2.getStrength();
+        newChicken.setGrowth(calculateNewStat(parent1Strength, parent2Strength, parent1.getGrowth(), parent2.getGrowth(), rand));
+        newChicken.setGain(calculateNewStat(parent1Strength, parent2Strength, parent2.getGain(), parent2.getGain(), rand));
+        newChicken.setStrength(calculateNewStat(parent1Strength, parent2Strength, parent1Strength, parent2Strength, rand));
+    }
+
+    private static int calculateNewStat(int thisStrength, int mateStrength, int stat1, int stat2, Random rand) {
+        int mutation = rand.nextInt(2) + 1;
         int newStatValue = (stat1 * thisStrength + stat2 * mateStrength) / (thisStrength + mateStrength) + mutation;
         if (newStatValue <= 1) return 1;
         if (newStatValue >= 10) return 10;

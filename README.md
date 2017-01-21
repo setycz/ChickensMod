@@ -16,7 +16,7 @@ TBD
 
 Chickens have different stats which affects their abilities. 
 Every stat is on scale from 1 (the lowest) to 10 (the highest).
-Naturally spawned chickens always start with 1 and you can increase stats by [breeding](#crossbreeding) them.
+Naturally spawned chickens always start with 1 and you can increase stats by [breeding](#crossbreeding) them but only if it has parents of the same breed.
 Please make a note, that stats are not-increased when a new breed is created.
 
 ### Growth

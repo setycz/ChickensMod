@@ -1,9 +1,11 @@
 Main improvements:
-*
+* stats are more challenging
+** every new breed starts with 1,1,1
+** stats are increased only if it has parents of the same breed
 
 Minor improvements:
-*
+* spawn egg applies NBT to entities
 
 Bugfixes:
-* short lay time fixed
+*
 
