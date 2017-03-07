@@ -57,7 +57,7 @@ public class CommonProxy {
             if (!itemLiquidEgg.tryPlaceContainedLiquid(null, source.getWorld(), blockpos, liquid)) {
                 return super.dispenseStack(source, stack);
             }
-            stack.stackSize--;
+            stack.shrink(1);
             return stack;
         }
     }

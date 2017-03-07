@@ -16,12 +16,6 @@ public class HenhousingRecipeHandler implements IRecipeHandler<HenhousingRecipeW
     }
 
     @Override
-    @Deprecated
-    public String getRecipeCategoryUid() {
-        return HenhousingRecipeCategory.UID;
-    }
-
-    @Override
     public String getRecipeCategoryUid(HenhousingRecipeWrapper recipe) {
         return HenhousingRecipeCategory.UID;
     }

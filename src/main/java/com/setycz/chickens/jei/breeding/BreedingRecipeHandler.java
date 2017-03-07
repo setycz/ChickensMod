@@ -16,12 +16,6 @@ public class BreedingRecipeHandler implements IRecipeHandler<BreedingRecipeWrapp
     }
 
     @Override
-    @Deprecated
-    public String getRecipeCategoryUid() {
-        return BreedingRecipeCategory.UID;
-    }
-
-    @Override
     public String getRecipeCategoryUid(BreedingRecipeWrapper recipe) {
         return BreedingRecipeCategory.UID;
     }

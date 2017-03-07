@@ -16,12 +16,6 @@ public class LayingRecipeHandler implements IRecipeHandler<LayingRecipeWrapper> 
     }
 
     @Override
-    @Deprecated
-    public String getRecipeCategoryUid() {
-        return LayingRecipeCategory.UID;
-    }
-
-    @Override
     public String getRecipeCategoryUid(LayingRecipeWrapper recipe) {
         return LayingRecipeCategory.UID;
     }

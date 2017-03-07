@@ -37,7 +37,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161111"
+    mappings = "snapshot_20170306"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 	
 	replace '@VERSION@', project.version
@@ -46,7 +46,7 @@ minecraft {
 
 repositories {
     mavenCentral()
-    maven { url "http://mobiusstrip.eu/maven" }
+    maven { url "http://tehnut.info/maven" }
     maven { url = "http://chickenbones.net/maven/" }
     maven { url "http://dvs1.progwml6.com/files/maven" }
 }
@@ -73,8 +73,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.6.387"
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "mezz.jei:jei_1.11.2:4.2.8.242"
+    compile "mcp.mobius.waila:Hwyla:1.8.10-B23_1.11"
 }
 
 processResources
@@ -98,14 +98,14 @@ processResources
 }
 
 curseforge {
-	apiKey = curse_token
+	apiKey = project.hasProperty('curse_token') ? project.getProperty('curse_token') : ''
 	project {
-		id = curse_project_id
+		id = project.hasProperty('curse_project_id') ? project.getProperty('curse_project_id') : ''
 		changelog = file('changelog.txt')
 		releaseType = project.releaseType
-		addGameVersion '1.10.2'
+		addGameVersion '1.11.2'
 		relations {
-			optionalLibrary 'waila'
+			optionalLibrary 'hwyla'
 			optionalLibrary 'just-enough-items-jei'
 		}
 	}

@@ -45,30 +45,30 @@ public class ContainerHenhouse extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tileEntityHenhouse.isUseableByPlayer(playerIn);
+        return tileEntityHenhouse.isUsableByPlayer(playerIn);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemStack1 = slot.getStack();
-            assert itemStack1 != null;
+            assert !itemStack1.isEmpty();
             itemstack = itemStack1.copy();
 
             if (index < this.tileEntityHenhouse.getSizeInventory()) {
                 if (!this.mergeItemStack(itemStack1, this.tileEntityHenhouse.getSizeInventory(), this.inventorySlots.size(), true)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(itemStack1, 0, this.tileEntityHenhouse.getSizeInventory(), false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (itemStack1.stackSize == 0) {
-                slot.putStack(null);
+            if (itemStack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }

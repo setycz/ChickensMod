@@ -62,7 +62,7 @@ public class ChickenNetherPopulateHandler {
             entity.setLocationAndAngles(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0.0F);
             livingData = entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), livingData);
             if (entity.isNotColliding()) {
-                world.spawnEntityInWorld(entity);
+                world.spawnEntity(entity);
             }
         }
         return livingData;

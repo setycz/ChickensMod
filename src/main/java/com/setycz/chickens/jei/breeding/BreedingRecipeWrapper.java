@@ -5,6 +5,8 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,8 +35,9 @@ public class BreedingRecipeWrapper extends BlankRecipeWrapper {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         String message = Translator.translateToLocalFormatted("gui.breeding.time", chance);
-        minecraft.fontRendererObj.drawString(message, 32, 25, Color.gray.getRGB());
+        minecraft.fontRenderer.drawString(message, 32, 25, Color.gray.getRGB());
     }
 }

@@ -22,6 +22,10 @@ public class EntityColoredEgg extends EntityEgg {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityColoredEgg.class, DataSerializers.VARINT);
     public static final String TYPE_NBT = "Type";
 
+    public EntityColoredEgg(World worldIn) {
+        super(worldIn);
+    }
+
     public EntityColoredEgg(World worldIn, EntityLivingBase throwerIn) {
         super(worldIn, throwerIn);
     }
@@ -63,7 +67,7 @@ public class EntityColoredEgg extends EntityEgg {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
 
-        if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0) {
+        if (!this.world.isRemote && this.rand.nextInt(8) == 0) {
             int i = 1;
 
             if (this.rand.nextInt(32) == 0) {
@@ -71,19 +75,19 @@ public class EntityColoredEgg extends EntityEgg {
             }
 
             for (int j = 0; j < i; ++j) {
-                EntityChickensChicken entityChicken = new EntityChickensChicken(this.worldObj);
+                EntityChickensChicken entityChicken = new EntityChickensChicken(this.world);
                 entityChicken.setChickenType(getChickenType());
                 entityChicken.setGrowingAge(-24000);
                 entityChicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-                this.worldObj.spawnEntityInWorld(entityChicken);
+                this.world.spawnEntity(entityChicken);
             }
         }
 
         for (int k = 0; k < 8; ++k) {
-            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, Item.getIdFromItem(Items.EGG));
+            this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, Item.getIdFromItem(Items.EGG));
         }
 
-        if (!this.worldObj.isRemote) {
+        if (!this.world.isRemote) {
             this.setDead();
         }
     }

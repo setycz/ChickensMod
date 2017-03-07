@@ -11,14 +11,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -29,7 +25,7 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             subItems.add(new ItemStack(itemIn, 1, chicken.getId()));
         }
@@ -49,12 +45,13 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
+            ItemStack stack = playerIn.getHeldItem(hand);
             BlockPos correlatedPos = correctPosition(pos, facing);
             activate(stack, worldIn, correlatedPos, stack.getMetadata());
             if (!playerIn.capabilities.isCreativeMode) {
-                stack.stackSize--;
+                stack.shrink(1);
             }
         }
         return EnumActionResult.SUCCESS;
@@ -73,8 +70,8 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     }
 
     private void activate(ItemStack stack, World worldIn, BlockPos pos, int metadata) {
-        String entityName = ChickensMod.MODID + "." + ChickensMod.CHICKEN;
-        EntityChickensChicken entity = (EntityChickensChicken) EntityList.createEntityByName(entityName, worldIn);
+        ResourceLocation entityName = new ResourceLocation(ChickensMod.MODID, ChickensMod.CHICKEN);
+        EntityChickensChicken entity = (EntityChickensChicken) EntityList.createEntityByIDFromName(entityName, worldIn);
         if (entity == null) {
             return;
         }
@@ -89,6 +86,6 @@ public class ItemSpawnEgg extends Item implements IColorSource {
             entity.readEntityFromNBT(entityNBT);
         }
 
-        worldIn.spawnEntityInWorld(entity);
+        worldIn.spawnEntity(entity);
     }
 }

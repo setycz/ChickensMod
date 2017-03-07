@@ -17,12 +17,6 @@ public class ThrowingRecipeHandler implements IRecipeHandler<ThrowingRecipeWrapp
     }
 
     @Override
-    @Deprecated
-    public String getRecipeCategoryUid() {
-        return ThrowingRecipeCategory.UID;
-    }
-
-    @Override
     public String getRecipeCategoryUid(ThrowingRecipeWrapper recipe) {
         return ThrowingRecipeCategory.UID;
     }
