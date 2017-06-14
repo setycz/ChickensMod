@@ -69,13 +69,13 @@ public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (container.stackSize < 1 || maxDrain < Fluid.BUCKET_VOLUME) {
+        if (container.getCount() < 1 || maxDrain < Fluid.BUCKET_VOLUME) {
             return null;
         }
 
         FluidStack fluidStack = getFluid();
         if (doDrain) {
-            container.stackSize--;
+            container.shrink(1);
         }
         return fluidStack;
     }

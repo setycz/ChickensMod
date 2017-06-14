@@ -18,14 +18,14 @@ public class ChickenTeachHandler {
     @SubscribeEvent
     public void handleInteraction(PlayerInteractEvent.EntityInteract event) {
         ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());
-        if (item == null || item.getItem() != Items.BOOK) {
+        if (item.isEmpty() || item.getItem() != Items.BOOK) {
             return;
         }
         if (!(event.getTarget().getClass() == EntityChicken.class)) {
             return;
         }
 
-        World worldObj = event.getEntityPlayer().worldObj;
+        World worldObj = event.getEntityPlayer().world;
         if (worldObj.isRemote) {
             return;
         }
@@ -39,7 +39,7 @@ public class ChickenTeachHandler {
         EntityChickensChicken smartChicken = convertToSmart(chicken, worldObj, smartChickenDescription);
 
         worldObj.removeEntity(chicken);
-        worldObj.spawnEntityInWorld(smartChicken);
+        worldObj.spawnEntity(smartChicken);
         smartChicken.spawnExplosionParticle();
 
         event.setCanceled(true);

@@ -11,6 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by setyc on 07.01.2017.
@@ -62,15 +64,8 @@ public class ThrowingRecipeCategory implements IRecipeCategory {
     }
 
     @Override
-    @Deprecated
-    public void drawAnimations(Minecraft minecraft) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
-
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return Collections.emptyList();
     }
 
     @Override

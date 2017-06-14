@@ -34,7 +34,7 @@ public class ItemAnalyzer extends Item {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (target.worldObj.isRemote || !(target instanceof EntityChickensChicken)) {
+        if (target.world.isRemote || !(target instanceof EntityChickensChicken)) {
             return false;
         }
 
@@ -43,20 +43,20 @@ public class ItemAnalyzer extends Item {
 
         TextComponentString chickenName = new TextComponentString(chicken.getName());
         chickenName.getStyle().setBold(true).setColor(TextFormatting.GOLD);
-        playerIn.addChatMessage(chickenName);
+        playerIn.sendMessage(chickenName);
 
-        playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.tier", chicken.getTier()));
+        playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.tier", chicken.getTier()));
 
-        playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.growth", chicken.getGrowth()));
-        playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.gain", chicken.getGain()));
-        playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.strength", chicken.getStrength()));
+        playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.growth", chicken.getGrowth()));
+        playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.gain", chicken.getGain()));
+        playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.strength", chicken.getStrength()));
 
         if (!chicken.isChild()) {
             int layProgress = chicken.getLayProgress();
             if (layProgress <= 0) {
-                playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.nextEggSoon"));
+                playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.nextEggSoon"));
             } else {
-                playerIn.addChatMessage(new TextComponentTranslation("entity.ChickensChicken.layProgress", layProgress));
+                playerIn.sendMessage(new TextComponentTranslation("entity.ChickensChicken.layProgress", layProgress));
             }
         }
 

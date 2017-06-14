@@ -16,12 +16,6 @@ public class DropRecipeHandler implements IRecipeHandler<DropRecipeWrapper> {
     }
 
     @Override
-    @Deprecated
-    public String getRecipeCategoryUid() {
-        return DropRecipeCategory.UID;
-    }
-
-    @Override
     public String getRecipeCategoryUid(DropRecipeWrapper recipe) {
         return DropRecipeCategory.UID;
     }

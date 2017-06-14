@@ -45,11 +45,11 @@ public class GuiHenhouse extends GuiContainer {
         ITextComponent henhouseDisplayName = tileEntityHenhouse.getDisplayName();
         assert henhouseDisplayName != null;
         String henhouseName = henhouseDisplayName.getUnformattedText();
-        this.fontRendererObj.drawString(
+        this.fontRenderer.drawString(
                 henhouseName,
-                xSize / 2 - fontRendererObj.getStringWidth(henhouseName) / 2, 6,
+                xSize / 2 - fontRenderer.getStringWidth(henhouseName) / 2, 6,
                 4210752);
-        this.fontRendererObj.drawString(
+        this.fontRenderer.drawString(
                 playerInv.getDisplayName().getUnformattedText(),
                 8, ySize - 96 + 2,
                 4210752);

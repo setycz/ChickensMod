@@ -116,7 +116,7 @@ public class EntityChickensChicken extends EntityChicken {
             return null;
         }
 
-        EntityChickensChicken newChicken = new EntityChickensChicken(this.worldObj);
+        EntityChickensChicken newChicken = new EntityChickensChicken(this.world);
         newChicken.setChickenType(childToBeBorn.getId());
 
         boolean mutatingStats = chickenDescription.getId() == mateChickenDescription.getId() && childToBeBorn.getId() == chickenDescription.getId();
@@ -155,14 +155,14 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public void onLivingUpdate() {
-        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey()) {
+        if (!this.world.isRemote && !this.isChild() && !this.isChickenJockey()) {
             int newTimeUntilNextEgg = timeUntilNextEgg - 1;
             setTimeUntilNextEgg(newTimeUntilNextEgg);
             if (newTimeUntilNextEgg <= 1) {
                 ChickensRegistryItem chickenDescription = getChickenDescription();
                 ItemStack itemToLay = chickenDescription.createLayItem();
 
-                itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, worldObj, new Vec3d(posX, posY, posZ));
+                itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, world, new Vec3d(posX, posY, posZ));
 
                 if (itemToLay != null) {
                     entityDropItem(chickenDescription.createLayItem(), 0);
@@ -207,7 +207,7 @@ public class EntityChickensChicken extends EntityChicken {
     public boolean getCanSpawnHere() {
         boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
         boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
-        Biome biome = worldObj.getBiomeForCoordsBody(getPosition());
+        Biome biome = world.getBiomeForCoordsBody(getPosition());
         return anyInNether && biome == Biomes.HELL || anyInOverworld && super.getCanSpawnHere();
     }
 
@@ -237,7 +237,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private SpawnType getSpawnType() {
-        Biome biome = worldObj.getBiomeForCoordsBody(getPosition());
+        Biome biome = world.getBiomeForCoordsBody(getPosition());
         return ChickensRegistry.getSpawnType(biome);
     }
 
@@ -325,7 +325,7 @@ public class EntityChickensChicken extends EntityChicken {
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
         ItemStack itemsToDrop = getChickenDescription().createDropItem();
         int count = 1 + rand.nextInt(1 + lootingModifier);
-        itemsToDrop.stackSize *= count;
+        itemsToDrop.setCount(itemsToDrop.getCount() * count);
         entityDropItem(itemsToDrop, 0);
 
         if (this.isBurning()) {

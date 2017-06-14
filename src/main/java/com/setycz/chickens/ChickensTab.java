@@ -2,7 +2,7 @@ package com.setycz.chickens;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -15,7 +15,7 @@ public class ChickensTab extends CreativeTabs {
     }
 
     @Override
-    public Item getTabIconItem() {
-        return Items.CHICKEN;
+    public ItemStack getTabIconItem() {
+        return new ItemStack(Items.CHICKEN);
     }
 }

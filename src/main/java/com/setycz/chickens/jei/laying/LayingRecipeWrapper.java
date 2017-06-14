@@ -5,6 +5,8 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -32,8 +34,9 @@ public class LayingRecipeWrapper extends BlankRecipeWrapper {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         String message = Translator.translateToLocalFormatted("gui.laying.time", minTime, maxTime);
-        minecraft.fontRendererObj.drawString(message, 24, 7, Color.gray.getRGB());
+        minecraft.fontRenderer.drawString(message, 24, 7, Color.gray.getRGB());
     }
 }

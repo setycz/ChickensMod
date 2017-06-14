@@ -42,7 +42,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
             subItems.add(new ItemStack(itemIn, 1, liquid.getId()));
         }
@@ -60,7 +60,8 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, false);
 
         //noinspection ConstantConditions
@@ -82,7 +83,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
                 } else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockPos1, liquid)) {
                     //noinspection ConstantConditions
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.stackSize - 1, itemStackIn.getMetadata())) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+                    return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(itemStackIn.getItem(), itemStackIn.getCount() - 1, itemStackIn.getMetadata())) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
                 } else {
                     return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }

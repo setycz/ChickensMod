@@ -11,10 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +46,7 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.isDye()) {
                 subItems.add(new ItemStack(itemIn, 1, chicken.getDyeMetadata()));
@@ -63,9 +60,11 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
+
         if (!playerIn.capabilities.isCreativeMode) {
-            --itemStackIn.stackSize;
+            itemStackIn.shrink(1);
         }
 
         worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
@@ -76,7 +75,7 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
                 entityIn.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
                 entityIn.setChickenType(chickenType);
-                worldIn.spawnEntityInWorld(entityIn);
+                worldIn.spawnEntity(entityIn);
             }
         }
 
