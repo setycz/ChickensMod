@@ -1,10 +1,10 @@
 itemGroup.chickens=Chickens
 
-item.liquid_egg.tooltip=Es ist wie ein Einwegeimer.
+item.liquid_egg.tooltip=Verhält sich wie ein Einwegeimer.
 item.liquid_egg.water.name=Wasser-Ei
 item.liquid_egg.lava.name=Lava-Ei
 item.analyzer.name=Hühner-Analysierer
-item.analyzer.tooltip1=Verwende es bei Hühnern, um ihre Statistiken zu bestimmen.
+item.analyzer.tooltip1=Verwende es bei Hühnern, um ihre Statistiken zu ermitteln.
 item.analyzer.tooltip2= - "Welchen Wochentag hassen Hühner am meisten? Fry-Tag!"
 
 item.colored_egg.tooltip=Wirf es, um eine Chance zu haben, ein Huhn zu erzeugen.
@@ -79,12 +79,12 @@ gui.laying.time=%1$s-%2$smin.
 gui.breeding=Hühnerzucht
 gui.breeding.time=%1$s%%
 gui.drops=Hühnerdrops
-gui.throws=Farbe Egg Werfen
-gui.henhousing=Henhouse Nebenprodukt
+gui.throws=Eierwerfen
+gui.henhousing=Hühnerhaus-Nebenprodukt
 
 container.henhouse=Hühnerhaus
 tile.henhouse.name=Hühnerhaus
-tile.henhouse.tooltip=Sammelt automatisch Items von Hühnern in einem 9x9x9-Radius, wenn es mit einem Heuballen ausgestattet wird.
+tile.henhouse.tooltip=Sammelt Items von Hühnern automatisch in einem 9x9x9-Radius, falls mit einem Heuballen ausgestattet.
 tile.henhouse_acacia.name=Akazienhühnerhaus
 tile.henhouse_birch.name=Birkenhühnerhaus
 tile.henhouse_dark_oak.name=Schwarzeichenhühnerhaus
