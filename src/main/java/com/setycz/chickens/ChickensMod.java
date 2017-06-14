@@ -49,20 +49,17 @@ import java.util.List;
 /**
  * Created by setyc on 12.02.2016.
  */
-@SuppressWarnings("unused")
 @Mod(modid = ChickensMod.MODID,
         version = ChickensMod.VERSION,
         acceptedMinecraftVersions = "[1.11.2]",
         dependencies = "required-after:forge@[13.20.0.2253,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
-    @SuppressWarnings("WeakerAccess")
     public static final String VERSION = "@VERSION@";
     public static final String CHICKEN = "ChickensChicken";
 
     private static final Logger log = LogManager.getLogger(MODID);
 
-    @SuppressWarnings("CanBeFinal")
     @Mod.Instance(MODID)
     public static ChickensMod instance;
 
@@ -87,10 +84,8 @@ public class ChickensMod {
     public static final Block henhouse_jungle = new BlockHenhouse().setRegistryName("henhouse_jungle").setUnlocalizedName("henhouse_jungle").setCreativeTab(tab);
     public static final Block henhouse_spruce = new BlockHenhouse().setRegistryName("henhouse_spruce").setUnlocalizedName("henhouse_spruce").setCreativeTab(tab);
 
-    @SuppressWarnings("WeakerAccess")
     public static final TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
-    @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
     @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
     public static CommonProxy proxy;
 

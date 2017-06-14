@@ -11,10 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Created by setyc on 21.03.2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class ChickenTeachHandler {
 
-    @SuppressWarnings("unused")
     @SubscribeEvent
     public void handleInteraction(PlayerInteractEvent.EntityInteract event) {
         ItemStack item = event.getEntityPlayer().getHeldItem(event.getHand());

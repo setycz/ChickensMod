@@ -13,7 +13,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by setyc on 18.02.2016.
  */
-@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 

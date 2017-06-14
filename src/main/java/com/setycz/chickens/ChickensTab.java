@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by setyc on 12.02.2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class ChickensTab extends CreativeTabs {
 
     public ChickensTab() {

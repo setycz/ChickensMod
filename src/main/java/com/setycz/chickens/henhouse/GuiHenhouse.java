@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Created by setyc on 06.03.2016.
  */
-@SuppressWarnings("WeakerAccess")
 @SideOnly(Side.CLIENT)
 public class GuiHenhouse extends GuiContainer {
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(ChickensMod.MODID, "textures/gui/henhouse.png");

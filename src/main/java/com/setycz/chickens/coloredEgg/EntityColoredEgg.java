@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 /**
  * Created by setyc on 13.02.2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class EntityColoredEgg extends EntityEgg {
     private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityColoredEgg.class, DataSerializers.VARINT);
     public static final String TYPE_NBT = "Type";

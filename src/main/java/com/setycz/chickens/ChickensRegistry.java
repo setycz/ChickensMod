@@ -45,7 +45,6 @@ public final class ChickensRegistry {
     }
 
     @Deprecated
-    @SuppressWarnings("unused")
     public static Collection<ChickensRegistryItem> getAllItems() {
         return items.values();
     }

@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by setyc on 06.03.2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class ContainerHenhouse extends Container {
 
     private final TileEntityHenhouse tileEntityHenhouse;

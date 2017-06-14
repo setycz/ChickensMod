@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * Created by setyc on 20.02.2016.
  */
-@SuppressWarnings("unused")
 public class ChickensEntityProvider implements IWailaEntityProvider {
 
     private static final ChickensEntityProvider INSTANCE = new ChickensEntityProvider();

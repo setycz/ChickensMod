@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 /**
  * Created by setyc on 13.12.2016.
  */
-@SuppressWarnings("WeakerAccess")
 public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider {
 
     private final ItemStack container;

@@ -49,7 +49,6 @@ public class ChickensRegistryItem {
         return this;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public ChickensRegistryItem setLayCoefficient(float coef) {
         layCoefficient = coef;
         return this;
@@ -165,7 +164,6 @@ public class ChickensRegistryItem {
     }
 
     @Deprecated
-    @SuppressWarnings("UnusedReturnValue")
     public void setParents(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
         this.parent1 = parent1;
         this.parent2 = parent2;

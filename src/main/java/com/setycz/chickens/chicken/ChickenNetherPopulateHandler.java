@@ -25,7 +25,6 @@ public class ChickenNetherPopulateHandler {
         this.chanceMultiplier = chanceMultiplier;
     }
 
-    @SuppressWarnings("unused")
     @SubscribeEvent
     public void populateChunk(PopulateChunkEvent.Populate event) {
         BlockPos chunkCentrePos = new BlockPos(event.getChunkX() * 16 + 8, 0, event.getChunkZ() * 16 + 8);
