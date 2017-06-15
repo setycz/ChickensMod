@@ -67,6 +67,9 @@ entity.LogChicken.name=原木鸡
 entity.SandChicken.name=沙子鸡
 entity.GlassChicken.name=玻璃鸡
 entity.LeatherChicken.name=皮革鸡
+entity.pShardChicken.name=海晶碎片鸡
+entity.xpChicken.name=经验鸡
+entity.pCrystalChicken.name=海晶砂粒鸡
 
 entity.ChickensChicken.tier=等级：%1$s
 entity.ChickensChicken.layProgress=距离产出下个鸡蛋%1$smin。

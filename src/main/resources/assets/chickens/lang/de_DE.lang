@@ -67,6 +67,9 @@ entity.LogChicken.name=Holzstammhuhn
 entity.SandChicken.name=Sandhuhn
 entity.GlassChicken.name=Glashuhn
 entity.LeatherChicken.name=Lederhuhn
+entity.pShardChicken.name=Prismarinscherbenhuhn
+entity.xpChicken.name=Erfahrungshuhn
+entity.pCrystalChicken.name=Prismarinkristallhuhn
 
 entity.ChickensChicken.tier=Stufe: %1$s
 entity.ChickensChicken.layProgress=Nächstes Ei in ~%1$smin.

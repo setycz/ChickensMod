@@ -569,6 +569,33 @@ public class ChickensMod {
                 slimeChicken, blazeChicken);
         chickens.add(magmaChicken);
 
+        ChickensRegistryItem pShardChicken = new ChickensRegistryItem(
+                new ResourceLocation(ChickensMod.MODID, "pShardChicken"), "pShardChicken", new ResourceLocation("chickens", "textures/entity/pshard_chicken.png"),
+                new ItemStack(Items.PRISMARINE_SHARD),
+                0x43806e, 0x9fcbbc,
+                waterChicken, blueChicken);
+        chickens.add(pShardChicken);
+        
+        ChickensRegistryItem pCrystalChicken = new ChickensRegistryItem(
+                new ResourceLocation(ChickensMod.MODID, "pCrystalChicken"), "pCrystalChicken", new ResourceLocation("chickens", "textures/entity/pcrystal_chicken.png"),
+                new ItemStack(Items.PRISMARINE_CRYSTALS, 1 , 0),
+                0x4e6961, 0xdfe9dc,
+                waterChicken, emeraldChicken);
+        chickens.add(pCrystalChicken);
+        
+        ChickensRegistryItem obsidianChicken = new ChickensRegistryItem(
+                new ResourceLocation(ChickensMod.MODID, "obsidianChicken"), "obsidianChicken", new ResourceLocation("chickens", "textures/entity/obsidian_chicken.png"),
+                new ItemStack(Blocks.OBSIDIAN, 1 , 0),
+                0x08080e, 0x463a60,
+                waterChicken, lavaChicken);
+        chickens.add(obsidianChicken);
+        
+        ChickensRegistryItem soulSandChicken = new ChickensRegistryItem(
+                new ResourceLocation(ChickensMod.MODID, "soulSandChicken"), "soulSandChicken", new ResourceLocation("chickens", "textures/entity/soulsand_chicken.png"),
+                new ItemStack(Blocks.SOUL_SAND, 1 , 0),
+                0x453125, 0xd52f08);
+        chickens.add(soulSandChicken);
+        
         return chickens;
 
     }
