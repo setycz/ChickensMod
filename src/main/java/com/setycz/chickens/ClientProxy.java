@@ -40,6 +40,8 @@ public class ClientProxy extends CommonProxy {
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_jungle), 0);
         //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_spruce), 0);
+        
+        registerItemModel(ChickensMod.spawnEgg, 0);
 
         registerItemModel(ChickensMod.analyzer, 0);
     }
@@ -60,7 +62,7 @@ public class ClientProxy extends CommonProxy {
     public void registerChicken(ChickensRegistryItem chicken) {
         super.registerChicken(chicken);
 
-        registerItemModel(ChickensMod.spawnEgg, chicken.getId());
+        //registerItemModel(ChickensMod.spawnEgg, chicken.getId());
 
         if (chicken.isDye()) {
             registerItemModel(ChickensMod.coloredEgg, chicken.getDyeMetadata());

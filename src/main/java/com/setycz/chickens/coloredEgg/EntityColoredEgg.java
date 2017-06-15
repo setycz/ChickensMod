@@ -18,7 +18,7 @@ import net.minecraft.world.World;
  * Created by setyc on 13.02.2016.
  */
 public class EntityColoredEgg extends EntityEgg {
-    private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityColoredEgg.class, DataSerializers.VARINT);
+    private static final DataParameter<String> CHICKEN_TYPE = EntityDataManager.createKey(EntityColoredEgg.class, DataSerializers.STRING);
     public static final String TYPE_NBT = "Type";
 
     public EntityColoredEgg(World worldIn) {
@@ -33,31 +33,31 @@ public class EntityColoredEgg extends EntityEgg {
         super(worldIn, x, y, z);
     }
 
-    public void setChickenType(int type) {
+    public void setChickenType(String type) {
         this.dataManager.set(CHICKEN_TYPE, type);
     }
 
-    private int getChickenType() {
+    private String getChickenType() {
         return this.dataManager.get(CHICKEN_TYPE);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(CHICKEN_TYPE, 0);
+        this.dataManager.register(CHICKEN_TYPE, "");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
-        tagCompound.setInteger(TYPE_NBT, getChickenType());
+        tagCompound.setString(TYPE_NBT, getChickenType());
         return tagCompound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
-        setChickenType(tagCompound.getInteger(TYPE_NBT));
+        setChickenType(tagCompound.getString(TYPE_NBT));
     }
 
     @Override

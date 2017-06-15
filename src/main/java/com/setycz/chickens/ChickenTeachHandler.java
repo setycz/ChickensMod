@@ -1,6 +1,7 @@
 package com.setycz.chickens;
 
 import com.setycz.chickens.chicken.EntityChickensChicken;
+
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -47,7 +48,9 @@ public class ChickenTeachHandler {
         EntityChickensChicken smartChicken = new EntityChickensChicken(worldObj);
         smartChicken.setPositionAndRotation(chicken.posX, chicken.posY, chicken.posZ, chicken.rotationYaw, chicken.rotationPitch);
         smartChicken.onInitialSpawn(worldObj.getDifficultyForLocation(chicken.getPosition()), null);
-        smartChicken.setChickenType(smartChickenDescription.getId());
+        //smartChicken.setChickenType(smartChickenDescription.getId());
+        smartChicken.setChickenType(ChickensRegistry.SMART_CHICKEN_ID.toString());
+        
         if (chicken.hasCustomName()) {
             smartChicken.setCustomNameTag(chicken.getCustomNameTag());
         }

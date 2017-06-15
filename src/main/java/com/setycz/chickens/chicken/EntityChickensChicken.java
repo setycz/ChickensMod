@@ -32,7 +32,8 @@ import java.util.Random;
  * Created by setyc on 12.02.2016.
  */
 public class EntityChickensChicken extends EntityChicken {
-    private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    //private static final DataParameter<Integer> CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
+    private static final DataParameter<String>  CHICKEN_TYPE = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.STRING);
     private static final DataParameter<Boolean> CHICKEN_STATS_ANALYZED = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> CHICKEN_GROWTH = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CHICKEN_GAIN = EntityDataManager.createKey(EntityChickensChicken.class, DataSerializers.VARINT);
@@ -87,7 +88,7 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private ChickensRegistryItem getChickenDescription() {
-        return ChickensRegistry.getByType(getChickenTypeInternal());
+        return ChickensRegistry.getByRegistryName(getChickenTypeInternal());
     }
 
     public int getTier() {
@@ -117,14 +118,14 @@ public class EntityChickensChicken extends EntityChicken {
         }
 
         EntityChickensChicken newChicken = new EntityChickensChicken(this.world);
-        newChicken.setChickenType(childToBeBorn.getId());
+        newChicken.setChickenType(childToBeBorn.getRegistryName().toString());
 
-        boolean mutatingStats = chickenDescription.getId() == mateChickenDescription.getId() && childToBeBorn.getId() == chickenDescription.getId();
+        boolean mutatingStats = chickenDescription.getRegistryName() == mateChickenDescription.getRegistryName() && childToBeBorn.getRegistryName() == chickenDescription.getRegistryName();
         if (mutatingStats) {
             increaseStats(newChicken, this, mateChicken, rand);
-        } else if (chickenDescription.getId() == childToBeBorn.getId()) {
+        } else if (chickenDescription.getRegistryName() == childToBeBorn.getRegistryName()) {
             inheritStats(newChicken, this);
-        } else if (mateChickenDescription.getId() == childToBeBorn.getId()) {
+        } else if (mateChickenDescription.getRegistryName() == childToBeBorn.getRegistryName()) {
             inheritStats(newChicken, mateChicken);
         }
 
@@ -223,7 +224,7 @@ public class EntityChickensChicken extends EntityChicken {
             if (possibleChickens.size() > 0) {
                 ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
 
-                int type = chickenToSpawn.getId();
+                String type = chickenToSpawn.getRegistryName().toString();
                 setChickenType(type);
                 livingData = new GroupData(type);
             }
@@ -242,35 +243,45 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private static class GroupData implements IEntityLivingData {
-        private final int type;
+        private final String type;
 
-        public GroupData(int type) {
+        public GroupData(String type) {
             this.type = type;
         }
 
-        public int getType() {
+        public String getType() {
             return type;
         }
     }
 
-    public void setChickenType(int type) {
-        setChickenTypeInternal(type);
+//    public void setChickenType(int type) {
+//        setChickenTypeInternal(type);
+//        isImmuneToFire = getChickenDescription().isImmuneToFire();
+//        resetTimeUntilNextEgg();
+//    }
+    
+    public void setChickenType(String registryName) {
+        setChickenTypeInternal(registryName);
         isImmuneToFire = getChickenDescription().isImmuneToFire();
         resetTimeUntilNextEgg();
     }
 
-    private void setChickenTypeInternal(int type) {
-        this.dataManager.set(CHICKEN_TYPE, type);
+    private void setChickenTypeInternal(String registryName) {
+        this.dataManager.set(CHICKEN_TYPE, registryName);
     }
+    
+//    private void setChickenTypeInternal(int type) {
+//        this.dataManager.set(CHICKEN_TYPE, type);
+//    }
 
-    private int getChickenTypeInternal() {
+    private String getChickenTypeInternal() {
         return this.dataManager.get(CHICKEN_TYPE);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(CHICKEN_TYPE, 0);
+        dataManager.register(CHICKEN_TYPE, "");
         dataManager.register(CHICKEN_GROWTH, 1);
         dataManager.register(CHICKEN_GAIN, 1);
         dataManager.register(CHICKEN_STRENGTH, 1);
@@ -281,7 +292,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger(TYPE_NBT, getChickenTypeInternal());
+        tagCompound.setString(TYPE_NBT, getChickenTypeInternal());
         tagCompound.setBoolean(CHICKEN_STATS_ANALYZED_NBT, getStatsAnalyzed());
         tagCompound.setInteger(CHICKEN_GROWTH_NBT, getGrowth());
         tagCompound.setInteger(CHICKEN_GAIN_NBT, getGain());
@@ -291,7 +302,7 @@ public class EntityChickensChicken extends EntityChicken {
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        setChickenTypeInternal(tagCompound.getInteger(TYPE_NBT));
+        setChickenTypeInternal(tagCompound.getString(TYPE_NBT));
         setStatsAnalyzed(tagCompound.getBoolean(CHICKEN_STATS_ANALYZED_NBT));
         setGrowth(getStatusValue(tagCompound, CHICKEN_GROWTH_NBT));
         setGain(getStatusValue(tagCompound, CHICKEN_GAIN_NBT));

@@ -18,6 +18,8 @@ import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeCategory;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeHandler;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
+import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
+
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.init.Blocks;
@@ -74,8 +76,12 @@ public class ChickensJeiPlugin implements IModPlugin {
     private List<LayingRecipeWrapper> getLayingRecipes() {
         List<LayingRecipeWrapper> result = new ArrayList<LayingRecipeWrapper>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+
+            ItemStack itemstack = new ItemStack(ChickensMod.spawnEgg, 1);
+            ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
+            
             result.add(new LayingRecipeWrapper(
-                    new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
+            		itemstack,
                     chicken.createLayItem(),
                     chicken.getMinLayTime(), chicken.getMaxLayTime()
             ));
@@ -86,8 +92,12 @@ public class ChickensJeiPlugin implements IModPlugin {
     private List<DropRecipeWrapper> getDropRecipes() {
         List<DropRecipeWrapper> result = new ArrayList<DropRecipeWrapper>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+
+            ItemStack itemstack = new ItemStack(ChickensMod.spawnEgg, 1);
+            ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
+            
             result.add(new DropRecipeWrapper(
-                    new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
+            		itemstack,
                     chicken.createDropItem()
             ));
         }
@@ -98,11 +108,21 @@ public class ChickensJeiPlugin implements IModPlugin {
         List<BreedingRecipeWrapper> result = new ArrayList<BreedingRecipeWrapper>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.isBreedable()) {
+
+                ItemStack itemstack = new ItemStack(ChickensMod.spawnEgg, 1);
+                ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
+                
+                ItemStack parent1 = new ItemStack(ChickensMod.spawnEgg, 1);
+                ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getParent1().getRegistryName()); 
+                
+                ItemStack parent2 = new ItemStack(ChickensMod.spawnEgg, 1);
+                ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getParent2().getRegistryName()); 
+                
                 //noinspection ConstantConditions
                 result.add(new BreedingRecipeWrapper(
-                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent1().getId()),
-                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getParent2().getId()),
-                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId()),
+                		parent1,
+                		parent2,
+                        itemstack,
                         ChickensRegistry.getChildChance(chicken)
                 ));
             }
@@ -114,9 +134,13 @@ public class ChickensJeiPlugin implements IModPlugin {
         List<ThrowingRecipeWrapper> result = new ArrayList<ThrowingRecipeWrapper>();
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.isDye()) {
+
+                ItemStack itemstack = new ItemStack(ChickensMod.spawnEgg, 1);
+                ItemSpawnEgg.applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
+                
                 result.add(new ThrowingRecipeWrapper(
                         new ItemStack(ChickensMod.coloredEgg, 1, chicken.getDyeMetadata()),
-                        new ItemStack(ChickensMod.spawnEgg, 1, chicken.getId())));
+                        itemstack));
             }
         }
         return result;

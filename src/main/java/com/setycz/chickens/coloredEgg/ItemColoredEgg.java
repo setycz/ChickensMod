@@ -70,8 +70,8 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
         worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         if (!worldIn.isRemote) {
-            int chickenType = getChickenType(itemStackIn);
-            if (chickenType != -1) {
+            String chickenType = getChickenType(itemStackIn);
+            if (chickenType != null) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
                 entityIn.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
                 entityIn.setChickenType(chickenType);
@@ -84,11 +84,11 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 
-    public int getChickenType(ItemStack itemStack) {
+    public String getChickenType(ItemStack itemStack) {
         ChickensRegistryItem chicken = ChickensRegistry.findDyeChicken(itemStack.getMetadata());
         if (chicken == null) {
-            return -1;
+            return null;
         }
-        return chicken.getId();
+        return chicken.getRegistryName().toString();
     }
 }

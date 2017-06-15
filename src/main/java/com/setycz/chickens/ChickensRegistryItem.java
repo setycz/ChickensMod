@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
  * Created by setyc on 12.02.2016.
  */
 public class ChickensRegistryItem {
-    private final int id;
+    private final ResourceLocation registryName;
+    
     private final String entityName;
     private ItemStack layItem;
     private ItemStack dropItem;
@@ -23,12 +24,12 @@ public class ChickensRegistryItem {
     private boolean isEnabled = true;
     private float layCoefficient = 1.0f;
 
-    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
-        this(id, entityName, texture, layItem, bgColor, fgColor, null, null);
+    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
+        this(registryName, entityName, texture, layItem, bgColor, fgColor, null, null);
     }
 
-    public ChickensRegistryItem(int id, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
-        this.id = id;
+    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+        this.registryName = registryName;
         this.entityName = entityName;
         this.layItem = layItem;
         this.bgColor = bgColor;
@@ -118,8 +119,12 @@ public class ChickensRegistryItem {
         return getTier() == 1 && spawnType != SpawnType.NONE;
     }
 
-    public int getId() {
-        return id;
+//    public int getId() {
+//        return id;
+//    }
+    
+    public ResourceLocation getRegistryName(){
+    	return registryName;
     }
 
     public int getMinLayTime() {

@@ -1,37 +1,54 @@
 package com.setycz.chickens;
 
 import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
+
 import java.util.*;
 
 /**
  * Created by setyc on 12.02.2016.
  */
 public final class ChickensRegistry {
-    private static final Map<Integer, ChickensRegistryItem> items = new HashMap<Integer, ChickensRegistryItem>();
-    public static final int SMART_CHICKEN_ID = 50;
+    
+	private static final Map<ResourceLocation, ChickensRegistryItem> items = new HashMap<ResourceLocation, ChickensRegistryItem>();
+    private static final Map<String, ChickensRegistryItem> STRING_TO_ITEM = new HashMap<String, ChickensRegistryItem>();
+    
+    public static final ResourceLocation SMART_CHICKEN_ID = new ResourceLocation(ChickensMod.MODID ,"SmartChicken");
     private static final Random rand = new Random();
 
     public static void register(ChickensRegistryItem entity) {
         validate(entity);
-        items.put(entity.getId(), entity);
+        items.put(entity.getRegistryName(), entity);
+        STRING_TO_ITEM.put(entity.getRegistryName().toString(), entity);
+        
+        //System.out.println(entity.getRegistryName());
     }
 
     private static void validate(ChickensRegistryItem entity) {
         for (ChickensRegistryItem item : items.values()) {
-            if (entity.getId() == item.getId()) {
-                throw new RuntimeException("Duplicated ID [" + entity.getId() + "] of [" + entity.getEntityName() + "] with [" + item.getEntityName() + "]!");
+            if (entity.getRegistryName().toString().compareToIgnoreCase(item.getRegistryName().toString()) == 0) {
+                throw new RuntimeException("Duplicated ID [" + entity.getRegistryName().toString() + "] of [" + entity.getEntityName() + "] with [" + item.getRegistryName().toString() + "] of [" + item.getEntityName() + "]!");
             }
             if (entity.getEntityName().compareToIgnoreCase(item.getEntityName()) == 0) {
-                throw new RuntimeException("Duplicated name [" + entity.getEntityName() + "] of [" + entity.getId() + "] with [" + item.getId() + "]!");
+                throw new RuntimeException("Duplicated name [" + entity.getEntityName() + "] of [" + entity.getRegistryName().toString() + "] with [" + item.getRegistryName().toString()  + "]!");
             }
         }
     }
 
-    public static ChickensRegistryItem getByType(int type) {
+//    public static ChickensRegistryItem getByType(int type) {
+//        return items.get(type);
+//    }
+    
+    public static ChickensRegistryItem getByResourceLocation(ResourceLocation type) {
         return items.get(type);
+    }
+    
+    public static ChickensRegistryItem getByRegistryName(String type)
+    {
+    	return STRING_TO_ITEM.get(type);
     }
 
     public static Collection<ChickensRegistryItem> getItems() {
@@ -42,11 +59,6 @@ public final class ChickensRegistry {
             }
         }
         return result;
-    }
-
-    @Deprecated
-    public static Collection<ChickensRegistryItem> getAllItems() {
-        return items.values();
     }
 
     private static List<ChickensRegistryItem> getChildren(ChickensRegistryItem parent1, ChickensRegistryItem parent2) {
