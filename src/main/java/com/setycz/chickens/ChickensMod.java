@@ -89,7 +89,7 @@ public class ChickensMod {
 
     public static final TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
-    @SidedProxy(clientSide = "com.setycz.chickens.ClientProxy", serverSide = "com.setycz.chickens.CommonProxy")
+    @SidedProxy(clientSide = "com.setycz.chickens.client.ClientProxy", serverSide = "com.setycz.chickens.common.CommonProxy")
     public static CommonProxy proxy;
 
     public boolean getAlwaysShowStats() {
