@@ -131,7 +131,7 @@ public class ChickensMod {
     }
     
     @EventHandler
-    public void preInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event) {
     	dumpChickens(ChickensRegistry.getItems());
     }
 
@@ -204,9 +204,9 @@ public class ChickensMod {
 
     private boolean requiresVisitingNether(ChickensRegistryItem chicken) {
         //noinspection ConstantConditions
-        return chicken.getTier() == 1
+        return chicken.getTier() == 1 
                 ? chicken.getSpawnType() == SpawnType.HELL
-                : requiresVisitingNether(chicken.getParent1()) || requiresVisitingNether(chicken.getParent2());
+                :  chicken.isBreedable() && (requiresVisitingNether(chicken.getParent1()) || requiresVisitingNether(chicken.getParent2()));
     }
 
     private void dumpChickens(Collection<ChickensRegistryItem> items) {
