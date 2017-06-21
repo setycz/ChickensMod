@@ -29,10 +29,8 @@ public class ConfigHandler {
     public static boolean alwaysShowStats = false;
 
 	
-    public static void LoadConfigs(List<ChickensRegistryItem> allchickens){
-    	
+    public static void LoadConfigs(List<ChickensRegistryItem> allchickens) {
     	loadConfiguration();
-    	
     	loadChickens(allchickens);
     }
     
@@ -42,7 +40,7 @@ public class ConfigHandler {
 	 * 
 	 * @param configFile
 	 */
-	private static void loadConfiguration(){
+	private static void loadConfiguration() {
 	     Configuration mainConfig = new Configuration(ChickensMainFile);
 	     	mainConfig.load();
 
@@ -53,8 +51,9 @@ public class ConfigHandler {
 	        netherSpawnChanceMultiplier = mainConfig.getFloat("netherSpawnChanceMultiplier", "general", 1.0f, 0.f, Float.MAX_VALUE, "Nether chicken spawn chance multiplier, e.g. 0=no initial spawn, 2=two times more spawn rate");
 	        alwaysShowStats = mainConfig.getBoolean("alwaysShowStats", "general", false, "Stats will be always shown in WAILA without the need to analyze chickens first when enabled.");
 
-			if (mainConfig.hasChanged())
+			if (mainConfig.hasChanged()) {
 	        mainConfig.save();
+			}
 	}
 	
 	
@@ -63,11 +62,9 @@ public class ConfigHandler {
 	 * 
 	 * @param allChickens
 	 */
-	public static void loadChickens(Collection<ChickensRegistryItem> allChickens){
+	public static void loadChickens(Collection<ChickensRegistryItem> allChickens) {
 		config = new JsonConfig(ChickensFile);
-		
 		config.Load();
-		
 		
 		// Add Comments
 			String comment = "_comment";
@@ -80,8 +77,7 @@ public class ConfigHandler {
 			config.getString(comment, "parent_1", "First parent, empty if it cant be breed. modid:chickenid #example: chickens:waterchicken");
 			config.getString(comment, "parent_2", "Second parent, empty if it cant be breed. ");
 		
-        for (ChickensRegistryItem chicken : allChickens) 
-        {
+        for (ChickensRegistryItem chicken : allChickens) {
         	String registryName = chicken.getRegistryName().toString();
         	
         	config.getString(registryName, "name", chicken.getEntityName());
@@ -103,8 +99,7 @@ public class ConfigHandler {
         }
         
         // Set Parents after Chickens have been registered
-        for (ChickensRegistryItem chicken : allChickens) 
-        {
+        for (ChickensRegistryItem chicken : allChickens) {
         	ChickensRegistryItem parent1 = ChickensRegistry.getByRegistryName(getChickenParent(config, "parent_1", allChickens, chicken, chicken.getParent1()));
         	ChickensRegistryItem parent2 = ChickensRegistry.getByRegistryName(getChickenParent(config, "parent_2", allChickens, chicken, chicken.getParent2()));
             
@@ -115,13 +110,13 @@ public class ConfigHandler {
         	}
         }
 		
-        if(config.hasChanged)
+        if(config.hasChanged) {
         	config.Save();
+        }
 	}
 	
 		
-    private static String getChickenParent(JsonConfig configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) 
-    {
+    private static String getChickenParent(JsonConfig configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
     	String Category = chicken.getRegistryName().toString();
         return configuration.getString(Category, propertyName, parent != null ? parent.getRegistryName().toString() : "");
     }
@@ -131,11 +126,10 @@ public class ConfigHandler {
 
     	ItemStack stack = configuration.getItemStack(Category, prefix, defaultItemStack);
     	
-        if (stack == null){
+        if (stack == null) {
         	if(defaultItemStack != null) return defaultItemStack;	
         	else throw new RuntimeException("Cannot find "+prefix+" for "+ chicken.getRegistryName().toString());
         }
-        
         return stack;
     }
     

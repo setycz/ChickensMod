@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
  * 
  * @author GenDeathrow
  */
-public class JsonConfig{
+public class JsonConfig {
 	
 	boolean hasChanged = false;
 	
@@ -27,25 +27,25 @@ public class JsonConfig{
 	private JsonObject json;
 	private Gson gson;
 	
-	public JsonConfig(File file){
+	public JsonConfig(File file) {
 		configFile = file;
 		gson = new Gson();
 		json = new JsonObject();
 	}
 	
-	public void Save(){
+	public void Save() {
 		WriteFile();
 		hasChanged = false;
 	}
 	
-	public void Load(){
+	public void Load() {
 		try { SetupFile(); } 
 		catch (IOException e) { e.printStackTrace(); }
 		
 		json = ReadFile();
 	}
 
-	public JsonObject getFullJson(){
+	public JsonObject getFullJson() {
 		return this.json;
 	}
 	
@@ -56,18 +56,15 @@ public class JsonConfig{
 	 * @param categoryProperty
 	 * @return
 	 */	
-	public JsonObject getCategory(String categoryProperty)
-	{
+	public JsonObject getCategory(String categoryProperty) {
 		JsonObject object = new JsonObject();
 
-		if(json.has(categoryProperty)){
+		if(json.has(categoryProperty)) {
     		object = json.getAsJsonObject(categoryProperty);
-    	}
-    	else{
+    	} else {
     		json.add(categoryProperty, object);
     		setHasChanged(true);
     	}
-    	
 		return object;
 	}
 	
@@ -80,17 +77,15 @@ public class JsonConfig{
 	 * @param value
 	 * @return
 	 */
-	public boolean getBoolean(String categoryProperty, String property, boolean value)
-	{
+	public boolean getBoolean(String categoryProperty, String property, boolean value) {
 		JsonObject object = getCategory(categoryProperty);
 
-		if(object.has(property)){
+		if(object.has(property)) {
 			value = object.get(property).getAsBoolean();
-		}else{
+		} else {
 			object.addProperty(property, value);
 			setHasChanged(true);
 		}
-		
 		return value;
 	}
 	
@@ -133,7 +128,7 @@ public class JsonConfig{
 		JsonObject object = getCategory(categoryProperty);
 		if(object.has(property)){
 			value = object.get(property).getAsFloat();
-		}else{
+		} else {
 			object.addProperty(property, value);
 			setHasChanged(true);
 		}
@@ -159,7 +154,7 @@ public class JsonConfig{
 		
 		if(object.has(property)){
 			stack = getItemStackFromID( object.get(property).getAsString());
-		}else{
+		} else {
 			object.addProperty(property, getIDfromItemStack(stack));
 			setHasChanged(true);
 		}
@@ -168,11 +163,11 @@ public class JsonConfig{
 	}
 	
 	
-	public boolean hasChanged(){
+	public boolean hasChanged() {
 		return this.hasChanged;
 	}
 	
-	protected void setHasChanged(boolean val){
+	protected void setHasChanged(boolean val) {
 		this.hasChanged = val;
 	}
 	/**
@@ -180,8 +175,7 @@ public class JsonConfig{
 	 * 
 	 * @throws IOException
 	 */
-	private void SetupFile() throws IOException{
-    	
+	private void SetupFile() throws IOException {
     	if (!configFile.exists()){
     		hasChanged = true;
     		configFile.getParentFile().mkdirs();
@@ -193,18 +187,18 @@ public class JsonConfig{
 	 * Reads a file and converts it to json format
 	 * @return
 	 */
-	protected JsonObject ReadFile(){
+	protected JsonObject ReadFile() {
 	   
 	   JsonObject obj = new JsonObject();
 	   
-		try{
+		try {
 			FileReader fr = new FileReader(configFile);
 			JsonObject jsonobject = gson.fromJson(fr, JsonObject.class);
 			fr.close();
 			
 			return jsonobject != null ? jsonobject : obj;
 
-		} catch(Exception e){
+		} catch(Exception e) {
 			throw new RuntimeException("Error "+e.getCause()+" loading file: "+ configFile.getPath());
 		}
 	}
@@ -213,9 +207,8 @@ public class JsonConfig{
    /**
     * Takes the json and writes it to a file.
     */
-   protected void WriteFile(){
-   	
-	   try{
+   protected void WriteFile() {
+	   try {
 		   FileWriter fw = new FileWriter(configFile);
 		   new GsonBuilder().setPrettyPrinting().create().toJson(json, fw);
 		   fw.flush();
@@ -232,10 +225,9 @@ public class JsonConfig{
      * @param stack
      * @return
      */
-	protected static String getIDfromItemStack(ItemStack stack){
+	protected static String getIDfromItemStack(ItemStack stack) {
 		return stack.getItem().getRegistryName() + (stack.getMetadata() != 0 || stack.getCount() > 1 ? ":"+ stack.getMetadata() + (stack.getCount() > 1 ? ":"+stack.getCount() : ""): "");
 	}
-	
 	
 	/**
 	 * Returns an Itemstack from a StringID
@@ -243,7 +235,7 @@ public class JsonConfig{
 	 * @return
 	 */
 	@Nullable
-	protected static ItemStack getItemStackFromID(String itemID){
+	protected static ItemStack getItemStackFromID(String itemID) {
 
 		String[] args = itemID.split(":");
 
@@ -252,33 +244,31 @@ public class JsonConfig{
 		int meta = 0;
 		int qty = 1;
 		
-		if(args.length >= 2){
+		if(args.length >= 2) {
 			item = Item.getByNameOrId(args[0] +":"+ args[1]);
 		}		
 		
 		if(args.length >= 3){
 			try{
 				meta = Integer.parseInt(args[2]);
-			}catch(Exception e){
+			} catch(Exception e) {
 				ChickensMod.log.error("Could not parse meta value: "+ itemID);
 			}
 		}
 		
-		if(args.length == 4){
-			try{
-				
+		if(args.length == 4) {
+			try {
 				qty = Integer.parseInt(args[3]);
 				
 				System.out.println(qty);
-			}catch(Exception e){
+			} catch(Exception e) {
 				ChickensMod.log.error("Could not parse qty value: "+ itemID);
 			}
 		}
 		
-		if(item != null){
+		if(item != null) {
 			stack = new ItemStack(item, qty, meta);
-		}
-		else{
+		} else {
 			ChickensMod.log.error("Item could not be Found: "+ itemID);
 		}
 
