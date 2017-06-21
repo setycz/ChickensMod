@@ -1,4 +1,4 @@
-package com.setycz.chickens;
+package com.setycz.chickens.registry;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;

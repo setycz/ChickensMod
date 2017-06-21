@@ -3,6 +3,9 @@ package com.setycz.chickens;
 import com.setycz.chickens.chicken.EntityChickensChicken;
 import com.setycz.chickens.chicken.ModelChickensChicken;
 import com.setycz.chickens.chicken.RenderChickensChicken;
+import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.LiquidEggRegistryItem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;

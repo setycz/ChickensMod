@@ -1,9 +1,10 @@
 package com.setycz.chickens.chicken;
 
-import com.setycz.chickens.ChickensRegistry;
-import com.setycz.chickens.ChickensRegistryItem;
 import com.setycz.chickens.SpawnType;
 import com.setycz.chickens.henhouse.TileEntityHenhouse;
+import com.setycz.chickens.registry.ChickensRegistry;
+import com.setycz.chickens.registry.ChickensRegistryItem;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
@@ -25,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Random;
 

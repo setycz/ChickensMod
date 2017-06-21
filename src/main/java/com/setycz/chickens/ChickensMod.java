@@ -1,13 +1,11 @@
 package com.setycz.chickens;
 
-import com.setycz.chickens.analyzer.ItemAnalyzer;
-import com.setycz.chickens.chicken.ChickenNetherPopulateHandler;
-import com.setycz.chickens.chicken.EntityChickensChicken;
-import com.setycz.chickens.coloredEgg.ItemColoredEgg;
-import com.setycz.chickens.henhouse.BlockHenhouse;
-import com.setycz.chickens.henhouse.TileEntityHenhouse;
-import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
-import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import joptsimple.internal.Strings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -23,28 +21,35 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.setycz.chickens.analyzer.ItemAnalyzer;
+import com.setycz.chickens.chicken.ChickenNetherPopulateHandler;
+import com.setycz.chickens.chicken.EntityChickensChicken;
+import com.setycz.chickens.coloredEgg.ItemColoredEgg;
+import com.setycz.chickens.config.ConfigHandler;
+import com.setycz.chickens.henhouse.BlockHenhouse;
+import com.setycz.chickens.henhouse.TileEntityHenhouse;
+import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
+import com.setycz.chickens.registry.ChickensRegistry;
+import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.LiquidEggRegistry;
+import com.setycz.chickens.registry.LiquidEggRegistryItem;
+import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -58,19 +63,12 @@ public class ChickensMod {
     public static final String VERSION = "@VERSION@";
     public static final String CHICKEN = "ChickensChicken";
 
-    private static final Logger log = LogManager.getLogger(MODID);
+    public static final Logger log = LogManager.getLogger(MODID);
 
     @Mod.Instance(MODID)
     public static ChickensMod instance;
 
     private static final CreativeTabs tab = new ChickensTab();
-
-    private int chickenEntityId = 30000;
-    private int spawnProbability = 10;
-    private int minBroodSize = 3;
-    private int maxBroodSize = 5;
-    private float netherSpawnChanceMultiplier = 1.0f;
-    private boolean alwaysShowStats = false;
 
     public static final Item spawnEgg = new ItemSpawnEgg().setRegistryName("spawn_egg").setUnlocalizedName("spawn_egg").setCreativeTab(tab);
     public static final Item coloredEgg = new ItemColoredEgg().setRegistryName("colored_egg").setUnlocalizedName("colored_egg").setCreativeTab(tab);
@@ -90,14 +88,14 @@ public class ChickensMod {
     public static CommonProxy proxy;
 
     public boolean getAlwaysShowStats() {
-        return alwaysShowStats;
+        return ConfigHandler.alwaysShowStats;
     }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 
-        EntityRegistry.registerModEntity(new ResourceLocation(ChickensMod.MODID, CHICKEN), EntityChickensChicken.class, CHICKEN, chickenEntityId, this, 64, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(ChickensMod.MODID, CHICKEN), EntityChickensChicken.class, CHICKEN, ConfigHandler.chickenEntityId, this, 64, 3, true);
 
         GameRegistry.register(coloredEgg);
         GameRegistry.register(spawnEgg);
@@ -114,7 +112,8 @@ public class ChickensMod {
         registerBlock(henhouse_spruce);
 
         registerLiquidEggs();
-        loadConfiguration(event.getSuggestedConfigurationFile());
+        
+        ConfigHandler.LoadConfigs(generateDefaultChickens());
 
         log.info("Enabled chickens: {}", getChickenNames(ChickensRegistry.getItems()));
         log.info("Disabled chickens: {}", getChickenNames(ChickensRegistry.getDisabledItems()));
@@ -123,7 +122,12 @@ public class ChickensMod {
                     spawnType, getChickenNames(ChickensRegistry.getPossibleChickensToSpawn(spawnType)));
         }
 
-        dumpChickens(ChickensRegistry.getItems());
+        
+    }
+    
+    @EventHandler
+    public void preInit(FMLPostInitializationEvent event) {
+    	dumpChickens(ChickensRegistry.getItems());
     }
 
     private void registerBlock(Block block) {
@@ -139,48 +143,6 @@ public class ChickensMod {
         return result;
     }
 
-    private void loadConfiguration(File configFile) {
-        Configuration configuration = new Configuration(configFile);
-
-        chickenEntityId = configuration.getInt("entityId", "general", 30000, Integer.MIN_VALUE, Integer.MAX_VALUE, "Chicken Entity ID");
-        spawnProbability = configuration.getInt("spawnProbability", "general", 10, Integer.MIN_VALUE, Integer.MAX_VALUE, "Spawn probability");
-        minBroodSize = configuration.getInt("minBroodSize", "general", 3, 1, Integer.MAX_VALUE, "Minimal brood size");
-        maxBroodSize = configuration.getInt("maxBroodSize", "general", 5, 2, Integer.MAX_VALUE, "Maximal brood size, must be greater than the minimal size");
-        netherSpawnChanceMultiplier = configuration.getFloat("netherSpawnChanceMultiplier", "general", 1.0f, 0.f, Float.MAX_VALUE, "Nether chicken spawn chance multiplier, e.g. 0=no initial spawn, 2=two times more spawn rate");
-        alwaysShowStats = configuration.getBoolean("alwaysShowStats", "general", false, "Stats will be always shown in WAILA without the need to analyze chickens first when enabled.");
-
-        Collection<ChickensRegistryItem> allChickens = generateDefaultChickens();
-        for (ChickensRegistryItem chicken : allChickens) {
-            boolean enabled = configuration.getBoolean("enabled", chicken.getEntityName(), true, "Is chicken enabled?");
-            chicken.setEnabled(enabled);
-
-            float layCoefficient = configuration.getFloat("layCoefficient", chicken.getEntityName(), 1.0f, 0.01f, 100.f, "Scale time to lay an egg.");
-            chicken.setLayCoefficient(layCoefficient);
-
-            ItemStack itemStack = loadItemStack(configuration, chicken, "egg", chicken.createLayItem());
-            chicken.setLayItem(itemStack);
-
-            ItemStack dropItemStack = loadItemStack(configuration, chicken, "drop", chicken.createDropItem());
-            chicken.setDropItem(dropItemStack);
-
-            ChickensRegistryItem parent1 = getChickenParent(configuration, "parent1", allChickens, chicken, chicken.getParent1());
-            ChickensRegistryItem parent2 = getChickenParent(configuration, "parent2", allChickens, chicken, chicken.getParent2());
-            if (parent1 != null && parent2 != null) {
-                chicken.setParentsNew(parent1, parent2);
-            } else {
-                chicken.setNoParents();
-            }
-
-            String spawnTypes = getAllAvailableSpawnTypes();
-            SpawnType spawnType = SpawnType.valueOf(configuration.getString("spawnType", chicken.getEntityName(), chicken.getSpawnType().toString(), "Chicken spawn type, can be: " + spawnTypes));
-            chicken.setSpawnType(spawnType);
-
-            ChickensRegistry.register(chicken);
-        }
-
-        configuration.save();
-    }
-
     private String getAllAvailableSpawnTypes() {
         String spawnTypes = "";
         String[] spawnTypeNames = SpawnType.names();
@@ -193,35 +155,6 @@ public class ChickensMod {
         return spawnTypes;
     }
 
-    @Nullable
-    private ChickensRegistryItem getChickenParent(Configuration configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, @Nullable ChickensRegistryItem parent) {
-        String parentName = configuration.getString(propertyName, chicken.getEntityName(), parent != null ? parent.getEntityName() : "", "First parent, empty if it's base chicken.");
-        return findChicken(allChickens, parentName);
-    }
-
-    @Nullable
-    private ChickensRegistryItem findChicken(Collection<ChickensRegistryItem> chickens, String name) {
-        for (ChickensRegistryItem chicken : chickens) {
-            if (chicken.getEntityName().compareToIgnoreCase(name) == 0) {
-                return chicken;
-            }
-        }
-        return null;
-    }
-
-    private ItemStack loadItemStack(Configuration configuration, ChickensRegistryItem chicken, String prefix, ItemStack defaultItemStack) {
-        String itemName = configuration.getString(prefix + "ItemName", chicken.getEntityName(), defaultItemStack.getItem().getRegistryName().toString(), "Item name to be laid/dropped.");
-        int itemAmount = configuration.getInt(prefix + "ItemAmount", chicken.getEntityName(), defaultItemStack.getCount(), 1, 64, "Item amount to be laid/dropped.");
-        int itemMeta = configuration.getInt(prefix + "ItemMeta", chicken.getEntityName(), defaultItemStack.getMetadata(), Integer.MIN_VALUE, Integer.MAX_VALUE, "Item amount to be laid/dropped.");
-
-        ResourceLocation itemResourceLocation = new ResourceLocation(itemName);
-        Item item = Item.REGISTRY.getObject(itemResourceLocation);
-        if (item == null) {
-            throw new RuntimeException("Cannot find egg item with name: " + itemName);
-        }
-        return new ItemStack(item, itemAmount, itemMeta);
-    }
-
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
@@ -230,11 +163,11 @@ public class ChickensMod {
 
         List<Biome> biomesForSpawning = getAllSpawnBiomes();
         if (biomesForSpawning.size() > 0) {
-            EntityRegistry.addSpawn(EntityChickensChicken.class, spawnProbability, minBroodSize, maxBroodSize, EnumCreatureType.CREATURE,
+            EntityRegistry.addSpawn(EntityChickensChicken.class, ConfigHandler.spawnProbability, ConfigHandler.minBroodSize, ConfigHandler.maxBroodSize, EnumCreatureType.CREATURE,
                     biomesForSpawning.toArray(new Biome[biomesForSpawning.size()])
             );
             if (biomesForSpawning.contains(Biomes.HELL)) {
-                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler(netherSpawnChanceMultiplier));
+                MinecraftForge.TERRAIN_GEN_BUS.register(new ChickenNetherPopulateHandler(ConfigHandler.netherSpawnChanceMultiplier));
             }
         }
 
@@ -593,7 +526,7 @@ public class ChickensMod {
         ChickensRegistryItem soulSandChicken = new ChickensRegistryItem(
                 new ResourceLocation(ChickensMod.MODID, "soulSandChicken"), "soulSandChicken", new ResourceLocation("chickens", "textures/entity/soulsand_chicken.png"),
                 new ItemStack(Blocks.SOUL_SAND, 1 , 0),
-                0x453125, 0xd52f08);
+                0x453125, 0xd52f08).setSpawnType(SpawnType.HELL);
         chickens.add(soulSandChicken);
         
         return chickens;

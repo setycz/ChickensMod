@@ -1,6 +1,7 @@
 package com.setycz.chickens.liquidEgg;
 
-import com.setycz.chickens.LiquidEggRegistry;
+import com.setycz.chickens.registry.LiquidEggRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;

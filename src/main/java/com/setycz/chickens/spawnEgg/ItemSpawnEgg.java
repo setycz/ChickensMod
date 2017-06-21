@@ -5,10 +5,10 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.ChickensRegistry;
-import com.setycz.chickens.ChickensRegistryItem;
 import com.setycz.chickens.IColorSource;
 import com.setycz.chickens.chicken.EntityChickensChicken;
+import com.setycz.chickens.registry.ChickensRegistry;
+import com.setycz.chickens.registry.ChickensRegistryItem;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

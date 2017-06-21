@@ -1,10 +1,13 @@
-package com.setycz.chickens;
+package com.setycz.chickens.registry;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
+
+import com.setycz.chickens.SpawnType;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -176,5 +179,11 @@ public class ChickensRegistryItem {
 
     public boolean isBreedable() {
         return parent1 != null && parent2 != null;
+    }
+    
+    
+    public static void registerChickens()
+    {
+    Item.getByNameOrId("");	
     }
 }

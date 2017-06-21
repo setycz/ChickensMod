@@ -3,6 +3,10 @@ package com.setycz.chickens;
 import com.setycz.chickens.coloredEgg.EntityColoredEgg;
 import com.setycz.chickens.coloredEgg.ItemColoredEgg;
 import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
+import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.LiquidEggRegistry;
+import com.setycz.chickens.registry.LiquidEggRegistryItem;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;

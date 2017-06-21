@@ -1,10 +1,15 @@
-package com.setycz.chickens;
+package com.setycz.chickens.registry;
 
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
+
+import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.SpawnType;
 
 import java.util.*;
 
@@ -23,8 +28,6 @@ public final class ChickensRegistry {
         validate(entity);
         items.put(entity.getRegistryName(), entity);
         STRING_TO_ITEM.put(entity.getRegistryName().toString(), entity);
-        
-        //System.out.println(entity.getRegistryName());
     }
 
     private static void validate(ChickensRegistryItem entity) {
@@ -36,16 +39,16 @@ public final class ChickensRegistry {
                 throw new RuntimeException("Duplicated name [" + entity.getEntityName() + "] of [" + entity.getRegistryName().toString() + "] with [" + item.getRegistryName().toString()  + "]!");
             }
         }
+        
     }
-
-//    public static ChickensRegistryItem getByType(int type) {
-//        return items.get(type);
-//    }
     
+    @Nullable
     public static ChickensRegistryItem getByResourceLocation(ResourceLocation type) {
-        return items.get(type);
+    	ChickensRegistryItem chicken = items.get(type);
+        return chicken != null ? items.get(type) : getByRegistryName(type.toString());
     }
     
+    @Nullable
     public static ChickensRegistryItem getByRegistryName(String type)
     {
     	return STRING_TO_ITEM.get(type);

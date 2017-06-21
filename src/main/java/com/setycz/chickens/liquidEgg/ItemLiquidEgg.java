@@ -1,8 +1,9 @@
 package com.setycz.chickens.liquidEgg;
 
 import com.setycz.chickens.IColorSource;
-import com.setycz.chickens.LiquidEggRegistry;
-import com.setycz.chickens.LiquidEggRegistryItem;
+import com.setycz.chickens.registry.LiquidEggRegistry;
+import com.setycz.chickens.registry.LiquidEggRegistryItem;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 /**
