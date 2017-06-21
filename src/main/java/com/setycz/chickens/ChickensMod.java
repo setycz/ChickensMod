@@ -6,6 +6,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.setycz.chickens.block.BlockHenhouse;
+import com.setycz.chickens.block.TileEntityHenhouse;
+import com.setycz.chickens.client.gui.TileEntityGuiHandler;
+import com.setycz.chickens.common.CommonProxy;
+import com.setycz.chickens.config.ConfigHandler;
+import com.setycz.chickens.entity.EntityChickensChicken;
+import com.setycz.chickens.handler.ChickenNetherPopulateHandler;
+import com.setycz.chickens.handler.ChickenTeachHandler;
+import com.setycz.chickens.handler.ChickensTab;
+import com.setycz.chickens.handler.SpawnType;
+import com.setycz.chickens.item.ItemAnalyzer;
+import com.setycz.chickens.item.ItemColoredEgg;
+import com.setycz.chickens.item.ItemLiquidEgg;
+import com.setycz.chickens.item.ItemSpawnEgg;
+import com.setycz.chickens.registry.ChickensRegistry;
+import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.LiquidEggRegistry;
+import com.setycz.chickens.registry.LiquidEggRegistryItem;
+
 import joptsimple.internal.Strings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -33,23 +55,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.setycz.chickens.analyzer.ItemAnalyzer;
-import com.setycz.chickens.chicken.ChickenNetherPopulateHandler;
-import com.setycz.chickens.chicken.EntityChickensChicken;
-import com.setycz.chickens.coloredEgg.ItemColoredEgg;
-import com.setycz.chickens.config.ConfigHandler;
-import com.setycz.chickens.henhouse.BlockHenhouse;
-import com.setycz.chickens.henhouse.TileEntityHenhouse;
-import com.setycz.chickens.liquidEgg.ItemLiquidEgg;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
-import com.setycz.chickens.registry.LiquidEggRegistry;
-import com.setycz.chickens.registry.LiquidEggRegistryItem;
-import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 
 /**
  * Created by setyc on 12.02.2016.
@@ -143,7 +148,8 @@ public class ChickensMod {
         return result;
     }
 
-    private String getAllAvailableSpawnTypes() {
+    @SuppressWarnings("unused")
+	private String getAllAvailableSpawnTypes() {
         String spawnTypes = "";
         String[] spawnTypeNames = SpawnType.names();
         for (int spawnTypeIndex = 0; spawnTypeIndex < spawnTypeNames.length; spawnTypeIndex++) {

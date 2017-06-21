@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-import com.setycz.chickens.SpawnType;
+import com.setycz.chickens.handler.SpawnType;
 
 /**
  * Created by setyc on 12.02.2016.

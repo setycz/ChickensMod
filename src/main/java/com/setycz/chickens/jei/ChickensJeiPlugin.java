@@ -1,6 +1,7 @@
 package com.setycz.chickens.jei;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.item.ItemSpawnEgg;
 import com.setycz.chickens.jei.breeding.BreedingRecipeCategory;
 import com.setycz.chickens.jei.breeding.BreedingRecipeHandler;
 import com.setycz.chickens.jei.breeding.BreedingRecipeWrapper;
@@ -18,7 +19,6 @@ import com.setycz.chickens.jei.throwing.ThrowingRecipeHandler;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
-import com.setycz.chickens.spawnEgg.ItemSpawnEgg;
 
 import mezz.jei.api.*;
 import mezz.jei.api.ingredients.IModIngredientRegistration;

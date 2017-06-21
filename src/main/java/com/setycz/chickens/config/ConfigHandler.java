@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.config.Configuration;
-
-import com.setycz.chickens.SpawnType;
+import com.setycz.chickens.handler.SpawnType;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
 	public static final File configDir = new File("config/chickens");
@@ -127,8 +127,7 @@ public class ConfigHandler {
     }
 
     
-    @SuppressWarnings("unused")
-	private static ItemStack loadItemStack(JsonConfig configuration, String Category, ChickensRegistryItem chicken, String prefix, ItemStack defaultItemStack) {
+    private static ItemStack loadItemStack(JsonConfig configuration, String Category, ChickensRegistryItem chicken, String prefix, ItemStack defaultItemStack) {
 
     	ItemStack stack = configuration.getItemStack(Category, prefix, defaultItemStack);
     	

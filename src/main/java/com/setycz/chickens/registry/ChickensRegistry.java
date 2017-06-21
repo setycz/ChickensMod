@@ -1,17 +1,20 @@
 package com.setycz.chickens.registry;
 
-import net.minecraft.init.Biomes;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.SpawnType;
+import com.setycz.chickens.handler.SpawnType;
 
-import java.util.*;
+import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 
 /**
  * Created by setyc on 12.02.2016.

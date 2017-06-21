@@ -7,14 +7,13 @@ import java.io.IOException;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.JsonUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.setycz.chickens.ChickensMod;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * 

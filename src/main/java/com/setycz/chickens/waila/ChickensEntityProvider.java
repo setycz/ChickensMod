@@ -1,7 +1,8 @@
 package com.setycz.chickens.waila;
 
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.chicken.EntityChickensChicken;
+import com.setycz.chickens.entity.EntityChickensChicken;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
