@@ -84,4 +84,9 @@ public class BreedingRecipeCategory implements IRecipeCategory {
         guiItemStacks.init(childrenSlot, false, 33, 30);
         guiItemStacks.set(ingredients);
     }
+
+	@Override
+	public String getModName() {
+		return ChickensMod.NAME;
+	}
 }

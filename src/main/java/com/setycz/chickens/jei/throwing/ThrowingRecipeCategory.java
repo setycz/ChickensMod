@@ -80,4 +80,9 @@ public class ThrowingRecipeCategory implements IRecipeCategory {
         guiItemStacks.init(outputSlot, false, 55, 15);
         guiItemStacks.set(ingredients);
     }
+
+	@Override
+	public String getModName() {
+		return ChickensMod.NAME;
+	}
 }

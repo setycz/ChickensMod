@@ -3,7 +3,7 @@ package com.setycz.chickens.jei.breeding;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.util.Ingredients;
+import mezz.jei.ingredients.Ingredients;
 import net.minecraft.item.ItemStack;
 
 /**

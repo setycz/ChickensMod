@@ -1,18 +1,24 @@
 package com.setycz.chickens.jei.henhousing;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.setycz.chickens.ChickensMod;
+
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by setyc on 07.01.2017.
@@ -80,4 +86,9 @@ public class HenhousingRecipeCategory implements IRecipeCategory {
         guiItemStacks.init(outputSlot, false, 24 - 18, 54 - 12);
         guiItemStacks.set(ingredients);
     }
+
+	@Override
+	public String getModName() {
+		return ChickensMod.NAME;
+	}
 }

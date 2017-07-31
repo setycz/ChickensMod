@@ -87,4 +87,9 @@ public class DropRecipeCategory implements IRecipeCategory {
         guiItemStacks.init(outputSlot, false, 57, 15);
         guiItemStacks.set(ingredients);
     }
+
+	@Override
+	public String getModName() {
+		return ChickensMod.NAME;
+	}
 }

@@ -1,5 +1,8 @@
 package com.setycz.chickens.jei;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.item.ItemSpawnEgg;
 import com.setycz.chickens.jei.breeding.BreedingRecipeCategory;
@@ -20,13 +23,16 @@ import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
 
-import mezz.jei.api.*;
+import mezz.jei.api.IJeiHelpers;
+import mezz.jei.api.IJeiRuntime;
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
+import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by setyc on 21.02.2016.
@@ -34,19 +40,11 @@ import java.util.List;
 @JEIPlugin
 public class ChickensJeiPlugin implements IModPlugin {
 
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-
-    }
-
-    @Override
-    public void registerIngredients(IModIngredientRegistration registry) {
-
-    }
-
-    @Override
-    public void register(IModRegistry registry) {
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registry) {
+		
         IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+        
         registry.addRecipeCategories(
                 new LayingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new BreedingRecipeCategory(jeiHelpers.getGuiHelper()),
@@ -54,13 +52,30 @@ public class ChickensJeiPlugin implements IModPlugin {
                 new ThrowingRecipeCategory(jeiHelpers.getGuiHelper()),
                 new HenhousingRecipeCategory(jeiHelpers.getGuiHelper())
         );
-        registry.addRecipeHandlers(
+	}
+	
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+    	subtypeRegistry.useNbtForSubtypes(ChickensMod.spawnEgg);
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
+
+    }
+
+    @SuppressWarnings("deprecation")
+	@Override
+    public void register(IModRegistry registry) {
+        
+    	registry.addRecipeHandlers(
                 new LayingRecipeHandler(),
                 new BreedingRecipeHandler(),
                 new DropRecipeHandler(),
                 new ThrowingRecipeHandler(),
                 new HenhousingRecipeHandler()
         );
+    	
         registry.addRecipes(getLayingRecipes());
         registry.addRecipes(getBreedingRecipes());
         registry.addRecipes(getDropRecipes());
@@ -152,4 +167,5 @@ public class ChickensJeiPlugin implements IModPlugin {
         henhouseRecipes.add(new HenhousingRecipeWrapper(new ItemStack(Blocks.HAY_BLOCK), new ItemStack(Blocks.DIRT)));
         return henhouseRecipes;
     }
+
 }
