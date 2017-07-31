@@ -60,13 +60,15 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
  * Created by setyc on 12.02.2016.
  */
 @Mod(modid = ChickensMod.MODID,
+		name=ChickensMod.NAME,
         version = ChickensMod.VERSION,
         acceptedMinecraftVersions = "[1.11.2]",
-        dependencies = "required-after:forge@[13.20.0.2253,);")
+        dependencies = "required-after:forge@[13.20.1.2386,);")
 public class ChickensMod {
     public static final String MODID = "chickens";
     public static final String VERSION = "@VERSION@";
     public static final String CHICKEN = "ChickensChicken";
+    public static final String NAME = "Chickens";
 
     public static final Logger log = LogManager.getLogger(MODID);
 

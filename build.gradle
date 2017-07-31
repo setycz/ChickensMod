@@ -22,9 +22,9 @@ version = modversion
 group= "com.setycz.chickens"
 archivesBaseName = "chickens"
 
-sourceCompatibility = targetCompatibility = "1.6"
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {
@@ -53,8 +53,8 @@ repositories {
 
 dependencies {
 
-    deobfCompile "mezz.jei:jei_1.11.2:4.2.8.242"
-    compile "mcp.mobius.waila:Hwyla:1.8.10-B23_1.11"
+    deobfCompile "mezz.jei:jei_1.11.2:4.5.0.295"
+    compile "mcp.mobius.waila:Hwyla:1.8.17-B31_1.11"
 
 }
 
