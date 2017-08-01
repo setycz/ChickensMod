@@ -42,6 +42,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -53,6 +54,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -261,17 +263,23 @@ public class ChickensMod {
 
     private List<Biome> getAllSpawnBiomes() {
         // chicken entity spawning
-        Biome[] allPossibleBiomes = {
-                Biomes.PLAINS, Biomes.EXTREME_HILLS, Biomes.FOREST,
-                Biomes.TAIGA, Biomes.SWAMPLAND, Biomes.ICE_PLAINS,
-                Biomes.ICE_MOUNTAINS, Biomes.FOREST_HILLS, Biomes.TAIGA_HILLS,
-                Biomes.EXTREME_HILLS_EDGE, Biomes.JUNGLE, Biomes.JUNGLE_HILLS,
-                Biomes.JUNGLE_EDGE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS,
-                Biomes.ROOFED_FOREST, Biomes.COLD_TAIGA, Biomes.COLD_TAIGA_HILLS,
-                Biomes.EXTREME_HILLS,
-                Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.HELL};
+    	ArrayList<Biome> allPossibleBiomes = new ArrayList<Biome>();
+    	for(Biome biome : ForgeRegistries.BIOMES.getValues())
+    	{
+    		if(!BiomeDictionary.hasType(biome, BiomeDictionary.Type.END)        &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))     &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM))  &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))     &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID))      &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY))     &&
+    		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL))     &&
+       		  (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER)))     	
+       		  {
+    			allPossibleBiomes.add(biome);
+       		  }
+    	}
 
-        List<Biome> biomesForSpawning = new ArrayList<Biome>();
+    	List<Biome> biomesForSpawning = new ArrayList<Biome>();
         for (Biome biome : allPossibleBiomes) {
             if (ChickensRegistry.isAnyIn(ChickensRegistry.getSpawnType(biome))) {
                 biomesForSpawning.add(biome);

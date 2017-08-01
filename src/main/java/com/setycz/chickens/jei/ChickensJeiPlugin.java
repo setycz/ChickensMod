@@ -82,7 +82,7 @@ public class ChickensJeiPlugin implements IModPlugin {
         registry.addRecipes(getThrowRecipes());
         registry.addRecipes(getHenhouseRecipes());
     }
-
+ 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 
