@@ -19,9 +19,14 @@ public class ContainerHenhouse extends Container {
 
     public ContainerHenhouse(InventoryPlayer playerInventory, TileEntityHenhouse tileEntityHenhouse) {
         this.tileEntityHenhouse = tileEntityHenhouse;
-
+        
+        //input
         this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 25, 19));
+        
+        //output
         this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
+        //TODO TRY THIS... 
+        //this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
