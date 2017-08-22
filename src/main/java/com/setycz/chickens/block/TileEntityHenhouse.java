@@ -5,37 +5,36 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.setycz.chickens.capabilities.InventoryStroageModifiable;
 import com.setycz.chickens.client.gui.GuiHenhouse;
 import com.setycz.chickens.client.gui.IInventoryGui;
 import com.setycz.chickens.client.gui.container.ContainerHenhouse;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * Created by setyc on 01.03.2016.
  */
-public class TileEntityHenhouse extends TileEntity implements ISidedInventory, IInventoryGui {
+public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
     public static final int hayBaleEnergy = 100;
 
     public static final int hayBaleSlotIndex = 0;
@@ -46,7 +45,29 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     private static final double FENCE_THRESHOLD = 0.5;
 
     private String customName;
-    private final NonNullList<ItemStack> slots = NonNullList.withSize(11, ItemStack.EMPTY);
+    private final InventoryStroageModifiable slots = new InventoryStroageModifiable("container.henhouse", 11)
+    		{
+    			@Override
+    			public boolean canInsertSlot(int slotIndex, ItemStack stackIn)
+    			{
+    				if(slotIndex == hayBaleSlotIndex && stackIn.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK)) 
+    					return true;
+    				else if(slotIndex == dirtSlotIndex && stackIn.getItem() == Item.getItemFromBlock(Blocks.DIRT))
+    					return true;
+    				else 
+    					return false;
+    			}
+    			
+    		    @Override
+    		    public boolean canExtractSlot(int slotIndex)
+    		    {
+    		    	if(slotIndex == hayBaleSlotIndex)
+    		    		return false;
+    		    	
+    		    	return true;
+    		    }
+    		};
+    		
     private int energy = 0;
 
     @Nullable
@@ -54,7 +75,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         List<TileEntityHenhouse> henhouses = findHenhouses(worldObj, pos, 4 + HENHOUSE_RADIUS + FENCE_THRESHOLD);
         for (TileEntityHenhouse henhouse : henhouses) {
             itemToLay = henhouse.pushItemStack(itemToLay);
-            if (itemToLay == null) {
+            if (itemToLay.isEmpty()) {
                 break;
             }
         }
@@ -106,45 +127,39 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     }
 
     private ItemStack pushItemStack(ItemStack stack) {
-        ItemStack rest = stack.copy();
 
         int capacity = getEffectiveCapacity();
         if (capacity <= 0) {
-            return rest;
+            return stack;
         }
-
+        
         for (int slotIndex = firstItemSlotIndex; slotIndex <= lastItemSlotIndex; slotIndex++) {
-            int canAdd = canAdd(slots.get(slotIndex), rest);
-            int willAdd = Math.min(canAdd, capacity);
-            if (willAdd > 0) {
-                consumeEnergy(willAdd);
-                capacity -= willAdd;
-
-                if (slots.get(slotIndex).isEmpty()) {
-                    slots.set(slotIndex, rest.splitStack(willAdd));
-                } else {
-                    slots.get(slotIndex).grow(willAdd);
-                    rest.shrink(willAdd);
-                }
-
-                if (rest.getCount() <= 0) {
-                    return ItemStack.EMPTY;
-                }
-            }
+        	
+        	if(stack.isEmpty())
+        		break;
+        	int stackSizePre = stack.getCount();
+        		ItemStack simulated = slots.insertItemInternal(slotIndex, stack, true);
+        	int powerToUse = stackSizePre - simulated.getCount();
+        	
+        	if(powerToUse > 0)
+        	{
+        		consumeEnergy(powerToUse);
+        		capacity -= powerToUse;
+        		
+        		stack = slots.insertItemInternal(slotIndex, stack, false);
+        	}
         }
-
-        markDirty();
-        return rest;
+        
+        markDirty(); 
+        return stack;
     }
 
     private void consumeEnergy(int amount) {
+    	
         while (amount > 0) {
             if (energy == 0) {
-                assert !slots.get(hayBaleSlotIndex).isEmpty();
-                slots.get(hayBaleSlotIndex).shrink(1);
-                if (slots.get(hayBaleSlotIndex).getCount() <= 0) {
-                    slots.set(hayBaleSlotIndex, ItemStack.EMPTY);
-                }
+                assert !slots.getStackInSlot(hayBaleSlotIndex).isEmpty();
+                	slots.extractItemInternal(hayBaleSlotIndex, 1, false);
                 energy += hayBaleEnergy;
             }
 
@@ -153,27 +168,11 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
             amount -= consumed;
 
             if (energy <= 0) {
-                if (slots.get(dirtSlotIndex).isEmpty()) {
-                    slots.set(dirtSlotIndex, new ItemStack(Blocks.DIRT, 1));
-                } else {
-                    slots.get(dirtSlotIndex).grow(1);
-                }
+                    slots.insertItemInternal(dirtSlotIndex, new ItemStack(Blocks.DIRT, 1), false);
             }
         }
     }
 
-    private int canAdd(@Nullable ItemStack slotStack, ItemStack inputStack) {
-        if (slotStack == null) {
-            return Math.min(getInventoryStackLimit(), inputStack.getCount());
-        }
-        if (!slotStack.isItemEqual(inputStack)) {
-            return 0;
-        }
-        if (slotStack.getCount() >= getInventoryStackLimit()) {
-            return 0;
-        }
-        return Math.min(inputStack.getCount(), getInventoryStackLimit() - slotStack.getCount());
-    }
 
     private int getEffectiveCapacity() {
         return Math.min(getInputCapacity(), getOutputCapacity());
@@ -182,7 +181,7 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     private int getInputCapacity() {
         int potential = energy;
 
-        ItemStack hayBaleStack = slots.get(hayBaleSlotIndex);
+        ItemStack hayBaleStack = slots.getStackInSlot(hayBaleSlotIndex);
         if (!hayBaleStack.isEmpty() && hayBaleStack.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK)) {
             potential += hayBaleStack.getCount() * hayBaleEnergy;
         }
@@ -191,39 +190,43 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
     }
 
     private int getOutputCapacity() {
-        ItemStack dirtStack = slots.get(dirtSlotIndex);
+        ItemStack dirtStack = slots.getStackInSlot(dirtSlotIndex);
         if (dirtStack.isEmpty()) {
-            return getInventoryStackLimit() * hayBaleEnergy;
+            return slots.getSlotLimit(dirtSlotIndex) * hayBaleEnergy;
         }
         if (dirtStack.getItem() != Item.getItemFromBlock(Blocks.DIRT)) {
             return 0;
         }
-        return (getInventoryStackLimit() - dirtStack.getCount()) * hayBaleEnergy;
+        return (slots.getSlotLimit(dirtSlotIndex) - dirtStack.getCount()) * hayBaleEnergy;
     }
+    
+    /**
+     * Drop all contents
+     */
+	public void dropContents()
+	{
+        for (int i = 0; i < this.slots.getSlots(); ++i)
+        {
+        	ItemStack stack = this.slots.extractItemInternal(i, this.slots.getSlotLimit(i), false);
+        	
+        	if(!stack.isEmpty())
+        	{
+        		this.world.spawnEntity(new EntityItem(world, this.pos.getX(), this.pos.getY()+1, this.pos.getZ(), stack));
+        	}
+        }
+	}
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
-        if (hasCustomName()) {
+        if (slots.hasCustomName()) {
             compound.setString("customName", customName);
         }
 
         compound.setInteger("energy", energy);
-
-        NBTTagList items = new NBTTagList();
-        for (int slotIndex = 0; slotIndex < slots.size(); slotIndex++) {
-            ItemStack itemStack = slots.get(slotIndex);
-            if (!itemStack.isEmpty()) {
-                NBTTagCompound item = new NBTTagCompound();
-                item.setInteger("slot", slotIndex);
-                itemStack.writeToNBT(item);
-                items.appendTag(item);
-            }
-        }
-        compound.setTag("items", items);
-
-        compound.setInteger("energy", energy);
+        
+        slots.writeToNBT(compound);
 
         return compound;
     }
@@ -235,100 +238,10 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         customName = compound.getString("customName");
 
         energy = compound.getInteger("energy");
-
-        clear();
-
-        NBTTagList items = compound.getTagList("items", 10);
-        for (int itemIndex = 0; itemIndex < items.tagCount(); itemIndex++) {
-            NBTTagCompound item = items.getCompoundTagAt(itemIndex);
-            int slotIndex = item.getInteger("slot");
-            ItemStack itemStack = new ItemStack(item);
-            slots.set(slotIndex, itemStack);
-        }
-
-        energy = compound.getInteger("energy");
+        
+        slots.readFromNBT(compound);
     }
 
-    @Override
-    public int getSizeInventory() {
-        return slots.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return slots.get(index);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        ItemStack stack = slots.get(index);
-
-        if (stack.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        if (count >= stack.getCount()) {
-            slots.set(index, ItemStack.EMPTY);
-            return stack;
-        }
-        return stack.splitStack(count);
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        ItemStack stack = slots.get(index);
-        slots.set(index, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-        slots.set(index, stack);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        if (index == hayBaleSlotIndex) {
-            return stack.getItem() == Item.getItemFromBlock(Blocks.HAY_BLOCK);
-        }
-        //noinspection RedundantIfStatement
-        if (index == dirtSlotIndex) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : slots) {
-            if (stack != null && !stack.isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public int getField(int id) {
         switch (id) {
             case 0:
@@ -338,7 +251,6 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         }
     }
 
-    @Override
     public void setField(int id, int value) {
         switch (id) {
             case 0:
@@ -347,31 +259,13 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         }
     }
 
-    @Override
     public int getFieldCount() {
         return 1;
     }
 
     @Override
-    public void clear() {
-        for (int slotIndex = 0; slotIndex < slots.size(); slotIndex++) {
-            slots.set(slotIndex, ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public String getName() {
-        return hasCustomName() ? customName : "container.henhouse";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return customName != null && customName.length() > 0;
-    }
-
-    @Override
     public ITextComponent getDisplayName() {
-        return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
+        return new TextComponentTranslation(slots.getName());
     }
 
     public void setCustomName(String customName) {
@@ -393,31 +287,18 @@ public class TileEntityHenhouse extends TileEntity implements ISidedInventory, I
         return energy;
     }
 
+	@SuppressWarnings("unchecked")
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        switch (side) {
-            case DOWN:
-                int itemSlotCount = lastItemSlotIndex - firstItemSlotIndex + 1;
-                int[] itemSlots = new int[itemSlotCount + 1];
-                itemSlots[0] = dirtSlotIndex;
-                for (int resultIndex = 0; resultIndex < itemSlotCount; resultIndex++) {
-                    itemSlots[resultIndex + 1] = firstItemSlotIndex + resultIndex;
-                }
-                return itemSlots;
-            case UP:
-                return new int[]{hayBaleSlotIndex};
-            default:
-                return new int[0];
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) this.slots;
         }
+        return super.getCapability(capability, facing);
     }
-
+		
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return isItemValidForSlot(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return true;
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+        super.hasCapability(capability, facing);
     }
 }

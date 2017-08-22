@@ -3,6 +3,7 @@ package com.setycz.chickens.block;
 import java.util.List;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.capabilities.InventoryStroageModifiable;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,9 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 /**
  * Created by setyc on 01.03.2016.
@@ -52,7 +57,7 @@ public class BlockHenhouse extends BlockContainer {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TileEntityHenhouse) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHenhouse) tileEntity);
+            ((TileEntityHenhouse) tileEntity).dropContents();
         }
 
         super.breakBlock(worldIn, pos, state);

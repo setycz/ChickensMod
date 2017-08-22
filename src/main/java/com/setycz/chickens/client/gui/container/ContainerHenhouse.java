@@ -1,6 +1,9 @@
 package com.setycz.chickens.client.gui.container;
 
+import javax.annotation.Nonnull;
+
 import com.setycz.chickens.block.TileEntityHenhouse;
+import com.setycz.chickens.capabilities.InventoryStroageModifiable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -8,6 +11,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 /**
  * Created by setyc on 06.03.2016.
@@ -15,23 +21,41 @@ import net.minecraft.item.ItemStack;
 public class ContainerHenhouse extends Container {
 
     private final TileEntityHenhouse tileEntityHenhouse;
+    private InventoryStroageModifiable invTileEntityHenhouse;
     private int energy;
-
+    
+     
     public ContainerHenhouse(InventoryPlayer playerInventory, TileEntityHenhouse tileEntityHenhouse) {
         this.tileEntityHenhouse = tileEntityHenhouse;
+         
+        this.invTileEntityHenhouse = (InventoryStroageModifiable) tileEntityHenhouse.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+             
+        //input 
+        // Overriding canTake and decrStack to use the internal extract and by pass the locks in place for other things taking items. 
         
-        //input
-        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 25, 19));
+        this.addSlotToContainer(new SlotItemHandler(invTileEntityHenhouse, TileEntityHenhouse.hayBaleSlotIndex, 25, 19)
+        		{
+        			@Override
+        			public boolean canTakeStack(EntityPlayer playerIn)
+        			{
+        				return !invTileEntityHenhouse.extractItemInternal(TileEntityHenhouse.hayBaleSlotIndex, 1, true).isEmpty();
+        			}
+
+        			@Override
+        			@Nonnull
+        			public ItemStack decrStackSize(int amount)
+        			{
+        				return invTileEntityHenhouse.extractItemInternal(TileEntityHenhouse.hayBaleSlotIndex, amount, false);
+        			}
+        		});
         
         //output
-        this.addSlotToContainer(new Slot(tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
-        //TODO TRY THIS... 
-        //this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
+        this.addSlotToContainer(new SlotItemHandler(invTileEntityHenhouse, TileEntityHenhouse.dirtSlotIndex, 25, 55));
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
-                this.addSlotToContainer(new Slot(
-                        tileEntityHenhouse,
+                this.addSlotToContainer(new SlotItemHandler(
+                		invTileEntityHenhouse,
                         TileEntityHenhouse.firstItemSlotIndex + (row * 3) + column,
                         98 + column * 18,
                         17 + row * 18));
@@ -51,7 +75,7 @@ public class ContainerHenhouse extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tileEntityHenhouse.isUsableByPlayer(playerIn);
+        return true;
     }
 
     @Override
@@ -65,11 +89,11 @@ public class ContainerHenhouse extends Container {
             assert !itemStack1.isEmpty();
             itemstack = itemStack1.copy();
 
-            if (index < this.tileEntityHenhouse.getSizeInventory()) {
-                if (!this.mergeItemStack(itemStack1, this.tileEntityHenhouse.getSizeInventory(), this.inventorySlots.size(), true)) {
+            if (index < this.invTileEntityHenhouse.getSlots()) {
+                if (!this.mergeItemStack(itemStack1, this.invTileEntityHenhouse.getSlots(), this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemStack1, 0, this.tileEntityHenhouse.getSizeInventory(), false)) {
+            } else if (!this.mergeItemStack(itemStack1, 0, this.invTileEntityHenhouse.getSlots(), false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -86,7 +110,7 @@ public class ContainerHenhouse extends Container {
     @Override
     public void onContainerClosed(EntityPlayer playerIn) {
         super.onContainerClosed(playerIn);
-        tileEntityHenhouse.closeInventory(playerIn);
+        //tileEntityHenhouse.closeInventory(playerIn);
     }
 
     @Override
