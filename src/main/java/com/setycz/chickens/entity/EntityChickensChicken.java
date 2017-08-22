@@ -90,7 +90,14 @@ public class EntityChickensChicken extends EntityChicken {
     }
 
     private ChickensRegistryItem getChickenDescription() {
-        return ChickensRegistry.getByRegistryName(getChickenTypeInternal());
+    	ChickensRegistryItem description = ChickensRegistry.getByRegistryName(getChickenTypeInternal());
+    	
+    	if(description == null || !description.isEnabled()){
+    		description = ChickensRegistry.getByResourceLocation(ChickensRegistry.SMART_CHICKEN_ID);
+    		if(!description.isEnabled())
+    			this.kill();
+    	}
+        return description;
     }
 
     public int getTier() {
@@ -165,17 +172,18 @@ public class EntityChickensChicken extends EntityChicken {
                 ChickensRegistryItem chickenDescription = getChickenDescription();
                 ItemStack itemToLay = chickenDescription.createLayItem();
 
+                int gain = getGain();
+                if (gain >= 5) {
+                	itemToLay.grow(chickenDescription.createLayItem().getCount());
+                }
+                if (gain >= 10) {
+                	itemToLay.grow(chickenDescription.createLayItem().getCount());
+                }
+                
                 itemToLay = TileEntityHenhouse.pushItemStack(itemToLay, world, new Vec3d(posX, posY, posZ));
 
-                if (itemToLay != null) {
+                if (!itemToLay.isEmpty()) {
                     entityDropItem(chickenDescription.createLayItem(), 0);
-                    int gain = getGain();
-                    if (gain >= 5) {
-                        entityDropItem(chickenDescription.createLayItem(), 0);
-                    }
-                    if (gain >= 10) {
-                        entityDropItem(chickenDescription.createLayItem(), 0);
-                    }
                     playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                 }
 
