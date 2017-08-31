@@ -220,9 +220,10 @@ public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
-        if (slots.hasCustomName()) {
-            compound.setString("customName", customName);
-        }
+        //TODO I sort of broke this with custom names, I need to fix this later
+//        if (slots.hasCustomName()) {
+//            compound.setString("customName", customName);
+//        }
 
         compound.setInteger("energy", energy);
         
@@ -235,7 +236,8 @@ public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        customName = compound.getString("customName");
+        //TODO I sort of broke this with custom names, I need to fix this later
+//        customName = compound.getString("customName");
 
         energy = compound.getInteger("energy");
         

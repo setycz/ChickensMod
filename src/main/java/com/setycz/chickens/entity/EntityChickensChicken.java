@@ -264,12 +264,6 @@ public class EntityChickensChicken extends EntityChicken {
         }
     }
 
-//    public void setChickenType(int type) {
-//        setChickenTypeInternal(type);
-//        isImmuneToFire = getChickenDescription().isImmuneToFire();
-//        resetTimeUntilNextEgg();
-//    }
-    
     public void setChickenType(String registryName) {
         setChickenTypeInternal(registryName);
         isImmuneToFire = getChickenDescription().isImmuneToFire();
@@ -280,10 +274,6 @@ public class EntityChickensChicken extends EntityChicken {
         this.dataManager.set(CHICKEN_TYPE, registryName);
     }
     
-//    private void setChickenTypeInternal(int type) {
-//        this.dataManager.set(CHICKEN_TYPE, type);
-//    }
-
     private String getChickenTypeInternal() {
         return this.dataManager.get(CHICKEN_TYPE);
     }

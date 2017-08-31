@@ -56,6 +56,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
@@ -119,6 +120,10 @@ public class ChickensMod {
         registerBlock(henhouse_dark_oak);
         registerBlock(henhouse_jungle);
         registerBlock(henhouse_spruce);
+        
+        
+		OreDictionary.registerOre("egg", coloredEgg);
+		OreDictionary.registerOre("listAllegg", coloredEgg);
 
         registerLiquidEggs();
         
@@ -131,6 +136,7 @@ public class ChickensMod {
                     spawnType, getChickenNames(ChickensRegistry.getPossibleChickensToSpawn(spawnType)));
         }
 
+        
         
     }
     
