@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "http://minecraft.curseforge.com/projects/chickens",
   "updateUrl": "",
-  "authorList": ["SetyCz", "Wyvi"],
+  "authorList": ["SetyCz", "Wyvi", "GenDeathrow", "LordCazsius"],
   "credits": "The Forge and FML guys, for making this example",
   "logoFile": "assets/chickens/logo.png",
   "screenshots": [],
