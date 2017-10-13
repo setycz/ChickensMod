@@ -119,7 +119,7 @@ public class ContainerHenhouse extends Container {
 
         for (IContainerListener listener : listeners) {
             if (energy != tileEntityHenhouse.getField(0)) {
-                listener.sendProgressBarUpdate(this, 0, tileEntityHenhouse.getField(0));
+                listener.sendWindowProperty(this, 0, tileEntityHenhouse.getField(0));
             }
         }
 

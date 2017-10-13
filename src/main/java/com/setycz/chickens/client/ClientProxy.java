@@ -64,10 +64,7 @@ public class ClientProxy extends CommonProxy {
         registerItemModel(ChickensMod.liquidEgg, liquidEgg.getId());
     }
 
-    @Override
     public void registerChicken(ChickensRegistryItem chicken) {
-        super.registerChicken(chicken);
-
         //registerItemModel(ChickensMod.spawnEgg, chicken.getId());
 
         if (chicken.isDye()) {

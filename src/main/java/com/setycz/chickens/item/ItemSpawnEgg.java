@@ -30,14 +30,13 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     public ItemSpawnEgg() {
         setHasSubtypes(true);
     }
-
+    
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             //subItems.add(new ItemStack(itemIn, 1, chicken.getId()));
         	
-        	
-            ItemStack itemstack = new ItemStack(itemIn, 1);
+            ItemStack itemstack = new ItemStack(this, 1);
             applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
         	subItems.add(itemstack);
         }

@@ -7,6 +7,7 @@ import com.setycz.chickens.registry.LiquidEggRegistryItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -39,15 +40,15 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(ItemStack stack,  World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(I18n.translateToLocal("item.liquid_egg.tooltip"));
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
-            subItems.add(new ItemStack(itemIn, 1, liquid.getId()));
+            subItems.add(new ItemStack(this, 1, liquid.getId()));
         }
     }
 

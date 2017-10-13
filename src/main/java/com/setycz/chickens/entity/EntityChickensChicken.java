@@ -95,7 +95,7 @@ public class EntityChickensChicken extends EntityChicken {
     	if(description == null || !description.isEnabled()){
     		description = ChickensRegistry.getByResourceLocation(ChickensRegistry.SMART_CHICKEN_ID);
     		if(!description.isEnabled())
-    			this.kill();
+    			this.despawnEntity();
     	}
         return description;
     }

@@ -83,10 +83,10 @@ public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
     }
 
     private static List<TileEntityHenhouse> findHenhouses(World worldObj, Vec3d pos, double radius) {
-        int firstChunkX = MathHelper.floor((pos.xCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int lastChunkX = MathHelper.floor((pos.xCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
-        int firstChunkY = MathHelper.floor((pos.zCoord - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
-        int lastChunkY = MathHelper.floor((pos.zCoord + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        int firstChunkX = MathHelper.floor((pos.x - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int lastChunkX = MathHelper.floor((pos.x + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
+        int firstChunkY = MathHelper.floor((pos.z - radius - World.MAX_ENTITY_RADIUS) / 16.0D);
+        int lastChunkY = MathHelper.floor((pos.z + radius + World.MAX_ENTITY_RADIUS) / 16.0D);
 
         List<Double> distances = new ArrayList<Double>();
         List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
@@ -109,9 +109,9 @@ public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
     }
 
     private static boolean testRange(Vec3d pos1, Vec3d pos2, double range) {
-        return Math.abs(pos1.xCoord - pos2.xCoord) <= range &&
-                Math.abs(pos1.yCoord - pos2.yCoord) <= range &&
-                Math.abs(pos1.zCoord - pos2.zCoord) <= range;
+        return Math.abs(pos1.x - pos2.x) <= range &&
+                Math.abs(pos1.y - pos2.y) <= range &&
+                Math.abs(pos1.z - pos2.z) <= range;
     }
 
     private static void addHenhouseToResults(TileEntityHenhouse henhouse, double distance, List<Double> distances, List<TileEntityHenhouse> henhouses) {

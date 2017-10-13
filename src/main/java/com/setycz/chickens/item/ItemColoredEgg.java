@@ -5,6 +5,7 @@ import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -31,8 +32,8 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(ItemStack stack,  World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         tooltip.add(I18n.translateToLocal("item.colored_egg.tooltip"));
     }
 
@@ -48,17 +49,17 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.isDye()) {
-                subItems.add(new ItemStack(itemIn, 1, chicken.getDyeMetadata()));
+                subItems.add(new ItemStack(this, 1, chicken.getDyeMetadata()));
             }
         }
     }
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int renderPass) {
-        return EnumDyeColor.byDyeDamage(stack.getMetadata()).getMapColor().colorValue;
+        return EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorValue();
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
             String chickenType = getChickenType(itemStackIn);
             if (chickenType != null) {
                 EntityColoredEgg entityIn = new EntityColoredEgg(worldIn, playerIn);
-                entityIn.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+                entityIn.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
                 entityIn.setChickenType(chickenType);
                 worldIn.spawnEntity(entityIn);
             }

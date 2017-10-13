@@ -10,8 +10,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class ItemColorHandler implements IItemColor {
-    @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        return ((IColorSource) stack.getItem()).getColorFromItemStack(stack, tintIndex);
-    }
+	@Override
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
+		return ((IColorSource) stack.getItem()).getColorFromItemStack(stack, tintIndex);
+	}
 }
