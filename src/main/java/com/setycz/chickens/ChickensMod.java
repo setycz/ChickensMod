@@ -83,24 +83,27 @@ public class ChickensMod {
 
 	private static final CreativeTabs chickensTab = new ChickensTab();
 
-	public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg").setCreativeTab(chickensTab);
+	public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg")
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "spawn_egg");;
 	public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "colored_egg");
 	public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg")
-			.setCreativeTab(chickensTab);
-	public static final Item analyzer = new ItemAnalyzer().setUnlocalizedName("analyzer").setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "liquid_egg");
+	public static final Item analyzer = new ItemAnalyzer().setUnlocalizedName("analyzer")
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "analyzer");
 
-	public static final Block henhouse = new BlockHenhouse().setUnlocalizedName("henhouse").setCreativeTab(chickensTab);
+	public static final Block henhouse = new BlockHenhouse()
+			.setUnlocalizedName("henhouse").setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse");
 	public static final Block henhouse_acacia = new BlockHenhouse().setUnlocalizedName("henhouse_acacia")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_acacia");
 	public static final Block henhouse_birch = new BlockHenhouse().setUnlocalizedName("henhouse_birch")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_birch");
 	public static final Block henhouse_dark_oak = new BlockHenhouse().setUnlocalizedName("henhouse_dark_oak")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_dark_oak");
 	public static final Block henhouse_jungle = new BlockHenhouse().setUnlocalizedName("henhouse_jungle")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_jungle");
 	public static final Block henhouse_spruce = new BlockHenhouse().setUnlocalizedName("henhouse_spruce")
-			.setCreativeTab(chickensTab);
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_spruce");
 
 	public static final TileEntityGuiHandler guiHandler = new TileEntityGuiHandler();
 
@@ -158,12 +161,12 @@ public class ChickensMod {
 	public static void blockRegistry(RegistryEvent.Register<Block> event) {
 		blockRegistry = event.getRegistry();
 
-		registerBlock(henhouse);
-		registerBlock(henhouse_acacia);
-		registerBlock(henhouse_birch);
-		registerBlock(henhouse_dark_oak);
-		registerBlock(henhouse_jungle);
-		registerBlock(henhouse_spruce);
+		blockRegistry.register(henhouse);
+		blockRegistry.register(henhouse_acacia);
+		blockRegistry.register(henhouse_birch);
+		blockRegistry.register(henhouse_dark_oak);
+		blockRegistry.register(henhouse_jungle);
+		blockRegistry.register(henhouse_spruce);
 	}
 
 	public static void registerBlock(Block block) {
