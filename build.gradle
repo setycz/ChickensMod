@@ -53,8 +53,8 @@ repositories {
 
 dependencies {
 
-    deobfCompile "mezz.jei:jei_1.11.2:4.5.0.295"
-    compile "mcp.mobius.waila:Hwyla:1.8.17-B31_1.11"
+    deobfCompile "mezz.jei:jei_1.11.2:4.5.1.296"
+    compile "mcp.mobius.waila:Hwyla:1.8.22-B37_1.11"
 
 }
 
