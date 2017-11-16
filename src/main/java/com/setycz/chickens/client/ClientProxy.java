@@ -6,7 +6,6 @@ import com.setycz.chickens.client.render.RenderChickensChicken;
 import com.setycz.chickens.common.CommonProxy;
 import com.setycz.chickens.entity.EntityChickensChicken;
 import com.setycz.chickens.handler.ItemColorHandler;
-import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
 import com.setycz.chickens.registry.LiquidEggRegistryItem;
 
@@ -51,12 +50,6 @@ public class ClientProxy extends CommonProxy {
         registerItemModel(ChickensMod.spawnEgg, 0);
 
         registerItemModel(ChickensMod.analyzer, 0);
-        
-        
-		for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-			registerChicken(chicken);
-		}
-		
     }
 
     private void registerItemModel(Item item, int meta) {

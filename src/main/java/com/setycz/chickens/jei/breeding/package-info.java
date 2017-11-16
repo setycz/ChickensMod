@@ -5,6 +5,6 @@
 @MethodsReturnNonnullByDefault
 package com.setycz.chickens.jei.breeding;
 
-import mcp.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import mcp.MethodsReturnNonnullByDefault;

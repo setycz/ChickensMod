@@ -1,13 +1,13 @@
 package com.setycz.chickens.registry;
 
+import javax.annotation.Nullable;
+
+import com.setycz.chickens.handler.SpawnType;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nullable;
-
-import com.setycz.chickens.handler.SpawnType;
 
 /**
  * Created by setyc on 12.02.2016.

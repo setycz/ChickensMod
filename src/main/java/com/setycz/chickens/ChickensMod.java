@@ -84,7 +84,7 @@ public class ChickensMod {
 	private static final CreativeTabs chickensTab = new ChickensTab();
 
 	public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg")
-			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "spawn_egg");;
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "spawn_egg");
 	public static final Item coloredEgg = new ItemColoredEgg().setUnlocalizedName("colored_egg")
 			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "colored_egg");
 	public static final Item liquidEgg = new ItemLiquidEgg().setUnlocalizedName("liquid_egg")
@@ -123,9 +123,6 @@ public class ChickensMod {
 
 		GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
 
-		OreDictionary.registerOre("egg", coloredEgg);
-		OreDictionary.registerOre("listAllegg", coloredEgg);
-
 		registerLiquidEggs();
 
 		ConfigHandler.LoadConfigs(generateDefaultChickens());
@@ -162,6 +159,9 @@ public class ChickensMod {
 		registerItemForBlock(henhouse_dark_oak);
 		registerItemForBlock(henhouse_jungle);
 		registerItemForBlock(henhouse_spruce);
+		
+		OreDictionary.registerOre("egg", coloredEgg);
+		OreDictionary.registerOre("listAllegg", coloredEgg);
 	}
 
 	@SubscribeEvent

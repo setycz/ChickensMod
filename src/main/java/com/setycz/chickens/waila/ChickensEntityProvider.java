@@ -1,5 +1,7 @@
 package com.setycz.chickens.waila;
 
+import java.util.List;
+
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.entity.EntityChickensChicken;
 
@@ -12,8 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Created by setyc on 20.02.2016.

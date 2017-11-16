@@ -1,5 +1,9 @@
 package com.setycz.chickens.jei.breeding;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.util.Translator;
@@ -7,10 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by setyc on 21.02.2016.

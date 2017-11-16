@@ -5,6 +5,6 @@
 @MethodsReturnNonnullByDefault
 package com.setycz.chickens.jei.throwing;
 
-import mcp.MethodsReturnNonnullByDefault;
-
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import mcp.MethodsReturnNonnullByDefault;

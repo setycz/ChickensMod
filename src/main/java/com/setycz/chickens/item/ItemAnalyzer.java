@@ -1,5 +1,9 @@
 package com.setycz.chickens.item;
 
+import java.util.List;
+
+import com.setycz.chickens.entity.EntityChickensChicken;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,10 +17,6 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
-import com.setycz.chickens.entity.EntityChickensChicken;
 
 /**
  * Created by setyc on 21.12.2016.

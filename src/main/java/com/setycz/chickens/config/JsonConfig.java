@@ -259,8 +259,6 @@ public class JsonConfig {
 		if(args.length == 4) {
 			try {
 				qty = Integer.parseInt(args[3]);
-				
-				System.out.println(qty);
 			} catch(Exception e) {
 				ChickensMod.log.error("Could not parse qty value: "+ itemID);
 			}

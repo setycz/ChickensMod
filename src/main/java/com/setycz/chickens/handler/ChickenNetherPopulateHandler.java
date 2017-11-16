@@ -1,5 +1,9 @@
 package com.setycz.chickens.handler;
 
+import javax.annotation.Nullable;
+
+import com.setycz.chickens.entity.EntityChickensChicken;
+
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.init.Biomes;
@@ -11,10 +15,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import javax.annotation.Nullable;
-
-import com.setycz.chickens.entity.EntityChickensChicken;
 
 /**
  * Created by setyc on 05.03.2016.

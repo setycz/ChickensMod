@@ -126,7 +126,7 @@ public class ConfigHandler {
 
     	ItemStack stack = configuration.getItemStack(Category, prefix, defaultItemStack);
     	
-        if (stack == null) {
+        if (stack == null || stack.isEmpty()) {
         	if(defaultItemStack != null) return defaultItemStack;	
         	else throw new RuntimeException("Cannot find "+prefix+" for "+ chicken.getRegistryName().toString());
         }

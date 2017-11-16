@@ -1,5 +1,7 @@
 package com.setycz.chickens.handler;
 
+import javax.annotation.Nullable;
+
 import com.setycz.chickens.registry.LiquidEggRegistry;
 
 import net.minecraft.item.ItemStack;
@@ -12,8 +14,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by setyc on 13.12.2016.
