@@ -155,6 +155,13 @@ public class ChickensMod {
 		itemRegistry.register(spawnEgg);
 		itemRegistry.register(liquidEgg);
 		itemRegistry.register(analyzer);
+		
+		registerItemForBlock(henhouse);
+		registerItemForBlock(henhouse_acacia);
+		registerItemForBlock(henhouse_birch);
+		registerItemForBlock(henhouse_dark_oak);
+		registerItemForBlock(henhouse_jungle);
+		registerItemForBlock(henhouse_spruce);
 	}
 
 	@SubscribeEvent
@@ -264,24 +271,29 @@ public class ChickensMod {
 
 	public static void registerChicken(ChickensRegistryItem chicken, IForgeRegistry<IRecipe> event) {
 		if (chicken.isDye() && chicken.isEnabled()) {
-			event.register(new ShapelessOreRecipe(new ResourceLocation("egg"),
+			ShapelessOreRecipe recipe = new ShapelessOreRecipe(new ResourceLocation("egg"),
 					new ItemStack(ChickensMod.coloredEgg, 1, chicken.getDyeMetadata()),
-					new Object[] { new ItemStack(Items.EGG), new ItemStack(Items.DYE, 1, chicken.getDyeMetadata()) }));
+					new Object[] { new ItemStack(Items.EGG), new ItemStack(Items.DYE, 1, chicken.getDyeMetadata()) });
+			
+			event.register(recipe.setRegistryName(chicken.getRegistryName() + "_egg"));
 		}
 	}
 
 	private static void registerHenhouse(Block henhouse, BlockPlanks.EnumType type, IForgeRegistry<IRecipe> event) {
-		event.register(
-				new ShapedOreRecipe(new ResourceLocation("henhouse"), new ItemStack(Item.getItemFromBlock(henhouse)),
-						new Object[] { "PPP", "PHP", "PPP", 'P',
-								type == BlockPlanks.EnumType.OAK ? "plankWood"
-										: new ItemStack(Blocks.PLANKS, 1, type.getMetadata()),
-								'H', Blocks.HAY_BLOCK }));
+		
+		ShapedOreRecipe recipe = new ShapedOreRecipe(new ResourceLocation("henhouse"), new ItemStack(Item.getItemFromBlock(henhouse)),
+				new Object[] { "PPP", "PHP", "PPP", 'P',
+						type == BlockPlanks.EnumType.OAK ? "plankWood"
+								: new ItemStack(Blocks.PLANKS, 1, type.getMetadata()),
+						'H', Blocks.HAY_BLOCK });
+
+		event.register(recipe.setRegistryName(ChickensMod.MODID, henhouse.getUnlocalizedName()));
 
 	}
 
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+		
 		// register all chickens to Minecraft
 		for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
 			ChickensMod.registerChicken(chicken, event.getRegistry());
@@ -300,7 +312,7 @@ public class ChickensMod {
 
 		event.getRegistry().register(
 				new ShapelessOreRecipe(new ResourceLocation("analyzer"), new ItemStack(ChickensMod.analyzer, 1),
-						new Object[] { new ItemStack(Items.EGG), new ItemStack(Items.COMPASS) }));
+						new Object[] { new ItemStack(Items.EGG), new ItemStack(Items.COMPASS) }).setRegistryName(ChickensMod.MODID, "analyzer"));
 	}
 
 	private List<Biome> getAllSpawnBiomes() {
