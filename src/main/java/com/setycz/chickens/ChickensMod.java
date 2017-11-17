@@ -47,6 +47,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -60,6 +61,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -81,7 +83,7 @@ public class ChickensMod {
 	@Mod.Instance(MODID)
 	public static ChickensMod instance;
 
-	private static final CreativeTabs chickensTab = new ChickensTab();
+	public static final CreativeTabs chickensTab = new ChickensTab();
 
 	public static final Item spawnEgg = new ItemSpawnEgg().setUnlocalizedName("spawn_egg")
 			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "spawn_egg");
@@ -349,10 +351,17 @@ public class ChickensMod {
 		return new ChickensRegistryItem(new ResourceLocation(ChickensMod.MODID, name), name,
 				new ResourceLocation("chickens",
 						"textures/entity/" + Strings.join(name.split("(?=[A-Z])"), "_").toLowerCase() + ".png"),
-				new ItemStack(Items.DYE, 1, color.getDyeDamage()), 0xf2f2f2, color.getColorValue())
+				new ItemStack(Items.DYE, 1, color.getDyeDamage()), 0xf2f2f2, getRGB(color))
 						.setSpawnType(SpawnType.NONE);
 	}
 
+	//Used to handle a client side only method
+	private int getRGB(EnumDyeColor color) {
+		if(FMLCommonHandler.instance().getEffectiveSide()==Side.CLIENT)
+			return color.getColorValue();
+		else return 0;
+	}
+	
 	private List<ChickensRegistryItem> generateDefaultChickens() {
 		List<ChickensRegistryItem> chickens = new ArrayList<ChickensRegistryItem>();
 

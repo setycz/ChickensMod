@@ -2,6 +2,7 @@ package com.setycz.chickens.item;
 
 import java.util.List;
 
+import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.registry.ChickensRegistry;
@@ -53,6 +54,9 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    	
+    	if(tab != ChickensMod.chickensTab) return;
+    	
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             if (chicken.isDye()) {
                 subItems.add(new ItemStack(this, 1, chicken.getDyeMetadata()));

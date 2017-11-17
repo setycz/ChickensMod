@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.handler.LiquidEggFluidWrapper;
 import com.setycz.chickens.registry.LiquidEggRegistry;
@@ -52,6 +53,8 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+      	if(tab != ChickensMod.chickensTab) return;
+      	
         for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
             subItems.add(new ItemStack(this, 1, liquid.getId()));
         }

@@ -33,6 +33,9 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+      	
+    	if(tab != ChickensMod.chickensTab) return;
+      	
         for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
             //subItems.add(new ItemStack(itemIn, 1, chicken.getId()));
         	
