@@ -22,6 +22,11 @@ import net.minecraft.world.World;
  * Created by setyc on 18.02.2016.
  */
 public class CommonProxy {
+	
+	public void preInit() {
+
+	}
+	
 	public void init() {
 
 	}

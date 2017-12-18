@@ -3,8 +3,10 @@ package com.setycz.chickens.client;
 import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.client.model.ModelChickensChicken;
 import com.setycz.chickens.client.render.RenderChickensChicken;
+import com.setycz.chickens.client.render.RenderThrownEgg.EntityColoredEggFactory;
 import com.setycz.chickens.common.CommonProxy;
 import com.setycz.chickens.entity.EntityChickensChicken;
+import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.ItemColorHandler;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
@@ -14,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,6 +26,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
+	
+	@Override 
+	public void preInit() {
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityColoredEgg.class, new EntityColoredEggFactory());
+	}
+	
     @Override
     public void init() {
         super.init();
@@ -34,8 +44,8 @@ public class ClientProxy extends CommonProxy {
         // chicken entity registration
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
         renderManager.entityRenderMap.put(EntityChickensChicken.class, new RenderChickensChicken(renderManager, new ModelChickensChicken()));
-
-        //noinspection ConstantConditions
+        
+          //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse), 0);
         //noinspection ConstantConditions
         registerItemModel(Item.getItemFromBlock(ChickensMod.henhouse_acacia), 0);

@@ -8,6 +8,7 @@ import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
+
 import net.minecraft.world.World;
 
 /**
@@ -33,15 +34,13 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-      	
-    	if(tab != ChickensMod.chickensTab) return;
-      	
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            //subItems.add(new ItemStack(itemIn, 1, chicken.getId()));
-        	
-            ItemStack itemstack = new ItemStack(this, 1);
-            applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
-        	subItems.add(itemstack);
+        if (this.isInCreativeTab(tab))
+        {
+        	for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+        		ItemStack itemstack = new ItemStack(this, 1);
+        		applyEntityIdToItemStack(itemstack, chicken.getRegistryName()); 
+        		subItems.add(itemstack);
+        	}
         }
     }
 
@@ -49,7 +48,7 @@ public class ItemSpawnEgg extends Item implements IColorSource {
     public String getItemStackDisplayName(ItemStack stack) {
         ChickensRegistryItem chickenDescription = ChickensRegistry.getByRegistryName(getTypeFromStack(stack));
         if(chickenDescription == null) return "null";
-        return I18n.translateToLocal("entity." + chickenDescription.getEntityName() + ".name");
+        return I18n.format("entity." + chickenDescription.getEntityName() + ".name");
     }
 
 

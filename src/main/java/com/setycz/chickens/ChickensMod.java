@@ -15,6 +15,7 @@ import com.setycz.chickens.client.gui.TileEntityGuiHandler;
 import com.setycz.chickens.common.CommonProxy;
 import com.setycz.chickens.config.ConfigHandler;
 import com.setycz.chickens.entity.EntityChickensChicken;
+import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.ChickenNetherPopulateHandler;
 import com.setycz.chickens.handler.ChickenTeachHandler;
 import com.setycz.chickens.handler.ChickensTab;
@@ -122,9 +123,15 @@ public class ChickensMod {
 
 		EntityRegistry.registerModEntity(new ResourceLocation(ChickensMod.MODID, CHICKEN), EntityChickensChicken.class,
 				CHICKEN, ConfigHandler.chickenEntityId, this, 64, 3, true);
+		
+		EntityRegistry.registerModEntity(new ResourceLocation(ChickensMod.MODID, "thown_egg"), EntityColoredEgg.class,
+				CHICKEN, 2, this, 64, 3, true);
+		
 
 		GameRegistry.registerTileEntity(TileEntityHenhouse.class, "henhouse");
-
+		
+		proxy.preInit();
+		
 		registerLiquidEggs();
 
 		ConfigHandler.LoadConfigs(generateDefaultChickens());

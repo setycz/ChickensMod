@@ -55,12 +55,13 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
     	
-    	if(tab != ChickensMod.chickensTab) return;
-    	
-        for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
-            if (chicken.isDye()) {
-                subItems.add(new ItemStack(this, 1, chicken.getDyeMetadata()));
-            }
+        if (this.isInCreativeTab(tab))
+        {
+        	for (ChickensRegistryItem chicken : ChickensRegistry.getItems()) {
+        		if (chicken.isDye()) {
+        			subItems.add(new ItemStack(this, 1, chicken.getDyeMetadata()));
+        		}
+        	}
         }
     }
 

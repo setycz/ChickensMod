@@ -53,11 +53,13 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-      	if(tab != ChickensMod.chickensTab) return;
-      	
-        for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
-            subItems.add(new ItemStack(this, 1, liquid.getId()));
+        if (this.isInCreativeTab(tab))
+        {
+        	for (LiquidEggRegistryItem liquid : LiquidEggRegistry.getAll()) {
+        		subItems.add(new ItemStack(this, 1, liquid.getId()));
+        	}
         }
+        
     }
 
     @Override

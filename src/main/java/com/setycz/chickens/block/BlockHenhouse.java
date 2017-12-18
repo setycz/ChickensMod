@@ -34,6 +34,7 @@ public class BlockHenhouse extends BlockContainer {
     public BlockHenhouse() {
         super(Material.WOOD);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        this.setHardness(2);
     }
     
     @SideOnly(Side.CLIENT)
