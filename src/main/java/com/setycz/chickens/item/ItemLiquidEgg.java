@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.handler.LiquidEggFluidWrapper;
 import com.setycz.chickens.registry.LiquidEggRegistry;

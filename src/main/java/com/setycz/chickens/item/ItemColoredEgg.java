@@ -2,7 +2,6 @@ package com.setycz.chickens.item;
 
 import java.util.List;
 
-import com.setycz.chickens.ChickensMod;
 import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.registry.ChickensRegistry;
