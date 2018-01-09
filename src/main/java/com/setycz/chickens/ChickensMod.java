@@ -24,6 +24,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -265,6 +266,10 @@ public class ChickensMod {
 
         // waila integration
         FMLInterModComms.sendMessage("Waila", "register", "com.setycz.chickens.waila.ChickensEntityProvider.load");
+
+        if (Loader.isModLoaded("theoneprobe")) {
+            FMLInterModComms.sendFunctionMessage("theoneprobe", "GetTheOneProbe", "com.setycz.chickens.top.TheOneProbePlugin$GetTheOneProbe");
+        }
     }
 
     private boolean requiresVisitingNether(ChickensRegistryItem chicken) {

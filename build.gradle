@@ -49,6 +49,10 @@ repositories {
     maven { url "http://mobiusstrip.eu/maven" }
     maven { url = "http://chickenbones.net/maven/" }
     maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { // TOP
+        name 'tterrag maven'
+        url "http://maven.tterrag.com/"
+    }
 }
 
 dependencies {
@@ -75,6 +79,7 @@ dependencies {
 
     deobfCompile "mezz.jei:jei_1.10.2:3.13.6.387"
     compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
 }
 
 processResources
