@@ -49,13 +49,22 @@ repositories {
     maven { url "http://tehnut.info/maven" }
     maven { url = "http://chickenbones.net/maven/" }
     maven { url "http://dvs1.progwml6.com/files/maven" }
+   	maven { // TOP
+		name 'tterrag maven'
+	    url "http://maven.tterrag.com/"
+	}
+    maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    }
 }
 
 dependencies {
 
     deobfCompile "mezz.jei:jei_1.12.2:4.7.10.97"
-    compile "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
-
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:${top_version}"
+    deobfCompile "mcp.mobius.waila:Hwyla:${HWYLA_version}_1.12"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:universal"
 }
 
 processResources
