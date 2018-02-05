@@ -1,6 +1,6 @@
 itemGroup.chickens=Chickens
 
-item.liquid_egg.tooltip=Es ist wie ein Einwegeimer.
+item.liquid_egg.tooltip=Verhält sich wie ein Einwegeimer.
 item.liquid_egg.water.name=Wasser-Ei
 item.liquid_egg.lava.name=Lava-Ei
 item.analyzer.name=Hühner-Analysierer
@@ -70,24 +70,35 @@ entity.LeatherChicken.name=Lederhuhn
 entity.pShardChicken.name=Prismarinscherbenhuhn
 entity.xpChicken.name=Erfahrungshuhn
 entity.pCrystalChicken.name=Prismarinkristallhuhn
+entity.obsidianChicken.name=Obsidianhuhn
+entity.soulSandChicken.name=Seelensandhuhn
 
 entity.ChickensChicken.tier=Stufe: %1$s
-entity.ChickensChicken.layProgress=Nächstes Ei in ~%1$smin.
-entity.ChickensChicken.nextEggSoon=Nächstes Ei in <1min.
+entity.ChickensChicken.layProgress=Nächstes Ei in ~%1$sMin.
+entity.ChickensChicken.nextEggSoon=Nächstes Ei in <1Min.
 entity.ChickensChicken.growth=Wachstum: %1$s
 entity.ChickensChicken.gain=Ertrag: %1$s
 entity.ChickensChicken.strength=Stärke: %1$s
+
+entity.ChickensChicken.top.tier=Stufe: 
+entity.ChickensChicken.top.layProgress=Nächstes Ei in
+entity.ChickensChicken.top.layProgressEnd=Min.
+entity.ChickensChicken.top.nextEggSoon=Nächstes Ei in <1Min.
+entity.ChickensChicken.top.growth=Wachstum: 
+entity.ChickensChicken.top.gain=Ertrag: 
+entity.ChickensChicken.top.strength=Stärke: 
+
 gui.laying=Legt Ei
 gui.laying.time=%1$s-%2$smin.
 gui.breeding=Hühnerzucht
 gui.breeding.time=%1$s%%
 gui.drops=Hühnerdrops
-gui.throws=Farbe Egg Werfen
-gui.henhousing=Henhouse Nebenprodukt
+gui.throws=Werfen von bunten Eiern
+gui.henhousing=Hühnerhaus-Nebenprodukte
 
 container.henhouse=Hühnerhaus
-tile.henhouse.name=Hühnerhaus
 tile.henhouse.tooltip=Sammelt automatisch Items von Hühnern in einem 9x9x9-Radius, wenn es mit einem Heuballen ausgestattet wird.
+tile.henhouse.name=Hühnerhaus
 tile.henhouse_acacia.name=Akazienhühnerhaus
 tile.henhouse_birch.name=Birkenhühnerhaus
 tile.henhouse_dark_oak.name=Schwarzeichenhühnerhaus
