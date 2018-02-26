@@ -77,7 +77,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class ChickensMod {
 	public static final String MODID = "chickens";
 	public static final String VERSION = "@VERSION@";
-	public static final String CHICKEN = "ChickensChicken";
+	public static final String CHICKEN = "chickenschicken";
 	public static final String NAME = "Chickens";
 
 	public static final Logger log = LogManager.getLogger(MODID);
