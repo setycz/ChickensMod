@@ -1,5 +1,6 @@
 package com.setycz.chickens.handler;
 
+import com.google.common.collect.ImmutableSet;
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.registry.LiquidEggRegistry;
@@ -13,12 +14,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 /**
  * Created by setyc on 13.12.2016.
  */
-public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider {
+public class LiquidEggFluidWrapper implements IFluidHandler, IFluidHandlerItem, ICapabilityProvider {
 
     private final ItemStack container;
 
@@ -28,7 +30,8 @@ public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
+               capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY; 
     }
 
     @Override
@@ -36,6 +39,9 @@ public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
+        }
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
+            return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.cast(this);
         }
         return null;
     }
@@ -78,5 +84,12 @@ public class LiquidEggFluidWrapper implements IFluidHandler, ICapabilityProvider
             container.shrink(1);
         }
         return fluidStack;
+    }
+    /**
+     * @return empty stack - item is consumable
+     */
+    @Override
+    public ItemStack getContainer() {
+        return ItemStack.EMPTY;
     }
 }
