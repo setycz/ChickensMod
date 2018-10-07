@@ -43,12 +43,12 @@ public class ItemColoredEgg extends ItemEgg implements IColorSource {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         EnumDyeColor color = EnumDyeColor.byDyeDamage(stack.getMetadata());
-        String unlocalizedName = color.getUnlocalizedName();
+        String unlocalizedName = color.getTranslationKey();
         // hotfix for compatibility with MoreChickens
         if (unlocalizedName.equals("silver")) {
             unlocalizedName += "Dye";
         }
-        return I18n.translateToLocal(getUnlocalizedName() + "." + unlocalizedName + ".name");
+        return I18n.translateToLocal(getTranslationKey() + "." + unlocalizedName + ".name");
     }
 
     @Override

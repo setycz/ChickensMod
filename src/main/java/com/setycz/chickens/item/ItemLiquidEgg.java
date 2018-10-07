@@ -69,7 +69,7 @@ public class ItemLiquidEgg extends ItemEgg implements IColorSource {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         Block liquid = LiquidEggRegistry.findById(stack.getMetadata()).getLiquid();
-        return I18n.translateToLocal(getUnlocalizedName() + "." + liquid.getUnlocalizedName().substring(5) + ".name");
+        return I18n.translateToLocal(getTranslationKey() + "." + liquid.getTranslationKey().substring(5) + ".name");
     }
 
     @Override

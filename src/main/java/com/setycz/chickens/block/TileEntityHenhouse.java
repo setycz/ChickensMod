@@ -92,10 +92,10 @@ public class TileEntityHenhouse extends TileEntity implements IInventoryGui {
         List<TileEntityHenhouse> result = new ArrayList<TileEntityHenhouse>();
         for (int chunkX = firstChunkX; chunkX <= lastChunkX; ++chunkX) {
             for (int chunkY = firstChunkY; chunkY <= lastChunkY; ++chunkY) {
-                Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkY);
+                Chunk chunk = worldObj.getChunk(chunkX, chunkY);
                 for (TileEntity tileEntity : chunk.getTileEntityMap().values()) {
                     if (tileEntity instanceof TileEntityHenhouse) {
-                        Vec3d tileEntityPos = new Vec3d(tileEntity.getPos()).addVector(HENHOUSE_RADIUS, HENHOUSE_RADIUS, HENHOUSE_RADIUS);
+                        Vec3d tileEntityPos = new Vec3d(tileEntity.getPos()).add(HENHOUSE_RADIUS, HENHOUSE_RADIUS, HENHOUSE_RADIUS);
                         boolean inRage = testRange(pos, tileEntityPos, radius);
                         if (inRage) {
                             double distance = pos.distanceTo(tileEntityPos);

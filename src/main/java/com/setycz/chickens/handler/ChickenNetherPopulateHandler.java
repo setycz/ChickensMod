@@ -70,7 +70,7 @@ public class ChickenNetherPopulateHandler {
     }
 
     private static BlockPos getRandomChunkPosition(World worldIn, int x, int z) {
-        Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
+        Chunk chunk = worldIn.getChunk(x, z);
         int i = x * 16 + worldIn.rand.nextInt(16);
         int j = z * 16 + worldIn.rand.nextInt(16);
         int k = MathHelper.roundUp(chunk.getHeight(new BlockPos(i, 0, j)) + 1, 16);

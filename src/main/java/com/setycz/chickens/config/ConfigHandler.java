@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+import com.setycz.chickens.handler.ItemHolder;
 import com.setycz.chickens.handler.SpawnType;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 
@@ -56,28 +59,30 @@ public class ConfigHandler {
 			}
 	}
 	
-	
 	/**
 	 * Load json file of all Chickens. 
 	 * 
 	 * @param allChickens
 	 */
-	public static void loadChickens(Collection<ChickensRegistryItem> allChickens) {
-		config = new JsonConfig(ChickensFile);
+	public static void loadChickensFromFile(File fileIn, Collection<ChickensRegistryItem> allChickens) {
+		
+		config = new JsonConfig(fileIn);
 		config.Load();
 		
 		// Add Comments
 			String comment = "_comment";
-			
 			config.getString(comment, "name", "Just a Reference to the old system naming. Changing does nothing.");
 			config.getString(comment, "is_enabled", "Is chicken enabled?");
-			config.getString(comment, "lay_item", "Item the chicken will Lay.               modid:itemid:metadata:amount #example: minecraft:log:2:3");
-			config.getString(comment, "drop_item", "Item the chicken drops on death.        modid:itemid:metadata:amount #example: minecraft:bone");
+			config.getString(comment, "lay_item", "Item the chicken will Lay. Changing the qty will double that amount on each gain bonus. ");
+			config.getFullJson().get(comment).getAsJsonObject().add("lay_item_example", new ItemHolder(new ItemStack(Items.GOLD_INGOT), true).writeJsonObject(new JsonObject()));
+			config.getString(comment, "drop_item", "Item the chicken will Lay. Changing the qty will double that amount on each gain bonus. ");
+			config.getFullJson().get(comment).getAsJsonObject().add("drop_item_example", new ItemHolder(new ItemStack(Items.BONE, 2).setStackDisplayName("Bone of my Enemy"), true).writeJsonObject(new JsonObject()));
 			config.getString(comment, "spawn_type", "Chicken spawn type, can be: " + String.join(",", SpawnType.names()));
 			config.getString(comment, "parent_1", "First parent, empty if it cant be breed. modid:chickenid #example: chickens:waterchicken");
 			config.getString(comment, "parent_2", "Second parent, empty if it cant be breed. ");
 		
         for (ChickensRegistryItem chicken : allChickens) {
+        	
         	String registryName = chicken.getRegistryName().toString();
         	
         	config.getString(registryName, "name", chicken.getEntityName());
@@ -88,8 +93,8 @@ public class ConfigHandler {
         	float layCoefficient = config.getFloat(registryName, "lay_coefficient", 1.0f, 0.01f, 100f);
         	chicken.setLayCoefficient(layCoefficient);
         	
-        	chicken.setLayItem(loadItemStack(config, registryName, chicken, "lay_item", chicken.createLayItem()));
-        	chicken.setDropItem(loadItemStack(config, registryName, chicken, "drop_item", chicken.createDropItem()));
+        	chicken.setLayItem(loadItemStack(config, registryName, chicken, "lay_item", chicken.getLayItemHolder().setSource(registryName)));
+        	chicken.setDropItem(loadItemStack(config, registryName, chicken, "drop_item", chicken.getDropItemHolder().setSource(registryName)));
         	
             SpawnType spawnType = SpawnType.valueOf(config.getString(registryName, "spawn_type", chicken.getSpawnType().toString()));
             chicken.setSpawnType(spawnType);
@@ -100,6 +105,7 @@ public class ConfigHandler {
         
         // Set Parents after Chickens have been registered
         for (ChickensRegistryItem chicken : allChickens) {
+        	
         	ChickensRegistryItem parent1 = ChickensRegistry.getByRegistryName(getChickenParent(config, "parent_1", allChickens, chicken, chicken.getParent1()));
         	ChickensRegistryItem parent2 = ChickensRegistry.getByRegistryName(getChickenParent(config, "parent_2", allChickens, chicken, chicken.getParent2()));
             
@@ -115,22 +121,17 @@ public class ConfigHandler {
         }
 	}
 	
+	public static void loadChickens(Collection<ChickensRegistryItem> allChickens) {
+		loadChickensFromFile(ChickensFile, allChickens);
+	}
 		
     private static String getChickenParent(JsonConfig configuration, String propertyName, Collection<ChickensRegistryItem> allChickens, ChickensRegistryItem chicken, ChickensRegistryItem parent) {
     	String Category = chicken.getRegistryName().toString();
         return configuration.getString(Category, propertyName, parent != null ? parent.getRegistryName().toString() : "");
     }
 
-    
-    private static ItemStack loadItemStack(JsonConfig configuration, String Category, ChickensRegistryItem chicken, String prefix, ItemStack defaultItemStack) {
-
-    	ItemStack stack = configuration.getItemStack(Category, prefix, defaultItemStack);
-    	
-        if (stack == null || stack.isEmpty()) {
-        	if(defaultItemStack != null) return defaultItemStack;	
-        	else throw new RuntimeException("Cannot find "+prefix+" for "+ chicken.getRegistryName().toString());
-        }
-        return stack;
+    private static ItemHolder loadItemStack(JsonConfig configuration, String Category, ChickensRegistryItem chicken, String prefix, ItemHolder defaultItemStack) {
+        return configuration.getItemHolder(Category, prefix, defaultItemStack);
     }
     
 }

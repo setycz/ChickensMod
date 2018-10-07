@@ -2,6 +2,7 @@ package com.setycz.chickens.registry;
 
 import javax.annotation.Nullable;
 
+import com.setycz.chickens.handler.ItemHolder;
 import com.setycz.chickens.handler.SpawnType;
 
 import net.minecraft.init.Items;
@@ -16,8 +17,8 @@ public class ChickensRegistryItem {
     private final ResourceLocation registryName;
     
     private final String entityName;
-    private ItemStack layItem;
-    private ItemStack dropItem;
+    private ItemHolder layItem;
+    private ItemHolder dropItem;
     private final int bgColor;
     private final int fgColor;
     private final ResourceLocation texture;
@@ -30,8 +31,11 @@ public class ChickensRegistryItem {
     public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(registryName, entityName, texture, layItem, bgColor, fgColor, null, null);
     }
-
-    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
+    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2)   {
+    	this(registryName, entityName, texture, new ItemHolder(layItem, false), bgColor, fgColor, parent1, parent2);
+    }
+    
+    public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemHolder layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2) {
         this.registryName = registryName;
         this.entityName = entityName;
         this.layItem = layItem;
@@ -43,9 +47,23 @@ public class ChickensRegistryItem {
         this.parent2 = parent2;
     }
 
-    public ChickensRegistryItem setDropItem(ItemStack stack) {
-        dropItem = stack;
+
+    public ItemHolder getDropItemHolder() {
+    	return this.dropItem == null ? this.layItem : this.dropItem;
+    }
+    
+    public ItemHolder getLayItemHolder() {
+    	return this.layItem;
+    }
+    
+    public ChickensRegistryItem setDropItem(ItemHolder itemHolder) {
+        dropItem = itemHolder;
         return this;
+    }
+    
+    @Deprecated
+    public ChickensRegistryItem setDropItem(ItemStack itemstack) {
+    	return setDropItem(new ItemHolder(itemstack, false));
     }
 
     public ChickensRegistryItem setSpawnType(SpawnType type) {
@@ -85,12 +103,13 @@ public class ChickensRegistryItem {
     }
 
     public ItemStack createLayItem() {
-        return layItem.copy();
+        return layItem.getStack();
     }
+    
 
     public ItemStack createDropItem() {
         if (dropItem != null) {
-            return dropItem.copy();
+            return dropItem.getStack();
         }
         return createLayItem();
     }
@@ -111,11 +130,11 @@ public class ChickensRegistryItem {
     }
 
     public boolean isDye(int dyeMetadata) {
-        return layItem.getItem() == Items.DYE && layItem.getMetadata() == dyeMetadata;
+        return layItem.getItem() == Items.DYE && layItem.getMeta() == dyeMetadata;
     }
 
     public int getDyeMetadata() {
-        return layItem.getMetadata();
+        return layItem.getMeta();
     }
 
     public boolean canSpawn() {
@@ -156,10 +175,15 @@ public class ChickensRegistryItem {
                 || parent2 != null && !parent2.isEnabled());
     }
 
-    public void setLayItem(ItemStack itemStack) {
-        layItem = itemStack;
+    public void setLayItem(ItemHolder itemHolder) {
+        layItem = itemHolder;
     }
 
+    @Deprecated
+    public void setLayItem(ItemStack itemstack) {
+    	setLayItem(new ItemHolder(itemstack, false));
+    }
+    
     public void setNoParents() {
         parent1 = null;
         parent2 = null;

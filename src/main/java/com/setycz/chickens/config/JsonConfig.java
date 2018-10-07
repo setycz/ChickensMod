@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.handler.ItemHolder;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -139,6 +140,42 @@ public class JsonConfig {
 		return value;
 	}
 	
+	
+	
+	@Nullable
+	public ItemHolder getItemHolder(String categoryProperty, String property, ItemHolder defaultItemHolder)
+	{
+		JsonObject object = getCategory(categoryProperty);
+		ItemHolder holder = defaultItemHolder;
+		boolean useDefault = true;
+		
+		if(object.has(property)){
+			if(object.get(property).isJsonObject()) {
+				holder.readJsonObject(object.get(property).getAsJsonObject());
+				useDefault = false;
+			}
+			else {
+				// Use old code reader to update old configs
+				ItemStack oldItemStack = getItemStack(categoryProperty, property, defaultItemHolder.getStack());
+				if(oldItemStack != null) {
+					object.add(property, holder.writeJsonObject(new JsonObject()));
+					useDefault = false;
+					setHasChanged(true);
+				}
+			}
+		} 
+		
+		if(useDefault) {
+			object.add(property, holder.writeJsonObject(new JsonObject()));
+			setHasChanged(true);
+		}
+		
+		//System.out.println(holder.toString());
+		
+		return holder;
+	}
+	
+	
 	/**
 	 * Get or Set an ItemStack 
 	 * 
@@ -148,6 +185,7 @@ public class JsonConfig {
 	 * @return
 	 */
 	@Nullable
+	@Deprecated
 	public ItemStack getItemStack(String categoryProperty, String property, ItemStack stack)
 	{
 		JsonObject object = getCategory(categoryProperty);
