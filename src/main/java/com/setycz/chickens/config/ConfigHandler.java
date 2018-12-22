@@ -30,6 +30,8 @@ public class ConfigHandler {
     public static int maxBroodSize = 5;
     public static float netherSpawnChanceMultiplier = 1.0f;
     public static boolean alwaysShowStats = false;
+    public static boolean crossbreedInheritStats = false;
+    public static float crossbreedInheritStatsRatio = 1.0f;
 
 	
     public static void LoadConfigs(List<ChickensRegistryItem> allchickens) {
@@ -53,6 +55,8 @@ public class ConfigHandler {
 	        maxBroodSize = mainConfig.getInt("maxBroodSize", "general", 5, 2, Integer.MAX_VALUE, "Maximal brood size, must be greater than the minimal size");
 	        netherSpawnChanceMultiplier = mainConfig.getFloat("netherSpawnChanceMultiplier", "general", 1.0f, 0.f, Float.MAX_VALUE, "Nether chicken spawn chance multiplier, e.g. 0=no initial spawn, 2=two times more spawn rate");
 	        alwaysShowStats = mainConfig.getBoolean("alwaysShowStats", "general", false, "Stats will be always shown in WAILA without the need to analyze chickens first when enabled.");
+	        crossbreedInheritStats = mainConfig.getBoolean("crossbreedInheritStats", "general", false, "Crossbred offspring will inherit the average stats of the parents.");
+	        crossbreedInheritStatsRatio = mainConfig.getFloat("crossbreedInheritStatsRatio", "general", 1.0f, 0.1f, 1.0f, "The ratio at which offspring inherit parent stats. 1.0 = average stats of parents.");
 
 			if (mainConfig.hasChanged()) {
 	        mainConfig.save();

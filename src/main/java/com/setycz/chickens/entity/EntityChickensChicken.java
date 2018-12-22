@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.block.TileEntityHenhouse;
+import com.setycz.chickens.config.ConfigHandler;
 import com.setycz.chickens.handler.SpawnType;
 import com.setycz.chickens.registry.ChickensRegistry;
 import com.setycz.chickens.registry.ChickensRegistryItem;
@@ -136,6 +137,8 @@ public class EntityChickensChicken extends EntityChicken {
             inheritStats(newChicken, this);
         } else if (mateChickenDescription.getRegistryName() == childToBeBorn.getRegistryName()) {
             inheritStats(newChicken, mateChicken);
+        } else if (ConfigHandler.crossbreedInheritStats) {
+            inheritStatsCrossbreeding(newChicken, this, mateChicken);
         }
 
         return newChicken;
@@ -145,6 +148,13 @@ public class EntityChickensChicken extends EntityChicken {
         newChicken.setGrowth(parent.getGrowth());
         newChicken.setGain(parent.getGain());
         newChicken.setStrength(parent.getStrength());
+    }
+
+    private void inheritStatsCrossbreeding(EntityChickensChicken newChicken, EntityChickensChicken parent1, EntityChickensChicken parent2) {
+        float ratio = ConfigHandler.crossbreedInheritStatsRatio;
+        newChicken.setGrowth(Math.max((int) (((parent1.getGrowth() + parent2.getGrowth()) / 2.0f) * ratio), 1));
+        newChicken.setGain(Math.max((int) (((parent1.getGain() + parent2.getGain()) / 2.0f) * ratio), 1));
+        newChicken.setStrength(Math.max((int) (((parent1.getStrength() + parent2.getStrength()) / 2.0f) * ratio), 1));
     }
 
     private static void increaseStats(EntityChickensChicken newChicken, EntityChickensChicken parent1, EntityChickensChicken parent2, Random rand) {
