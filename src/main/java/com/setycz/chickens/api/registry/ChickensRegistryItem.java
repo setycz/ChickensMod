@@ -1,9 +1,13 @@
-package com.setycz.chickens.registry;
+package com.setycz.chickens.api.registry;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.setycz.chickens.handler.ItemHolder;
-import com.setycz.chickens.handler.SpawnType;
+import com.setycz.chickens.api.properties.ChickenProperites;
+import com.setycz.chickens.api.properties.ItemHolder;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -24,13 +28,21 @@ public class ChickensRegistryItem {
     private final ResourceLocation texture;
     private ChickensRegistryItem parent1;
     private ChickensRegistryItem parent2;
-    private SpawnType spawnType;
+    private String spawnType;
+
     private boolean isEnabled = true;
     private float layCoefficient = 1.0f;
-
+    
+    //TODO New properies
+    /**
+     * Giving special properties like fire immunity
+     */
+    private List<ChickenProperites> specialProperties = new ArrayList<ChickenProperites>();
+    
     public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor) {
         this(registryName, entityName, texture, layItem, bgColor, fgColor, null, null);
     }
+    
     public ChickensRegistryItem(ResourceLocation registryName, String entityName, ResourceLocation texture, ItemStack layItem, int bgColor, int fgColor, @Nullable ChickensRegistryItem parent1, @Nullable ChickensRegistryItem parent2)   {
     	this(registryName, entityName, texture, new ItemHolder(layItem, false), bgColor, fgColor, parent1, parent2);
     }
@@ -42,7 +54,7 @@ public class ChickensRegistryItem {
         this.bgColor = bgColor;
         this.fgColor = fgColor;
         this.texture = texture;
-        this.spawnType = SpawnType.NORMAL;
+        this.spawnType = "normal";
         this.parent1 = parent1;
         this.parent2 = parent2;
     }
@@ -56,6 +68,15 @@ public class ChickensRegistryItem {
     	return this.layItem;
     }
     
+    public ChickensRegistryItem setSpecialProperties(ChickenProperites... props) {
+    	specialProperties = Arrays.asList(props);
+    	return this;
+    }
+    
+	public List<ChickenProperites> getSpecialProperties() {
+		return this.specialProperties;
+	}
+	
     public ChickensRegistryItem setDropItem(ItemHolder itemHolder) {
         dropItem = itemHolder;
         return this;
@@ -66,7 +87,7 @@ public class ChickensRegistryItem {
     	return setDropItem(new ItemHolder(itemstack, false));
     }
 
-    public ChickensRegistryItem setSpawnType(SpawnType type) {
+    public ChickensRegistryItem setSpawnType(String type) {
         spawnType = type;
         return this;
     }
@@ -106,7 +127,6 @@ public class ChickensRegistryItem {
         return layItem.getStack();
     }
     
-
     public ItemStack createDropItem() {
         if (dropItem != null) {
             return dropItem.getStack();
@@ -138,13 +158,9 @@ public class ChickensRegistryItem {
     }
 
     public boolean canSpawn() {
-        return getTier() == 1 && spawnType != SpawnType.NONE;
+        return getTier() == 1 && !spawnType.toLowerCase().trim().equals("none");
     }
 
-//    public int getId() {
-//        return id;
-//    }
-    
     public ResourceLocation getRegistryName(){
     	return registryName;
     }
@@ -157,12 +173,8 @@ public class ChickensRegistryItem {
         return 2 * getMinLayTime();
     }
 
-    public SpawnType getSpawnType() {
+    public String getSpawnType() {
         return spawnType;
-    }
-
-    public boolean isImmuneToFire() {
-        return spawnType == SpawnType.HELL;
     }
 
     public void setEnabled(boolean enabled) {
@@ -210,4 +222,7 @@ public class ChickensRegistryItem {
     {
     Item.getByNameOrId("");	
     }
+
+
+    
 }

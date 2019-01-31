@@ -1,11 +1,11 @@
 package com.setycz.chickens.common;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.api.registry.LiquidEggRegistry;
+import com.setycz.chickens.api.registry.LiquidEggRegistryItem;
 import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.item.ItemColoredEgg;
 import com.setycz.chickens.item.ItemLiquidEgg;
-import com.setycz.chickens.registry.LiquidEggRegistry;
-import com.setycz.chickens.registry.LiquidEggRegistryItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;

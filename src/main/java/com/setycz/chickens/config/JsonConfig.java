@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.handler.ItemHolder;
+import com.setycz.chickens.api.properties.ItemHolder;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -112,6 +115,29 @@ public class JsonConfig {
 		
 		return value;
 	}
+
+	
+	public ArrayList<String> getStringList(String categoryProperty, String property, ArrayList<String> value) {
+		JsonObject object = getCategory(categoryProperty);
+		
+		if(object.has(property)){
+			JsonArray jarray = object.get(property).getAsJsonArray();
+			value = new ArrayList<String>();
+			for(JsonElement item : jarray) {
+				value.add(item.getAsString());
+			}
+		}else{
+			JsonArray list = new JsonArray();
+			for(String stringValue : value) {
+				list.add(stringValue);
+			}
+			object.add(property, list);
+			setHasChanged(true);
+		}
+		return value;
+	}
+
+
 
 		
 	/**
@@ -310,7 +336,6 @@ public class JsonConfig {
 
 		return stack;
 	}
-
 
 
 }

@@ -3,10 +3,10 @@ package com.setycz.chickens.item;
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 import com.setycz.chickens.entity.EntityChickensChicken;
 import com.setycz.chickens.handler.IColorSource;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;

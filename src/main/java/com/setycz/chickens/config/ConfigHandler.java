@@ -6,19 +6,24 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.setycz.chickens.handler.ItemHolder;
-import com.setycz.chickens.handler.SpawnType;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.api.properties.ItemHolder;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.BiomeSpawnItem;
+import com.setycz.chickens.registry.SpawnRegistry;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ConfigHandler {
 	public static final File configDir = new File("config/chickens");
 	public static final File ChickensMainFile = new File(configDir, "main_chickens.cfg");
 	public static final File ChickensFile = new File(configDir, "chickens.json");
+	public static final File CustomBiomeDir = new File(configDir, "customBiomes");
 	
 	private static JsonConfig config;
 	
@@ -35,6 +40,10 @@ public class ConfigHandler {
     public static void LoadConfigs(List<ChickensRegistryItem> allchickens) {
     	loadConfiguration();
     	loadChickens(allchickens);
+    }
+    
+    public static void initLoadConfigs() {
+    	loadBiomeListFromDir(CustomBiomeDir);    	
     }
     
     
@@ -59,6 +68,92 @@ public class ConfigHandler {
 			}
 	}
 	
+	
+	/**
+	 * Load Custom Biome files
+	 */
+	public static void loadBiomeListFromDir(File directory){
+		if(!directory.isDirectory()) 
+			directory.mkdirs();
+		
+		 File[] files = directory.listFiles();
+		 
+		 if(files.length == 0)
+			 createSpawnDefaults();
+		 
+		 for(File file : files) {
+			 if(file.getPath().toLowerCase().endsWith(".json")) {
+				 loadBiomesFromFile(file);
+			 }
+		 }
+		
+	}
+	
+	public static void loadBiomesFromFile(File fileIn) {
+		
+		config = new JsonConfig(fileIn);
+		config.Load();
+		
+		
+		String cat = "settings";
+		ArrayList<String> biomes = config.getStringList(cat, "biome_ids", new ArrayList<String>());
+		
+		BiomeSpawnItem customSpawn = new BiomeSpawnItem(biomes);
+		SpawnRegistry.registerBiomeSpawns(fileIn.getName().replace(".json","").toLowerCase(), customSpawn);
+System.out.println("FIELS "+ fileIn.getName().replace(".json",""));
+        if(config.hasChanged) {
+        	config.Save();
+        }
+	}
+	
+	
+	public static void createSpawnDefaults() {
+		
+		File Normal = new File(CustomBiomeDir, "Normal.json");
+		File Hell = new File(CustomBiomeDir, "Nether.json");
+		File Snow = new File(CustomBiomeDir, "Snow.json");
+		
+		// Get Biomes
+		ArrayList<String> Normal_biomes = new ArrayList<String>();
+		ArrayList<String> Nether_biomes = new ArrayList<String>();
+		ArrayList<String> Snow_biomes = new ArrayList<String>();
+		
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.END)
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL))
+					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER))) {
+				Normal_biomes.add(biome.getRegistryName().toString());
+			}else if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.NETHER)) {
+				Nether_biomes.add(biome.getRegistryName().toString());
+			}else if(BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD) 
+					|| BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY)) {
+				Snow_biomes.add(biome.getRegistryName().toString());
+			}
+		}
+		
+		createBiomeFile(Normal, Normal_biomes);
+		createBiomeFile(Hell, Nether_biomes);
+		createBiomeFile(Snow, Snow_biomes);
+	}
+	
+	private static void createBiomeFile(File name, ArrayList<String> biomes) {
+		config = new JsonConfig(name);
+		config.Load();
+		String cat = "settings";
+		config.getStringList(cat, "biome_ids", biomes);
+		config.Save();
+	}
+	
+	
 	/**
 	 * Load json file of all Chickens. 
 	 * 
@@ -77,7 +172,7 @@ public class ConfigHandler {
 			config.getFullJson().get(comment).getAsJsonObject().add("lay_item_example", new ItemHolder(new ItemStack(Items.GOLD_INGOT), true).writeJsonObject(new JsonObject()));
 			config.getString(comment, "drop_item", "Item the chicken will Lay. Changing the qty will double that amount on each gain bonus. ");
 			config.getFullJson().get(comment).getAsJsonObject().add("drop_item_example", new ItemHolder(new ItemStack(Items.BONE, 2).setStackDisplayName("Bone of my Enemy"), true).writeJsonObject(new JsonObject()));
-			config.getString(comment, "spawn_type", "Chicken spawn type, can be: " + String.join(",", SpawnType.names()));
+			config.getString(comment, "spawn_type", "Chicken spawn type is the name of the file in your custom biomes folder. Which gives what biomes it can spawn in.");
 			config.getString(comment, "parent_1", "First parent, empty if it cant be breed. modid:chickenid #example: chickens:waterchicken");
 			config.getString(comment, "parent_2", "Second parent, empty if it cant be breed. ");
 		
@@ -96,9 +191,9 @@ public class ConfigHandler {
         	chicken.setLayItem(loadItemStack(config, registryName, chicken, "lay_item", chicken.getLayItemHolder().setSource(registryName)));
         	chicken.setDropItem(loadItemStack(config, registryName, chicken, "drop_item", chicken.getDropItemHolder().setSource(registryName)));
         	
-            SpawnType spawnType = SpawnType.valueOf(config.getString(registryName, "spawn_type", chicken.getSpawnType().toString()));
-            chicken.setSpawnType(spawnType);
-            
+            String spawnType = config.getString(registryName, "spawn_type", chicken.getSpawnType().toString());
+            chicken.setSpawnType(spawnType.toLowerCase());
+
             ChickensRegistry.register(chicken);
 
         }

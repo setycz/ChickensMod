@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 import com.setycz.chickens.item.ItemSpawnEgg;
 import com.setycz.chickens.jei.breeding.BreedingRecipeCategory;
 import com.setycz.chickens.jei.breeding.BreedingRecipeHandler;
@@ -20,8 +22,6 @@ import com.setycz.chickens.jei.laying.LayingRecipeWrapper;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeCategory;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeHandler;
 import com.setycz.chickens.jei.throwing.ThrowingRecipeWrapper;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
 
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;

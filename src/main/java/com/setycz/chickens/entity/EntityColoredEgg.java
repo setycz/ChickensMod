@@ -1,8 +1,8 @@
 package com.setycz.chickens.entity;
 
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;

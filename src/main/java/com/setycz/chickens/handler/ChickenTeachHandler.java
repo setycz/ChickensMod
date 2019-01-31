@@ -1,8 +1,8 @@
 package com.setycz.chickens.handler;
 
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 import com.setycz.chickens.entity.EntityChickensChicken;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
 
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Items;

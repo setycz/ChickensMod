@@ -1,4 +1,4 @@
-package com.setycz.chickens.registry;
+package com.setycz.chickens.api.registry;
 
 import java.util.Collection;
 import java.util.HashMap;

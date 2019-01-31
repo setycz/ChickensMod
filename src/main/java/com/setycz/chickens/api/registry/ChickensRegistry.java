@@ -1,4 +1,4 @@
-package com.setycz.chickens.registry;
+package com.setycz.chickens.api.registry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,9 +10,8 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.setycz.chickens.ChickensMod;
-import com.setycz.chickens.handler.SpawnType;
+import com.setycz.chickens.registry.SpawnRegistry;
 
-import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
@@ -23,7 +22,8 @@ public final class ChickensRegistry {
     
 	private static final Map<ResourceLocation, ChickensRegistryItem> items = new HashMap<ResourceLocation, ChickensRegistryItem>();
     private static final Map<String, ChickensRegistryItem> STRING_TO_ITEM = new HashMap<String, ChickensRegistryItem>();
-    
+
+//TODO remove this to make a functional API
     public static final ResourceLocation SMART_CHICKEN_ID = new ResourceLocation(ChickensMod.MODID ,"SmartChicken");
     private static final Random rand = new Random();
 
@@ -92,28 +92,22 @@ public final class ChickensRegistry {
         }
         return null;
     }
-
-    public static List<ChickensRegistryItem> getPossibleChickensToSpawn(SpawnType spawnType) {
+    
+    public static List<ChickensRegistryItem> getPossibleChickensToSpawn(Biome biomeIn) 
+    { 
         List<ChickensRegistryItem> result = new ArrayList<ChickensRegistryItem>();
-        for (ChickensRegistryItem chicken : items.values()) {
-            if (chicken.canSpawn() && chicken.getSpawnType() == spawnType && chicken.isEnabled()) {
-                result.add(chicken);
+
+        for (ChickensRegistryItem chicken : items.values()) 
+        {
+            if (chicken.canSpawn() && chicken.isEnabled()) 
+            {
+           		if(SpawnRegistry.canSpawnInBiome(biomeIn, chicken.getSpawnType()))
+           			result.add(chicken);
             }
         }
         return result;
     }
 
-    public static SpawnType getSpawnType(Biome biome) {
-        if (biome == Biomes.HELL) {
-            return SpawnType.HELL;
-        }
-
-        if (biome == Biomes.EXTREME_HILLS || biome.isSnowyBiome()) {
-            return SpawnType.SNOW;
-        }
-
-        return SpawnType.NORMAL;
-    }
 
     public static float getChildChance(ChickensRegistryItem child) {
         if (child.getTier() <= 1) {
@@ -172,14 +166,6 @@ public final class ChickensRegistry {
         return maxChance;
     }
 
-    public static boolean isAnyIn(SpawnType spawnType) {
-        for (ChickensRegistryItem chicken : items.values()) {
-            if (chicken.canSpawn() && chicken.isEnabled() && chicken.getSpawnType() == spawnType) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Nullable
     public static ChickensRegistryItem getSmartChicken() {

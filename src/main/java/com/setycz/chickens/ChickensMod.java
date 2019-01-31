@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
 
+import com.setycz.chickens.api.properties.ChickenProperites;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
+import com.setycz.chickens.api.registry.LiquidEggRegistry;
+import com.setycz.chickens.api.registry.LiquidEggRegistryItem;
 import com.setycz.chickens.block.BlockHenhouse;
 import com.setycz.chickens.block.TileEntityHenhouse;
 import com.setycz.chickens.client.gui.TileEntityGuiHandler;
@@ -17,15 +23,11 @@ import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.ChickenNetherPopulateHandler;
 import com.setycz.chickens.handler.ChickenTeachHandler;
 import com.setycz.chickens.handler.ChickensTab;
-import com.setycz.chickens.handler.SpawnType;
 import com.setycz.chickens.item.ItemAnalyzer;
 import com.setycz.chickens.item.ItemColoredEgg;
 import com.setycz.chickens.item.ItemLiquidEgg;
 import com.setycz.chickens.item.ItemSpawnEgg;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
-import com.setycz.chickens.registry.LiquidEggRegistry;
-import com.setycz.chickens.registry.LiquidEggRegistryItem;
+import com.setycz.chickens.registry.SpawnRegistry;
 
 import joptsimple.internal.Strings;
 import net.minecraft.block.Block;
@@ -43,7 +45,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -140,10 +141,6 @@ public class ChickensMod {
 
 		log.info(String.format("Enabled chickens: %s", getChickenNames(ChickensRegistry.getItems())));
 		log.info(String.format("Disabled chickens: %s", getChickenNames(ChickensRegistry.getDisabledItems())));
-		for (SpawnType spawnType : SpawnType.values()) {
-			log.info(String.format("[%s] biome type will spawn %s", spawnType,
-					getChickenNames(ChickensRegistry.getPossibleChickensToSpawn(spawnType))));
-		}
 
 	}
 
@@ -203,24 +200,16 @@ public class ChickensMod {
 		return result;
 	}
 
-	@SuppressWarnings("unused")
-	private String getAllAvailableSpawnTypes() {
-		String spawnTypes = "";
-		String[] spawnTypeNames = SpawnType.names();
-		for (int spawnTypeIndex = 0; spawnTypeIndex < spawnTypeNames.length; spawnTypeIndex++) {
-			if (spawnTypeIndex > 0) {
-				spawnTypes += ", ";
-			}
-			spawnTypes += spawnTypeNames[spawnTypeIndex];
-		}
-		return spawnTypes;
-	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init();
 
 		MinecraftForge.EVENT_BUS.register(new ChickenTeachHandler());
+		
+		//Prep Biomes
+		ConfigHandler.initLoadConfigs();
+		
 
 		List<Biome> biomesForSpawning = getAllSpawnBiomes();
 		
@@ -243,7 +232,7 @@ public class ChickensMod {
 
 	private boolean requiresVisitingNether(ChickensRegistryItem chicken) {
 		// noinspection ConstantConditions
-		return chicken.getTier() == 1 ? chicken.getSpawnType() == SpawnType.HELL
+		return chicken.getTier() == 1 ? chicken.getSpawnType() == "minecraft:hell"
 				: chicken.isBreedable() && (requiresVisitingNether(chicken.getParent1())
 						|| requiresVisitingNether(chicken.getParent2()));
 	}
@@ -331,28 +320,14 @@ public class ChickensMod {
 	}
 
 	private List<Biome> getAllSpawnBiomes() {
-		// chicken entity spawning
 		ArrayList<Biome> allPossibleBiomes = new ArrayList<Biome>();
-		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.END)
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.BEACH))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MUSHROOM))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.MAGICAL))
-					&& (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.WATER))) {
-				allPossibleBiomes.add(biome);
+		for (Entry<ResourceLocation, Biome> biome : ForgeRegistries.BIOMES.getEntries()) {
+			if(SpawnRegistry.containsBiome(biome.getValue())) {
+				System.out.println(biome.getKey());
+				allPossibleBiomes.add(biome.getValue());
 			}
 		}
-
-		List<Biome> biomesForSpawning = new ArrayList<Biome>();
-		for (Biome biome : allPossibleBiomes) {
-			if (ChickensRegistry.isAnyIn(ChickensRegistry.getSpawnType(biome))) {
-				biomesForSpawning.add(biome);
-			}
-		}
-		return biomesForSpawning;
+		return allPossibleBiomes;
 	}
 
 	private void registerLiquidEggs() {
@@ -365,7 +340,7 @@ public class ChickensMod {
 				new ResourceLocation("chickens",
 						"textures/entity/" + Strings.join(name.split("(?=[A-Z])"), "_").toLowerCase() + ".png"),
 				new ItemStack(Items.DYE, 1, color.getDyeDamage()), 0xf2f2f2, getRGB(color))
-						.setSpawnType(SpawnType.NONE);
+						.setSpawnType("none");
 	}
 
 	//Used to handle a client side only method
@@ -380,11 +355,11 @@ public class ChickensMod {
 
 		chickens.add(new ChickensRegistryItem(ChickensRegistry.SMART_CHICKEN_ID, "SmartChicken",
 				new ResourceLocation("chickens", "textures/entity/smart_chicken.png"), new ItemStack(Items.EGG),
-				0xffffff, 0xffff00).setSpawnType(SpawnType.NONE));
+				0xffffff, 0xffff00).setSpawnType("none"));
 
 		// dye chickens
 		ChickensRegistryItem whiteChicken = createDyeChicken(EnumDyeColor.WHITE, "WhiteChicken")
-				.setDropItem(new ItemStack(Items.BONE)).setSpawnType(SpawnType.NORMAL);
+				.setDropItem(new ItemStack(Items.BONE)).setSpawnType("normal");
 		chickens.add(whiteChicken);
 		ChickensRegistryItem yellowChicken = createDyeChicken(EnumDyeColor.YELLOW, "YellowChicken");
 		chickens.add(yellowChicken);
@@ -427,7 +402,7 @@ public class ChickensMod {
 		ChickensRegistryItem quartzChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "QuartzChicken"), "QuartzChicken",
 				new ResourceLocation("chickens", "textures/entity/quartz_chicken.png"), new ItemStack(Items.QUARTZ),
-				0x4d0000, 0x1a0000).setSpawnType(SpawnType.HELL);
+				0x4d0000, 0x1a0000).setSpawnType("nether");
 		chickens.add(quartzChicken);
 
 		ChickensRegistryItem logChicken = new ChickensRegistryItem(
@@ -499,7 +474,7 @@ public class ChickensMod {
 		ChickensRegistryItem snowballChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "SnowballChicken"), "SnowballChicken",
 				new ResourceLocation("chickens", "textures/entity/snowball_chicken.png"), new ItemStack(Items.SNOWBALL),
-				0x33bbff, 0x0088cc, blueChicken, logChicken).setSpawnType(SpawnType.SNOW);
+				0x33bbff, 0x0088cc, blueChicken, logChicken).setSpawnType("snow");
 		chickens.add(snowballChicken);
 
 		ChickensRegistryItem waterChicken = new ChickensRegistryItem(
@@ -511,7 +486,7 @@ public class ChickensMod {
 		ChickensRegistryItem lavaChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "LavaChicken"), "LavaChicken",
 				new ResourceLocation("chickens", "textures/entity/lava_chicken.png"), new ItemStack(liquidEgg, 1, 1),
-				0xcc3300, 0xffff00, coalChicken, quartzChicken).setSpawnType(SpawnType.HELL);
+				0xcc3300, 0xffff00, coalChicken, quartzChicken).setSpawnType("nether");
 		chickens.add(lavaChicken);
 
 		ChickensRegistryItem clayChicken = new ChickensRegistryItem(
@@ -529,7 +504,7 @@ public class ChickensMod {
 		ChickensRegistryItem netherwartChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "NetherwartChicken"), "NetherwartChicken",
 				new ResourceLocation("chickens", "textures/entity/netherwart_chicken.png"),
-				new ItemStack(Items.NETHER_WART), 0x800000, 0x331a00, brownChicken, glowstoneChicken);
+				new ItemStack(Items.NETHER_WART), 0x800000, 0x331a00, brownChicken, glowstoneChicken).setSpecialProperties(ChickenProperites.FireImmunity);
 		chickens.add(netherwartChicken);
 
 		// Tier 4
@@ -597,7 +572,7 @@ public class ChickensMod {
 		ChickensRegistryItem soulSandChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "soulSandChicken"), "soulSandChicken",
 				new ResourceLocation("chickens", "textures/entity/soulsand_chicken.png"),
-				new ItemStack(Blocks.SOUL_SAND, 1, 0), 0x453125, 0xd52f08).setSpawnType(SpawnType.HELL);
+				new ItemStack(Blocks.SOUL_SAND, 1, 0), 0x453125, 0xd52f08).setSpawnType("nether");
 		chickens.add(soulSandChicken);
 
 		return chickens;

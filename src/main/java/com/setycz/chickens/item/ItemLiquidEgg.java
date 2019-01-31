@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.setycz.chickens.api.registry.LiquidEggRegistry;
+import com.setycz.chickens.api.registry.LiquidEggRegistryItem;
 import com.setycz.chickens.handler.IColorSource;
 import com.setycz.chickens.handler.LiquidEggFluidWrapper;
-import com.setycz.chickens.registry.LiquidEggRegistry;
-import com.setycz.chickens.registry.LiquidEggRegistryItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

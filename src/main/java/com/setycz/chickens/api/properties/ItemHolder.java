@@ -1,4 +1,4 @@
-package com.setycz.chickens.handler;
+package com.setycz.chickens.api.properties;
 
 import java.util.ArrayList;
 import java.util.HashMap;

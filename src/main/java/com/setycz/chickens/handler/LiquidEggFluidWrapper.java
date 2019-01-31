@@ -1,9 +1,9 @@
 package com.setycz.chickens.handler;
 
 import com.google.common.collect.ImmutableSet;
-import javax.annotation.Nullable;
+import com.setycz.chickens.api.registry.LiquidEggRegistry;
 
-import com.setycz.chickens.registry.LiquidEggRegistry;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

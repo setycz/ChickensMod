@@ -1,6 +1,9 @@
 package com.setycz.chickens.client;
 
 import com.setycz.chickens.ChickensMod;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
+import com.setycz.chickens.api.registry.LiquidEggRegistryItem;
 import com.setycz.chickens.client.model.ModelChickensChicken;
 import com.setycz.chickens.client.render.RenderChickensChicken;
 import com.setycz.chickens.client.render.RenderThrownEgg.EntityColoredEggFactory;
@@ -8,9 +11,6 @@ import com.setycz.chickens.common.CommonProxy;
 import com.setycz.chickens.entity.EntityChickensChicken;
 import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.ItemColorHandler;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
-import com.setycz.chickens.registry.LiquidEggRegistryItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

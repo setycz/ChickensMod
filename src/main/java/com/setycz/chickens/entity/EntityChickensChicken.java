@@ -5,16 +5,16 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.setycz.chickens.api.properties.ChickenProperites;
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 import com.setycz.chickens.block.TileEntityHenhouse;
-import com.setycz.chickens.handler.SpawnType;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
+import com.setycz.chickens.registry.SpawnRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -216,10 +217,19 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     public boolean getCanSpawnHere() {
-        boolean anyInNether = ChickensRegistry.isAnyIn(SpawnType.HELL);
-        boolean anyInOverworld = ChickensRegistry.isAnyIn(SpawnType.NORMAL) || ChickensRegistry.isAnyIn(SpawnType.SNOW);
         Biome biome = world.getBiomeForCoordsBody(getPosition());
-        return anyInNether && biome == Biomes.HELL || anyInOverworld && super.getCanSpawnHere();
+        return SpawnRegistry.containsBiome(biome) && super.getCanSpawnHere();
+    }
+    
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source)
+    {
+    	List<ChickenProperites> properties = getChickenDescription().getSpecialProperties();
+    	
+    	if(properties.contains(ChickenProperites.FireImmunity) && (source.isFireDamage() || source == DamageSource.LAVA))
+    		return true;
+    	
+    	return super.isEntityInvulnerable(source);
     }
 
     @Override
@@ -229,8 +239,7 @@ public class EntityChickensChicken extends EntityChicken {
             GroupData groupData = (GroupData) livingData;
             setChickenType(groupData.getType());
         } else {
-            SpawnType spawnType = getSpawnType();
-            List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn(spawnType);
+            List<ChickensRegistryItem> possibleChickens = ChickensRegistry.getPossibleChickensToSpawn(this.world.getBiome(this.getPosition()));
             if (possibleChickens.size() > 0) {
                 ChickensRegistryItem chickenToSpawn = possibleChickens.get(rand.nextInt(possibleChickens.size()));
 
@@ -247,11 +256,6 @@ public class EntityChickensChicken extends EntityChicken {
         return livingData;
     }
 
-    private SpawnType getSpawnType() {
-        Biome biome = world.getBiomeForCoordsBody(getPosition());
-        return ChickensRegistry.getSpawnType(biome);
-    }
-
     private static class GroupData implements IEntityLivingData {
         private final String type;
 
@@ -266,7 +270,6 @@ public class EntityChickensChicken extends EntityChicken {
 
     public void setChickenType(String registryName) {
         setChickenTypeInternal(registryName);
-        isImmuneToFire = getChickenDescription().isImmuneToFire();
         resetTimeUntilNextEgg();
     }
 

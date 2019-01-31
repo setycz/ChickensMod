@@ -2,10 +2,10 @@ package com.setycz.chickens.item;
 
 import java.util.List;
 
+import com.setycz.chickens.api.registry.ChickensRegistry;
+import com.setycz.chickens.api.registry.ChickensRegistryItem;
 import com.setycz.chickens.entity.EntityColoredEgg;
 import com.setycz.chickens.handler.IColorSource;
-import com.setycz.chickens.registry.ChickensRegistry;
-import com.setycz.chickens.registry.ChickensRegistryItem;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
