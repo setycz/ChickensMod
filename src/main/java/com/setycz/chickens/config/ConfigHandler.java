@@ -2,6 +2,7 @@ package com.setycz.chickens.config;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -69,6 +70,12 @@ public class ConfigHandler {
 	}
 	
 	
+	private static File Normal = new File(CustomBiomeDir, "Normal.json");
+	private static File Hell = new File(CustomBiomeDir, "Nether.json");
+	private static File Snow = new File(CustomBiomeDir, "Snow.json");
+	private static File All = new File(CustomBiomeDir, "All.txt");
+	
+	
 	/**
 	 * Load Custom Biome files
 	 */
@@ -78,7 +85,7 @@ public class ConfigHandler {
 		
 		 File[] files = directory.listFiles();
 		 
-		 if(files.length == 0)
+		 if(!Normal.exists() || !Hell.exists() || !Snow.exists() || !All.exists())
 			 createSpawnDefaults();
 		 
 		 for(File file : files) {
@@ -88,30 +95,24 @@ public class ConfigHandler {
 		 }
 		
 	}
+
 	
 	public static void loadBiomesFromFile(File fileIn) {
 		
 		config = new JsonConfig(fileIn);
 		config.Load();
-		
-		
 		String cat = "settings";
 		ArrayList<String> biomes = config.getStringList(cat, "biome_ids", new ArrayList<String>());
 		
 		BiomeSpawnItem customSpawn = new BiomeSpawnItem(biomes);
 		SpawnRegistry.registerBiomeSpawns(fileIn.getName().replace(".json","").toLowerCase(), customSpawn);
-System.out.println("FIELS "+ fileIn.getName().replace(".json",""));
         if(config.hasChanged) {
         	config.Save();
         }
 	}
 	
-	
+
 	public static void createSpawnDefaults() {
-		
-		File Normal = new File(CustomBiomeDir, "Normal.json");
-		File Hell = new File(CustomBiomeDir, "Nether.json");
-		File Snow = new File(CustomBiomeDir, "Snow.json");
 		
 		// Get Biomes
 		ArrayList<String> Normal_biomes = new ArrayList<String>();
@@ -140,14 +141,38 @@ System.out.println("FIELS "+ fileIn.getName().replace(".json",""));
 			}
 		}
 		
-		createBiomeFile(Normal, Normal_biomes);
-		createBiomeFile(Hell, Nether_biomes);
-		createBiomeFile(Snow, Snow_biomes);
+		if(!Normal.exists())
+			createBiomeFile(Normal, Normal_biomes);
+
+		if(!Hell.exists())
+			createBiomeFile(Hell, Nether_biomes);
+
+		if(!Snow.exists())
+			createBiomeFile(Snow, Snow_biomes);
+
+		if(!All.exists()) {
+			ArrayList<String> allbiomes = new ArrayList<String>();
+			ForgeRegistries.BIOMES.getKeys().forEach((n) -> allbiomes.add(n.toString()));
+			createBiomeFile(All, allbiomes);
+		}
 	}
 	
 	private static void createBiomeFile(File name, ArrayList<String> biomes) {
 		config = new JsonConfig(name);
 		config.Load();
+		
+		if(name.equals(All)) {
+			String comment = "_comments";
+			int i = 1;
+			config.getString(comment, "_comment"+i++, "This folder allows you to create special biome spawning rules. You can add any biome to the list.");
+			config.getString(comment, "_comment"+i++, "Use one of the default json files as an example. This file contains all registered biomes. Delete this file to regen it, if you have added more biomes to the game.");
+			config.getString(comment, "_comment"+i++, "This currently is a whitelist only for now.");
+			config.getString(comment, "_comment"+i++, "You can create any number of custom spawn rules. And can add it to any chicken in the chicken json file.");
+			config.getString(comment, "_comment"+i++, "best to keep file name simple. ie. 'Normal.json' inputed into chicken spawn type is just: 'normal' ");
+			config.getString(comment, "_comment"+i++, "no limit to the amount of files you can add in your spawnrules folder. ");
+			config.getString(comment, "_comment"+i++, "You can not delete the Normal.json, Snow.json, Nether.json, All.txt. As this could break things.");			
+		}
+		
 		String cat = "settings";
 		config.getStringList(cat, "biome_ids", biomes);
 		config.Save();
@@ -192,7 +217,7 @@ System.out.println("FIELS "+ fileIn.getName().replace(".json",""));
         	chicken.setDropItem(loadItemStack(config, registryName, chicken, "drop_item", chicken.getDropItemHolder().setSource(registryName)));
         	
             String spawnType = config.getString(registryName, "spawn_type", chicken.getSpawnType().toString());
-            chicken.setSpawnType(spawnType.toLowerCase());
+            chicken.setSpawnType(legacySpawn(spawnType).toLowerCase());
 
             ChickensRegistry.register(chicken);
 
@@ -214,6 +239,13 @@ System.out.println("FIELS "+ fileIn.getName().replace(".json",""));
         if(config.hasChanged) {
         	config.Save();
         }
+	}
+
+	// Renames old spawn names. 
+	private static String legacySpawn(String var1) {
+		if(var1.equals("HELL"))
+			var1 = "nether";
+		return var1;
 	}
 	
 	public static void loadChickens(Collection<ChickensRegistryItem> allChickens) {

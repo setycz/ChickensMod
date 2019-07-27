@@ -98,8 +98,8 @@ public class ChickensMod {
 	public static final Item analyzer = new ItemAnalyzer().setTranslationKey("analyzer")
 			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "analyzer");
 
-	public static final Block henhouse = new BlockHenhouse()
-			.setTranslationKey("henhouse").setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse");
+	public static final Block henhouse = new BlockHenhouse().setTranslationKey("henhouse")
+			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse");
 	public static final Block henhouse_acacia = new BlockHenhouse().setTranslationKey("henhouse_acacia")
 			.setCreativeTab(chickensTab).setRegistryName(ChickensMod.MODID, "henhouse_acacia");
 	public static final Block henhouse_birch = new BlockHenhouse().setTranslationKey("henhouse_birch")
@@ -184,10 +184,6 @@ public class ChickensMod {
 		blockRegistry.register(henhouse_spruce);
 	}
 
-	public static void registerBlock(Block block) {
-		blockRegistry.register(block.setRegistryName(block.getTranslationKey().substring(5)));
-	}
-	
 	public static void registerItemForBlock(Block block) {
 		itemRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 	}
@@ -504,7 +500,7 @@ public class ChickensMod {
 		ChickensRegistryItem netherwartChicken = new ChickensRegistryItem(
 				new ResourceLocation(ChickensMod.MODID, "NetherwartChicken"), "NetherwartChicken",
 				new ResourceLocation("chickens", "textures/entity/netherwart_chicken.png"),
-				new ItemStack(Items.NETHER_WART), 0x800000, 0x331a00, brownChicken, glowstoneChicken).setSpecialProperties(ChickenProperites.FireImmunity);
+				new ItemStack(Items.NETHER_WART), 0x800000, 0x331a00, brownChicken, glowstoneChicken).setSpecialProperties(ChickenProperites.FIREIMMUNITY);
 		chickens.add(netherwartChicken);
 
 		// Tier 4

@@ -25,6 +25,14 @@ public class RenderChickensChicken extends RenderLiving<EntityChickensChicken> {
         return entity.getTexture();
     }
 
+    public void doRender(EntityChickensChicken entity, double x, double y, double z, float entityYaw, float partialTicks)
+    {
+
+    	double hover = Math.sin(y + 0.5d * partialTicks);
+    	
+    	super.doRender(entity, x, y, z, entityYaw, partialTicks);
+    }
+    
     @Override
     protected float handleRotationFloat(EntityChickensChicken livingBase, float partialTicks) {
         float f = livingBase.oFlap + (livingBase.wingRotation - livingBase.oFlap) * partialTicks;

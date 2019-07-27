@@ -214,7 +214,7 @@ public class EntityChickensChicken extends EntityChicken {
         int newTimeUntilNextEgg = (int) Math.max(1.0f, (newBaseTimeUntilNextEgg * (10.f - getGrowth() + 1.f)) / 10.f);
         setTimeUntilNextEgg(newTimeUntilNextEgg * 2);
     }
-
+//TODO dont think this is needed really.. 
     @Override
     public boolean getCanSpawnHere() {
         Biome biome = world.getBiomeForCoordsBody(getPosition());
@@ -226,7 +226,7 @@ public class EntityChickensChicken extends EntityChicken {
     {
     	List<ChickenProperites> properties = getChickenDescription().getSpecialProperties();
     	
-    	if(properties.contains(ChickenProperites.FireImmunity) && (source.isFireDamage() || source == DamageSource.LAVA))
+    	if(properties.contains(ChickenProperites.FIREIMMUNITY) && (source.isFireDamage() || source == DamageSource.LAVA))
     		return true;
     	
     	return super.isEntityInvulnerable(source);
@@ -337,11 +337,14 @@ public class EntityChickensChicken extends EntityChicken {
 
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier) {
-        ItemStack itemsToDrop = getChickenDescription().createDropItem();
-        int count = 1 + rand.nextInt(1 + lootingModifier);
-        itemsToDrop.setCount(itemsToDrop.getCount() * count);
-        entityDropItem(itemsToDrop, 0);
-
+    	
+    	if(this.rand.nextInt(1) == 0) {
+    		ItemStack itemsToDrop = getChickenDescription().createDropItem();
+    		int count = 1 + rand.nextInt(1 + lootingModifier);
+    		itemsToDrop.setCount(itemsToDrop.getCount() * count);
+    		entityDropItem(itemsToDrop, 0);
+    	}
+    	
         if (this.isBurning()) {
             this.dropItem(Items.COOKED_CHICKEN, 1);
         } else {
