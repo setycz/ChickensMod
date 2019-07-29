@@ -102,18 +102,16 @@ public class ItemHolder
 	public ItemStack getStack() {
 		
 		
-		if(ErroredItems.containsKey(this.itemID)) {
-			handleItemNotFound();
-		}
-		
 		if(!isComplete) {
-			isComplete = true;
+			
 			Item item = getItem();
-			if(item != null) {
+			if(item != null) 
+			{
 				stack = new ItemStack(getItem(), this.getAmount(), this.metaID);
-				
 				if(this.nbtData != null && !this.nbtData.isEmpty())
 	                	stack.setTagCompound(this.nbtData);
+				
+				isComplete = true;
 			}else {
 				handleItemNotFound();
 			}
