@@ -1,8 +1,8 @@
 {
-    "parent": "block/orientable",
-    "textures": {
-        "top": "chickens:blocks/henhouse_top",
-        "front": "chickens:blocks/henhouse_front",
-        "side": "chickens:blocks/henhouse_side"
-    }
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "side": "chickens:blocks/henhouse_side",
+    "front": "chickens:blocks/henhouse_front",
+    "top": "chickens:blocks/henhouse_top"
+  }
 }

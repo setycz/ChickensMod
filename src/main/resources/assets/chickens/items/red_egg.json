@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/red_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 11546150
+      }
+    ]
+  }
+}

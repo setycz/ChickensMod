@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "chickens:henhouse",
+    "chickens:henhouse_acacia",
+    "chickens:henhouse_birch",
+    "chickens:henhouse_dark_oak",
+    "chickens:henhouse_jungle",
+    "chickens:henhouse_spruce"
+  ]
+}

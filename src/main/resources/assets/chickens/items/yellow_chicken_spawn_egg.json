@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/yellow_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16701501
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 16701501
+      }
+    ]
+  }
+}

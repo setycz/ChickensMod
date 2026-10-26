@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/sand_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15658734
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 10526880
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/light_gray_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 10329495
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+name: Fabric 26.3 build
+on:
+  push:
+    branches: [fabric-26.3]
+  pull_request:
+    branches: [fabric-26.3]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x gradlew
+      - run: ./gradlew build --no-daemon
+      - name: Dedicated server regression
+        run: |
+          set -o pipefail
+          ./gradlew -PregressionTests=true runRegressionServer --no-daemon | tee regression.log
+          grep -q 'CHICKENS REGRESSION OK' regression.log
+          ! grep -q 'CHICKENS REGRESSION FAILED' regression.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chickens-fabric-26.3
+          path: build/libs/*.jar
