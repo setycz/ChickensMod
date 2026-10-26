@@ -59,6 +59,13 @@ The initial port was compiled for both client and server and exercised on a dedi
 
 Original mod and textures © 2016 setycz, distributed under the MIT license in [LICENSE.txt](LICENSE.txt).
 
+## 0.1.3 baby chicken fix
+
+Resource chickens now render with chick proportions while young: a smaller body,
+legs and wings with a larger head. Breed textures and adult appearances are
+preserved. The renderer switches automatically as the chicken grows up. Replace
+the Chickens jar on client and server; existing chickens and worlds are supported.
+
 ## 0.1.2 texture fix
 
 Item and block textures now use the modern `textures/item/` and `textures/block/` atlas directories. This fixes missing checkerboard icons and henhouse block textures. `python3 scripts/check_assets.py` checks custom model texture paths before every CI build. Entity and screen textures remain in their direct texture locations.
