@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/netherwartchicken"
+    "chicken": "roost:block/chicken/netherwartchicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

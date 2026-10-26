@@ -23,6 +23,6 @@
     "java": ">=25",
     "fabricloader": ">=0.19.5",
     "fabric-api": "*",
-    "chickens": ">=0.1.2"
+    "chickens": ">=0.1.3"
   }
 }

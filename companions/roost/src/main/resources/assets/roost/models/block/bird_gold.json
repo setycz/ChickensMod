@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/goldchicken"
+    "chicken": "roost:block/chicken/goldchicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

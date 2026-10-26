@@ -27,7 +27,7 @@ Build the Chickens jar at the repository root first, then run:
 ./gradlew -p companions/roost -PregressionTests=true runRegressionServer
 ```
 
-The companion resolves the parent build at `../../build/libs/chickens-fabric-26.3-0.1.2.jar`. The headless regression harness is a separate development mod, excluded from the playable jar. Success prints `ROOST REGRESSION OK`.
+The companion resolves the parent build at `../../build/libs/chickens-fabric-26.3-0.1.3.jar`. The headless regression harness is a separate development mod, excluded from the playable jar. Success prints `ROOST REGRESSION OK`.
 
 ## Scope and validation
 
@@ -36,3 +36,7 @@ This version supports vanilla chickens and all 42 breeds in our Chickens port. O
 Dedicated-server regression coverage includes capture/release metadata, UUID isolation, catcher duplication guards, full inventory fallback, Roost production and stack capacity, pending output persistence, breeding seed costs and inheritance, full-output pauses, Collector transfers, hopper protection, and GUI data synchronization.
 
 Original source and assets © 2019 Tim Wood, David Vierra. See LICENSE.txt.
+
+## 0.1.1 fixes
+
+Matching captured chickens now stack despite incidental entity timers, breeding cooldowns, and combat memories. Breed, Growth/Gain/Strength, custom names, health, baby age, and other persistent traits remain intact. Previously captured items migrate automatically in player inventories and when Roost machines load or receive them; items stored in ordinary chests migrate when moved into your inventory. Stacks retain a maximum of 16. Chicken display models now define their particle texture.

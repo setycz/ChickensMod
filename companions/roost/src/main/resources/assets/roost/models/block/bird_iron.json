@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/ironchicken"
+    "chicken": "roost:block/chicken/ironchicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

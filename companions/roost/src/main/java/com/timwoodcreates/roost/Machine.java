@@ -44,6 +44,7 @@ public final class Machine extends BaseContainerBlockEntity implements WorldlyCo
     @Override public boolean canTakeItemThroughFace(int slot,ItemStack stack,Direction side){return kind()==2 || side!=Direction.UP && slot>=firstOutput();}
     public int insertBird(ItemStack stack){
         if(kind()==2 || ChickenItem.bird(stack)==null)return 0;
+        ChickenItem.normalize(stack);normalizeBirds();
         int count=stack.getCount(),end=kind()==0?1:2;
         for(int i=0;i<end && !stack.isEmpty();i++){
             var at=items.get(i);if(!at.isEmpty()&&!ItemStack.isSameItemSameComponents(at,stack))continue;
@@ -55,6 +56,7 @@ public final class Machine extends BaseContainerBlockEntity implements WorldlyCo
     }
     /** Simulates insertion first. Failed insertion never partially changes inventory. */
     public boolean offer(ItemStack stack,boolean commit){
+        ChickenItem.normalize(stack);normalizeBirds();
         int remaining=stack.getCount();
         for(int i=firstOutput();i<size() && remaining>0;i++){
             var at=items.get(i);if(at.isEmpty() || ItemStack.isSameItemSameComponents(at,stack))remaining-=Math.min(remaining,stack.getMaxStackSize()-(at.isEmpty()?0:at.getCount()));
@@ -69,7 +71,14 @@ public final class Machine extends BaseContainerBlockEntity implements WorldlyCo
         setChanged();return true;
     }
     private boolean same(ItemStack a,ItemStack b){return a.isEmpty()&&b.isEmpty() || ItemStack.isSameItemSameComponents(a,b);}
+    private void normalizeBirds(){
+        boolean changed=false;
+        for(var stack:items)changed|=ChickenItem.normalize(stack);
+        changed|=ChickenItem.normalize(pending);changed|=ChickenItem.normalize(left);changed|=ChickenItem.normalize(right);
+        if(changed)setChanged();
+    }
     public void tick(ServerLevel server){
+        normalizeBirds();
         if(kind()==2){collect(server);return;}
         var a=items.get(0);var b=kind()==1?items.get(1):ItemStack.EMPTY;
         if(!same(left,a)||!same(right,b)){elapsed=0;duration=0;pending=ItemStack.EMPTY;left=a.copy();right=b.copy();setChanged();}
@@ -111,5 +120,5 @@ public final class Machine extends BaseContainerBlockEntity implements WorldlyCo
         }
     }
     @Override protected void saveAdditional(ValueOutput out){super.saveAdditional(out);ContainerHelper.saveAllItems(out,items);out.putInt("Elapsed",elapsed);out.putInt("Duration",duration);out.store("Pending",ItemStack.OPTIONAL_CODEC,pending);out.store("Left",ItemStack.OPTIONAL_CODEC,left);out.store("Right",ItemStack.OPTIONAL_CODEC,right);}
-    @Override protected void loadAdditional(ValueInput in){super.loadAdditional(in);items=NonNullList.withSize(size(),ItemStack.EMPTY);ContainerHelper.loadAllItems(in,items);elapsed=Math.clamp(in.getIntOr("Elapsed",0),0,200000000);duration=Math.clamp(in.getIntOr("Duration",0),0,200000000);pending=in.read("Pending",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);left=in.read("Left",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);right=in.read("Right",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);}
+    @Override protected void loadAdditional(ValueInput in){super.loadAdditional(in);items=NonNullList.withSize(size(),ItemStack.EMPTY);ContainerHelper.loadAllItems(in,items);elapsed=Math.clamp(in.getIntOr("Elapsed",0),0,200000000);duration=Math.clamp(in.getIntOr("Duration",0),0,200000000);pending=in.read("Pending",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);left=in.read("Left",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);right=in.read("Right",ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);normalizeBirds();}
 }

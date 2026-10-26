@@ -26,6 +26,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.Level;
 
 public final class ChickensMod implements ModInitializer {
+    private static boolean initialized;
     public static final Map<Item,Breed> COLORED_EGGS=new LinkedHashMap<>();
     public static final Map<String,Block> HENHOUSES=new LinkedHashMap<>();
     public static BlockEntityType<HenhouseBlockEntity> HENHOUSE_ENTITY;
@@ -35,7 +36,11 @@ public final class ChickensMod implements ModInitializer {
     public static Identifier id(String path){return Identifier.fromNamespaceAndPath("chickens",path);}
     private static Item.Properties props(String path){return new Item.Properties().setId(ResourceKey.create(Registries.ITEM,id(path)));}
     private static <T extends Item> T item(String path,T item){return Registry.register(BuiltInRegistries.ITEM,id(path),item);}
-    @Override public void onInitialize(){
+    @Override public void onInitialize(){initialize();}
+    /** Companions can establish registry readiness regardless of entrypoint order. */
+    public static synchronized void initialize(){
+        if(initialized)return;
+        initialized=true;
         HENHOUSE_MENU=Registry.register(BuiltInRegistries.MENU,id("henhouse"),new net.minecraft.world.inventory.MenuType<>(HenhouseMenu::new,net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
         WATER_EGG=item("water_egg",new LiquidEggItem(Fluids.WATER,props("water_egg").stacksTo(16)));
         LAVA_EGG=item("lava_egg",new LiquidEggItem(Fluids.LAVA,props("lava_egg").stacksTo(16)));

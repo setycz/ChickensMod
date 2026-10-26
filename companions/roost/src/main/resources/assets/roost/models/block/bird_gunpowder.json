@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/gunpowderchicken"
+    "chicken": "roost:block/chicken/gunpowderchicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

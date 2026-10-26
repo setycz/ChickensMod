@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/silverdyechicken"
+    "chicken": "roost:block/chicken/silverdyechicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

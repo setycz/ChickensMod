@@ -20,15 +20,42 @@ public final class ChickenItem extends Item {
     public static ChickenItem bird(ItemStack stack) { return stack.getItem() instanceof ChickenItem c?c:null; }
     public static CompoundTag data(ItemStack stack) { return stack.getOrDefault(DataComponents.CUSTOM_DATA,CustomData.EMPTY).copyTag(); }
     public static int stat(ItemStack stack,String key) { return Math.clamp(data(stack).getIntOr(key,1),1,10); }
+    /** Entity runtime state is not part of a portable chicken's identity. */
+    private static final java.util.Set<String> TRANSIENT=java.util.Set.of(
+        "UUID","leash","Leash","Pos","Motion","Rotation","FallDistance","OnGround","Air",
+        "PortalCooldown","LayTime","EggLayTime","Brain","InLove","LoveCause","ForcedAge",
+        "HurtTime","HurtByTimestamp","DeathTime","Fire","TicksFrozen","FallFlying","LeftHanded",
+        "Analyzed","invulnerable_time","last_hurt_by_player","last_hurt_by_player_memory_time",
+        "last_hurt_by_mob","ticks_since_last_hurt_by_mob","current_impulse_context",
+        "current_impulse_context_reset_grace_time");
+    public static boolean normalize(ItemStack stack) {
+        var bird=bird(stack);if(bird==null)return false;
+        var tag=data(stack);
+        if(tag.getIntOr("RoostDataVersion",0)==1)return false;
+        for(String key:TRANSIENT)tag.remove(key);
+        // Keep baby age, but discard an adult's temporary breeding cooldown.
+        if(tag.getIntOr("Age",0)>=0)tag.remove("Age");
+        if(bird.breed!=null) {
+            for(String key:java.util.List.of("Growth","Gain","Strength"))tag.putInt(key,Math.clamp(tag.getIntOr(key,1),1,10));
+            // Resource breed textures override vanilla chicken appearance variants.
+            tag.remove("variant");
+        }
+        tag.putInt("RoostDataVersion",1);
+        stack.set(DataComponents.CUSTOM_DATA,CustomData.of(tag));
+        return true;
+    }
+    @Override public void inventoryTick(ItemStack stack,ServerLevel level,net.minecraft.world.entity.Entity entity,net.minecraft.world.entity.EquipmentSlot slot) {
+        super.inventoryTick(stack,level,entity,slot);
+        if(normalize(stack) && entity instanceof net.minecraft.world.entity.player.Player player)player.getInventory().setChanged();
+    }
     public static ItemStack capture(Chicken chicken,ServerLevel level) {
         var item=chicken instanceof ResourceChicken c?RoostMod.BIRDS.get(c.breed().id):RoostMod.BIRDS.get("vanilla");
         ItemStack stack=new ItemStack(item);
         var out=TagValueOutput.createWithContext(ProblemReporter.DISCARDING,level.registryAccess());
         chicken.saveWithoutId(out);var tag=out.buildResult();
-        for(String key:java.util.List.of("UUID","leash","Leash","Pos","Motion","Rotation","FallDistance","OnGround","Air","PortalCooldown","LayTime","EggLayTime"))tag.remove(key);
-        // Store the entity data without its identity or location; identical portable chickens stack.
         stack.set(DataComponents.CUSTOM_DATA,CustomData.of(tag));
         if(chicken.hasCustomName())stack.set(DataComponents.CUSTOM_NAME,chicken.getCustomName());
+        normalize(stack);
         return stack;
     }
     public Chicken entity(ItemStack stack,ServerLevel level) {

@@ -28,6 +28,7 @@ public final class RoostMod implements ModInitializer {
  public static Identifier id(String name){return Identifier.fromNamespaceAndPath("roost",name);}
  private static Item.Properties props(String name){return new Item.Properties().setId(ResourceKey.create(Registries.ITEM,id(name)));}
  @Override public void onInitialize(){
+  ChickensMod.initialize();
   RoostConfig.load();
   CATCHER=Registry.register(BuiltInRegistries.ITEM,id("catcher"),new Item(props("catcher").durability(64)));
   registerBird("vanilla",null);

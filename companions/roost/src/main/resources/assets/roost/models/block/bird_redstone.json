@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/redstonechicken"
+    "chicken": "roost:block/chicken/redstonechicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

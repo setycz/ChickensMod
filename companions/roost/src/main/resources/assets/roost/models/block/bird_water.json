@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/waterchicken"
+    "chicken": "roost:block/chicken/waterchicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

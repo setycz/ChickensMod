@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/magmachicken"
+    "chicken": "roost:block/chicken/magmachicken",
+    "particle": "#chicken"
   },
   "elements": [
     {

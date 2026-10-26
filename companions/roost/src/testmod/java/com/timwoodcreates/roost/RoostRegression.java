@@ -27,6 +27,8 @@ public final class RoostRegression implements ModInitializer {
  static int count(Machine m,Item item){int c=0;for(int i=m.firstOutput();i<m.getContainerSize();i++)if(m.getItem(i).is(item))c+=m.getItem(i).getCount();return c;}
  static void run(ServerLevel level){
   check(RoostMod.BIRDS.size()==43,"vanilla and all 42 resource breeds registered");
+  ChickensMod.initialize();
+  check(Breeds.ALL.values().stream().allMatch(b->b.entityType!=null && RoostMod.BIRDS.get(b.id).breed==b),"companion references initialized breed registry and repeated initialization is safe");
   check(RoostMod.BLOCKS.size()==3 && RoostMod.MENUS.size()==3,"Roost, Breeder and Collector registered");
   var chicken=Breeds.get("iron").entityType.create(level,EntitySpawnReason.COMMAND);chicken.stats(9,10,8);chicken.setCustomName(Component.literal("Iron Annie"));chicken.setHealth(2);chicken.setNoAi(true);chicken.setPos(0,101,0);level.addFreshEntity(chicken);
   var captured=ChickenItem.capture(chicken,level);var roundtrip=ChickenItem.bird(captured).entity(captured,level);
@@ -34,6 +36,28 @@ public final class RoostRegression implements ModInitializer {
   check(((ResourceChicken)roundtrip).growth()==9 && ((ResourceChicken)roundtrip).gain()==10 && ((ResourceChicken)roundtrip).strength()==8,"capture/release retains all stats");
   check(roundtrip.getName().getString().equals("Iron Annie") && roundtrip.getHealth()==2 && roundtrip.isNoAi(),"capture/release retains name, health and AI state");
   check(!roundtrip.getUUID().equals(chicken.getUUID()),"released copies never reuse an entity UUID");
+  var greenA=Breeds.get("green").entityType.create(level,EntitySpawnReason.COMMAND);
+  var greenB=Breeds.get("green").entityType.create(level,EntitySpawnReason.COMMAND);
+  greenB.setAge(5000);
+  var greenStackA=ChickenItem.capture(greenA,level);var greenStackB=ChickenItem.capture(greenB,level);
+  check(ItemStack.isSameItemSameComponents(greenStackA,greenStackB),"separately captured matching adults stack despite breeding cooldown and independent timers");
+  var legacy=greenStackB.copy();var legacyData=ChickenItem.data(legacy);legacyData.remove("RoostDataVersion");
+  legacyData.putInt("InLove",400);legacyData.putInt("Age",5000);legacyData.putInt("HurtTime",8);
+  legacyData.putInt("invulnerable_time",12);legacyData.putString("last_hurt_by_player","obsolete");
+  legacyData.put("Brain",new net.minecraft.nbt.CompoundTag());legacyData.putBoolean("Analyzed",true);
+  legacy.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA,net.minecraft.world.item.component.CustomData.of(legacyData));
+  var migrated=legacy.copy();migrated.getItem().inventoryTick(migrated,level,greenA,null);
+  check(ItemStack.isSameItemSameComponents(greenStackA,migrated),"inventory tick migrates previously captured chickens without release/recapture");
+  check(!ChickenItem.normalize(migrated),"migration is idempotent");
+  greenB.stats(2,1,1);check(!ItemStack.isSameItemSameComponents(greenStackA,ChickenItem.capture(greenB,level)),"different growth stats remain separate stacks");
+  greenB.stats(1,1,1);greenB.setCustomName(Component.literal("Green Annie"));
+  check(!ItemStack.isSameItemSameComponents(greenStackA,ChickenItem.capture(greenB,level)),"named chickens remain distinct");
+  var migrationRoost=machine(level,0,50);migrationRoost.setItem(0,legacy.copy());
+  check(migrationRoost.insertBird(greenStackA.copy())==1 && migrationRoost.getItem(0).getCount()==2,"legacy housed chickens merge with newly captured matching chickens");
+  var migratedSave=migrationRoost.saveWithoutMetadata(level.registryAccess());
+  var migrationReload=new Machine(migrationRoost.getBlockPos(),migrationRoost.getBlockState());
+  migrationReload.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING,level.registryAccess(),migratedSave));
+  check(migrationReload.getItem(0).getCount()==2,"migrated stack retains count through save/reload");
   var player=new Player(level,new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"RoostTest")){public net.minecraft.world.level.GameType gameMode(){return net.minecraft.world.level.GameType.SURVIVAL;}};
   check(RoostMod.capture(player,chicken,level) && chicken.isRemoved(),"catcher transfers one adult and removes original");
   int n=0;for(int i=0;i<36;i++)if(ChickenItem.bird(player.getInventory().getItem(i))!=null)n+=player.getInventory().getItem(i).getCount();check(n==1,"catcher creates exactly one captured chicken");

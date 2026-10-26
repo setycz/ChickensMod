@@ -21,7 +21,8 @@
     }
   },
   "textures": {
-    "chicken": "roost:block/chicken/blazechicken"
+    "chicken": "roost:block/chicken/blazechicken",
+    "particle": "#chicken"
   },
   "elements": [
     {
