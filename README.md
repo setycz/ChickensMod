@@ -62,3 +62,7 @@ Original mod and textures © 2016 setycz, distributed under the MIT license in [
 ## 0.1.2 texture fix
 
 Item and block textures now use the modern `textures/item/` and `textures/block/` atlas directories. This fixes missing checkerboard icons and henhouse block textures. `python3 scripts/check_assets.py` checks custom model texture paths before every CI build. Entity and screen textures remain in their direct texture locations.
+
+## Roost companion
+
+[Roost for Fabric 26.3](companions/roost/README.md) adds the Chicken Catcher, captured chicken items, Roost, Chicken Breeder, and Roost Collector as a separate mod jar compatible with all 42 breeds.

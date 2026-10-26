@@ -26,7 +26,19 @@ jobs:
           ./gradlew -PregressionTests=true runRegressionServer --no-daemon | tee regression.log
           grep -q 'CHICKENS REGRESSION OK' regression.log
           ! grep -q 'CHICKENS REGRESSION FAILED' regression.log
+      - name: Roost assets and build
+        run: |
+          python3 companions/roost/scripts/check_assets.py
+          ./gradlew -p companions/roost build --no-daemon
+      - name: Roost dedicated server regression
+        run: |
+          set -o pipefail
+          ./gradlew -p companions/roost -PregressionTests=true runRegressionServer --no-daemon | tee roost-regression.log
+          grep -q 'ROOST REGRESSION OK' roost-regression.log
+          ! grep -q 'ROOST REGRESSION FAILED' roost-regression.log
       - uses: actions/upload-artifact@v4
         with:
           name: chickens-fabric-26.3
-          path: build/libs/*.jar
+          path: |
+            build/libs/*.jar
+            companions/roost/build/libs/*.jar

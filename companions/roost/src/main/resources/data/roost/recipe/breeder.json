@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "www",
+    "wsw",
+    "hhh"
+  ],
+  "key": {
+    "w": "#minecraft:planks",
+    "s": "minecraft:wheat_seeds",
+    "h": "minecraft:hay_block"
+  },
+  "result": {
+    "id": "roost:breeder"
+  }
+}
