@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "chickens:items/analyzer"
+    "layer0": "chickens:item/analyzer"
   }
 }

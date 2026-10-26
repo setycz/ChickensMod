@@ -58,3 +58,7 @@ Run `./gradlew -PregressionTests=true runRegressionServer` for the headless regr
 The initial port was compiled for both client and server and exercised on a dedicated Minecraft 26.3 server with Fabric Loader 0.19.5 and Fabric API 0.160.7+26.3. Regression coverage includes all breed registrations, breeding and stats, persistence, collection/fuel boundaries, live production, death loot, liquid transfer transactions, dispenser behavior, menu restrictions, live fuel synchronization, shift-clicking, full player inventories, and breaking a stocked henhouse. Client visuals still need an in-game check.
 
 Original mod and textures © 2016 setycz, distributed under the MIT license in [LICENSE.txt](LICENSE.txt).
+
+## 0.1.2 texture fix
+
+Item and block textures now use the modern `textures/item/` and `textures/block/` atlas directories. This fixes missing checkerboard icons and henhouse block textures. `python3 scripts/check_assets.py` checks custom model texture paths before every CI build. Entity and screen textures remain in their direct texture locations.

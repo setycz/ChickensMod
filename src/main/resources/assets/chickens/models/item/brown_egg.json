@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "chickens:items/colored_egg"
+    "layer0": "chickens:item/colored_egg"
   }
 }

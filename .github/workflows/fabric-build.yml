@@ -18,6 +18,7 @@ jobs:
           java-version: '25'
       - uses: gradle/actions/setup-gradle@v4
       - run: chmod +x gradlew
+      - run: python3 scripts/check_assets.py
       - run: ./gradlew build --no-daemon
       - name: Dedicated server regression
         run: |
