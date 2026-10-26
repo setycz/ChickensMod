@@ -22,17 +22,36 @@ public final class ChickenItem extends Item {
     public static int stat(ItemStack stack,String key) { return Math.clamp(data(stack).getIntOr(key,1),1,10); }
     /** Entity runtime state is not part of a portable chicken's identity. */
     private static final java.util.Set<String> TRANSIENT=java.util.Set.of(
-        "UUID","leash","Leash","Pos","Motion","Rotation","FallDistance","OnGround","Air",
+        "UUID","leash","Leash","Pos","Motion","Rotation","FallDistance","fall_distance","OnGround","Air",
         "PortalCooldown","LayTime","EggLayTime","Brain","InLove","LoveCause","ForcedAge",
         "HurtTime","HurtByTimestamp","DeathTime","Fire","TicksFrozen","FallFlying","LeftHanded",
         "Analyzed","invulnerable_time","last_hurt_by_player","last_hurt_by_player_memory_time",
         "last_hurt_by_mob","ticks_since_last_hurt_by_mob","current_impulse_context",
-        "current_impulse_context_reset_grace_time");
+        "current_impulse_context_reset_grace_time","current_explosion_impact_pos","sound_variant");
     public static boolean normalize(ItemStack stack) {
         var bird=bird(stack);if(bird==null)return false;
         var tag=data(stack);
-        if(tag.getIntOr("RoostDataVersion",0)==1)return false;
+        if(tag.getIntOr("RoostDataVersion",0)==2)return false;
         for(String key:TRANSIENT)tag.remove(key);
+        // Natural spawns have a random follow-range bonus unrelated to chicken stats.
+        // Keep custom attributes/modifiers, but omit default values and that bonus.
+        var attributes=tag.getListOrEmpty("attributes");
+        var defaults=net.minecraft.world.entity.ai.attributes.DefaultAttributes.getSupplier(EntityTypes.CHICKEN);
+        for(int i=attributes.size()-1;i>=0;i--) {
+            var attribute=attributes.getCompoundOrEmpty(i);var modifiers=attribute.getListOrEmpty("modifiers");
+            for(int j=modifiers.size()-1;j>=0;j--)
+                if(modifiers.getCompoundOrEmpty(j).getStringOr("id","").equals("minecraft:random_spawn_bonus"))modifiers.remove(j);
+            if(modifiers.isEmpty())attribute.remove("modifiers");
+            var key=net.minecraft.resources.Identifier.tryParse(attribute.getStringOr("id",""));
+            var holder=key==null?java.util.Optional.<net.minecraft.core.Holder.Reference<net.minecraft.world.entity.ai.attributes.Attribute>>empty():net.minecraft.core.registries.BuiltInRegistries.ATTRIBUTE.get(key);
+            if(modifiers.isEmpty() && holder.isPresent() && defaults.hasAttribute(holder.get()) && attribute.getDoubleOr("base",0)==defaults.getBaseValue(holder.get()))attributes.remove(i);
+        }
+        if(attributes.isEmpty())tag.remove("attributes");
+        for(String key:java.util.List.of("AgeLocked","CanPickUpLoot","Invulnerable","IsChickenJockey","PersistenceRequired","NoAI","NoGravity","Silent","Glowing","CustomNameVisible","HasVisualFire"))
+            if(!tag.getBooleanOr(key,false))tag.remove(key);
+        if(tag.getFloatOr("Health",4)==4)tag.remove("Health");
+        if(tag.getFloatOr("AbsorptionAmount",0)==0)tag.remove("AbsorptionAmount");
+        if(tag.getStringOr("variant","").equals("minecraft:temperate"))tag.remove("variant");
         // Keep baby age, but discard an adult's temporary breeding cooldown.
         if(tag.getIntOr("Age",0)>=0)tag.remove("Age");
         if(bird.breed!=null) {
@@ -40,7 +59,7 @@ public final class ChickenItem extends Item {
             // Resource breed textures override vanilla chicken appearance variants.
             tag.remove("variant");
         }
-        tag.putInt("RoostDataVersion",1);
+        tag.putInt("RoostDataVersion",2);
         stack.set(DataComponents.CUSTOM_DATA,CustomData.of(tag));
         return true;
     }
