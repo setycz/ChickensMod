@@ -37,6 +37,9 @@ public final class RoostRegression implements ModInitializer {
   var player=new Player(level,new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(),"RoostTest")){public net.minecraft.world.level.GameType gameMode(){return net.minecraft.world.level.GameType.SURVIVAL;}};
   check(RoostMod.capture(player,chicken,level) && chicken.isRemoved(),"catcher transfers one adult and removes original");
   int n=0;for(int i=0;i<36;i++)if(ChickenItem.bird(player.getInventory().getItem(i))!=null)n+=player.getInventory().getItem(i).getCount();check(n==1,"catcher creates exactly one captured chicken");
+  var leashed=EntityTypes.CHICKEN.create(level,EntitySpawnReason.COMMAND);leashed.setLeashedTo(player,false);
+  var portable=ChickenItem.capture(leashed,level);var unleashed=ChickenItem.bird(portable).entity(portable,level);
+  check(unleashed.getLeashData()==null && !ChickenItem.data(portable).contains("leash") && !ChickenItem.data(portable).contains("Leash"),"capture never stores a reusable lead connection");
   check(!RoostMod.capture(player,chicken,level),"catching an already removed chicken cannot duplicate it");
   var baby=EntityTypes.CHICKEN.create(level,EntitySpawnReason.COMMAND);baby.setBaby(true);check(!RoostMod.capture(player,baby,level),"catcher rejects babies");
   var full=EntityTypes.CHICKEN.create(level,EntitySpawnReason.COMMAND);full.setPos(1,101,0);level.addFreshEntity(full);

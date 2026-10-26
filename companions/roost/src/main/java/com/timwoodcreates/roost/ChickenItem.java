@@ -25,7 +25,7 @@ public final class ChickenItem extends Item {
         ItemStack stack=new ItemStack(item);
         var out=TagValueOutput.createWithContext(ProblemReporter.DISCARDING,level.registryAccess());
         chicken.saveWithoutId(out);var tag=out.buildResult();
-        for(String key:java.util.List.of("UUID","Pos","Motion","Rotation","FallDistance","OnGround","Air","PortalCooldown","LayTime","EggLayTime"))tag.remove(key);
+        for(String key:java.util.List.of("UUID","leash","Leash","Pos","Motion","Rotation","FallDistance","OnGround","Air","PortalCooldown","LayTime","EggLayTime"))tag.remove(key);
         // Store the entity data without its identity or location; identical portable chickens stack.
         stack.set(DataComponents.CUSTOM_DATA,CustomData.of(tag));
         if(chicken.hasCustomName())stack.set(DataComponents.CUSTOM_NAME,chicken.getCustomName());
