@@ -30,11 +30,13 @@ public final class ChickensMod implements ModInitializer {
     public static final Map<String,Block> HENHOUSES=new LinkedHashMap<>();
     public static BlockEntityType<HenhouseBlockEntity> HENHOUSE_ENTITY;
     public static EntityType<ColoredEgg> COLORED_EGG_ENTITY;
+    public static net.minecraft.world.inventory.MenuType<HenhouseMenu> HENHOUSE_MENU;
     public static Item ANALYZER,WATER_EGG,LAVA_EGG;
     public static Identifier id(String path){return Identifier.fromNamespaceAndPath("chickens",path);}
     private static Item.Properties props(String path){return new Item.Properties().setId(ResourceKey.create(Registries.ITEM,id(path)));}
     private static <T extends Item> T item(String path,T item){return Registry.register(BuiltInRegistries.ITEM,id(path),item);}
     @Override public void onInitialize(){
+        HENHOUSE_MENU=Registry.register(BuiltInRegistries.MENU,id("henhouse"),new net.minecraft.world.inventory.MenuType<>(HenhouseMenu::new,net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
         WATER_EGG=item("water_egg",new LiquidEggItem(Fluids.WATER,props("water_egg").stacksTo(16)));
         LAVA_EGG=item("lava_egg",new LiquidEggItem(Fluids.LAVA,props("lava_egg").stacksTo(16)));
         for(Item egg:List.of(WATER_EGG,LAVA_EGG)) {

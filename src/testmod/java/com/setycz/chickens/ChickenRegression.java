@@ -102,7 +102,30 @@ public final class ChickenRegression implements ModInitializer {
   check(smart.isLeashed() && smart.getLeashHolder()==invPlayer,"book conversion preserves the lead connection");smart.discard();
   var menu=new HenhouseMenu(1,invPlayer.getInventory(),h);
   check(menu.getSlot(0).mayPlace(new ItemStack(Items.HAY_BLOCK)) && !menu.getSlot(0).mayPlace(new ItemStack(Items.DIAMOND)),"menu fuel rejects non-hay");
-  check(!menu.getSlot(1).mayPlace(new ItemStack(Items.DIRT)) && !menu.getSlot(2).mayPlace(new ItemStack(Items.IRON_INGOT)) && !menu.getSlot(11).isActive(),"output and unused GUI slots reject insertion");
+  check(!menu.getSlot(1).mayPlace(new ItemStack(Items.DIRT)) && !menu.getSlot(2).mayPlace(new ItemStack(Items.IRON_INGOT)),"output GUI slots reject insertion");
+  check(menu.slots.size()==47 && menu.getSlot(0).x==25 && menu.getSlot(0).y==19 && menu.getSlot(2).x==98 && menu.getSlot(10).y==53,"original eleven-slot layout and full player inventory are exposed");
+  var clientMenu=new HenhouseMenu(2,invPlayer.getInventory());
+  menu.addSlotListener(new net.minecraft.world.inventory.ContainerListener(){
+   public void slotChanged(net.minecraft.world.inventory.AbstractContainerMenu m,int index,ItemStack stack){}
+   public void dataChanged(net.minecraft.world.inventory.AbstractContainerMenu m,int index,int value){clientMenu.setData(index,value);}
+  });
+  menu.broadcastChanges();check(clientMenu.fuelRemaining()==h.energy(),"opening menu synchronizes initial remaining fuel");
+  h.collect(new ItemStack(Items.IRON_INGOT,10));menu.broadcastChanges();
+  check(clientMenu.fuelRemaining()==87 && clientMenu.fuelPixels()==49,"fuel indicator follows live server collection");
+  clientMenu.setData(0,100);check(clientMenu.fuelPixels()==57,"full fuel fills the original 57-pixel bar");
+  clientMenu.setData(0,0);check(clientMenu.fuelPixels()==0,"empty fuel clears the bar");
+  clientMenu.setData(0,1000);check(clientMenu.fuelRemaining()==100,"client fuel display clamps malformed values");
+  h.setItem(0,ItemStack.EMPTY);invPlayer.getInventory().setItem(9,new ItemStack(Items.HAY_BLOCK,5));
+  menu.quickMoveStack(invPlayer,11);
+  check(h.getItem(0).getCount()==5 && invPlayer.getInventory().getItem(9).isEmpty(),"shift-click hay moves only to fuel slot");
+  int beforeOutput=output(h);invPlayer.getInventory().setItem(9,new ItemStack(Items.DIAMOND,4));menu.quickMoveStack(invPlayer,11);
+  check(output(h)==beforeOutput && invPlayer.getInventory().getItem(0).is(Items.DIAMOND),"shift-click other items switches player rows without inserting into outputs");
+  invPlayer.getInventory().clearContent();int before=output(h);menu.quickMoveStack(invPlayer,2);
+  check(output(h)==0 && invPlayer.getInventory().getItem(8).getCount()==before,"shift-click output transfers exact stack to player");
+  for(int slot=0;slot<36;slot++)invPlayer.getInventory().setItem(slot,new ItemStack(Items.DIAMOND,64));
+  h.setItem(2,new ItemStack(Items.IRON_INGOT,3));
+  check(menu.quickMoveStack(invPlayer,2).isEmpty() && h.getItem(2).getCount()==3,"full player inventory leaves henhouse output intact");
+  invPlayer.getInventory().clearContent();
   h.setItem(0,new ItemStack(Items.HAY_BLOCK,2));h.setItem(2,new ItemStack(Items.IRON_INGOT,3));
   for(var entity:level.getEntitiesOfClass(ItemEntity.class,new AABB(p).inflate(8)))entity.discard();
   level.removeBlock(p,false);

@@ -18,7 +18,7 @@ public final class HenhouseBlockEntity extends BaseContainerBlockEntity implemen
     private NonNullList<ItemStack> items=NonNullList.withSize(27,ItemStack.EMPTY);
     private int energy;
     public HenhouseBlockEntity(BlockPos pos,BlockState state) { super(ChickensMod.HENHOUSE_ENTITY,pos,state); }
-    @Override protected Component getDefaultName() { return Component.literal("Henhouse — Hay | Dirt | Output"); }
+    @Override protected Component getDefaultName() { return Component.translatable("container.chickens.henhouse"); }
     @Override public int getContainerSize() { return 27; }
     @Override protected NonNullList<ItemStack> getItems() { return items; }
     @Override protected void setItems(NonNullList<ItemStack> value) { items=value; }

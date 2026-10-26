@@ -107,5 +107,11 @@
   "block.chickens.henhouse_birch": "Birch Henhouse",
   "block.chickens.henhouse_dark_oak": "Dark Oak Henhouse",
   "block.chickens.henhouse_jungle": "Jungle Henhouse",
-  "block.chickens.henhouse_spruce": "Spruce Henhouse"
+  "block.chickens.henhouse_spruce": "Spruce Henhouse",
+  "container.chickens.henhouse": "Henhouse",
+  "gui.chickens.fuel.remaining": "%s items remaining before another hay bale",
+  "gui.chickens.fuel.ready": "Ready: the next hay bale collects 100 items",
+  "gui.chickens.fuel.empty": "Add hay bales to collect chicken resources",
+  "gui.chickens.fuel.compost_full": "Dirt output is full \u2014 empty it to use more hay",
+  "gui.chickens.fuel.hay": "Hay bales stored: %s"
 }

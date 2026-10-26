@@ -24,7 +24,7 @@ Craft a henhouse with eight matching wood planks surrounding a hay bale. Oak, ac
 
 Resource chickens within five blocks on each axis send production to the closest loaded henhouse with fuel and space. No terrain is loaded to perform collection. One hay bale collects 100 items and then produces one dirt.
 
-The henhouse uses the vanilla chest screen: slot 1 is hay, slot 2 is dirt output, and slots 3–11 hold collected resources. Remaining screen slots are unused and reject insertion. Output slots also reject manual insertion. Hoppers feed hay from the top and extract dirt/resources from other sides. If storage is full or unavailable, the exact uncollected remainder drops beside the chicken.
+The henhouse has its original dedicated screen: hay input at the upper left, dirt output below it, nine resource slots on the right, and a live fuel bar between them. Hover over the fuel bar to see how many items remain before another hay bale is needed, the stored hay count, and whether more hay or dirt-output space is needed. Output slots reject manual insertion. Shift-clicking hay inserts it into the fuel slot; shift-clicking resources returns them to the player inventory. Other items stay in the player inventory. Hoppers feed hay from the top and extract dirt/resources from other sides. If storage is full or unavailable, the exact uncollected remainder drops beside the chicken.
 
 Breaking a henhouse drops its inventory. Partially used hay energy belongs to the placed henhouse and is lost when it is broken.
 
@@ -55,6 +55,6 @@ With Java 25 selected, run `./gradlew build` (Windows: `gradlew.bat build`). The
 
 Run `./gradlew -PregressionTests=true runRegressionServer` for the headless regression mod. It creates an isolated flat world, executes checks, and stops the server. Success prints `CHICKENS REGRESSION OK`; failure prints `CHICKENS REGRESSION FAILED`. The regression mod is excluded from the release jar.
 
-The initial port was compiled for both client and server and exercised on a dedicated Minecraft 26.3 server with Fabric Loader 0.19.5 and Fabric API 0.160.7+26.3. Regression coverage includes all breed registrations, breeding and stats, persistence, collection/fuel boundaries, live production, death loot, liquid transfer transactions, dispenser behavior, menu restrictions, and breaking a stocked henhouse. Client visuals still need an in-game check.
+The initial port was compiled for both client and server and exercised on a dedicated Minecraft 26.3 server with Fabric Loader 0.19.5 and Fabric API 0.160.7+26.3. Regression coverage includes all breed registrations, breeding and stats, persistence, collection/fuel boundaries, live production, death loot, liquid transfer transactions, dispenser behavior, menu restrictions, live fuel synchronization, shift-clicking, full player inventories, and breaking a stocked henhouse. Client visuals still need an in-game check.
 
 Original mod and textures © 2016 setycz, distributed under the MIT license in [LICENSE.txt](LICENSE.txt).
