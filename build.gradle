@@ -22,8 +22,8 @@ if (providers.gradleProperty('regressionTests').getOrElse('false') == 'true') {
         regression {
             java.srcDir 'src/testmod/java'
             resources.srcDir 'src/testmod/resources'
-            compileClasspath += sourceSets.main.output
-            runtimeClasspath += sourceSets.main.output
+            compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+            runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
         }
     }
     configurations {
