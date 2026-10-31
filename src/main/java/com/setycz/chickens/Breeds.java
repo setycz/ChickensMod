@@ -132,6 +132,7 @@ public final class Breeds {
         chickens.add(coalChicken);
 
         Breed brownChicken = dye(DyeColor.BROWN, "BrownChicken").setParentsNew(redChicken, greenChicken);
+        brownChicken.layItem = Items.COCOA_BEANS;
         chickens.add(brownChicken);
 
         // tier 3

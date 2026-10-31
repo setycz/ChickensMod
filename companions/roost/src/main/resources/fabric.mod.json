@@ -16,6 +16,9 @@
     ],
     "client": [
       "com.timwoodcreates.roost.client.RoostClient"
+    ],
+    "jei_mod_plugin": [
+      "com.timwoodcreates.roost.jei.RoostJeiPlugin"
     ]
   },
   "depends": {
@@ -23,6 +26,9 @@
     "java": ">=25",
     "fabricloader": ">=0.19.5",
     "fabric-api": "*",
-    "chickens": ">=0.1.3"
+    "chickens": ">=0.1.4"
+  },
+  "suggests": {
+    "jei": ">=31.17.0.103"
   }
 }
