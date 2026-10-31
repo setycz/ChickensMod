@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "wcw",
+    "whw",
+    "wow"
+  ],
+  "key": {
+    "w": "#minecraft:planks",
+    "c": "roost:vanilla_chicken",
+    "h": "minecraft:hopper",
+    "o": "minecraft:chest"
+  },
+  "result": {
+    "id": "roost:collector"
+  }
+}

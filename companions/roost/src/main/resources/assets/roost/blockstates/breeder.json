@@ -1,0 +1,120 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "roost:block/breeder",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "active": "false"
+      },
+      "apply": {
+        "model": "roost:block/breeder_empty",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "active": "true"
+      },
+      "apply": {
+        "model": "roost:block/breeder_privacy",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "roost:block/breeder",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "false"
+      },
+      "apply": {
+        "model": "roost:block/breeder_empty",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "active": "true"
+      },
+      "apply": {
+        "model": "roost:block/breeder_privacy",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "roost:block/breeder",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active": "false"
+      },
+      "apply": {
+        "model": "roost:block/breeder_empty",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "active": "true"
+      },
+      "apply": {
+        "model": "roost:block/breeder_privacy",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "roost:block/breeder",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "false"
+      },
+      "apply": {
+        "model": "roost:block/breeder_empty",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "active": "true"
+      },
+      "apply": {
+        "model": "roost:block/breeder_privacy",
+        "y": 270
+      }
+    }
+  ]
+}

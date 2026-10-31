@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/lime_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 8439583
+      }
+    ]
+  }
+}

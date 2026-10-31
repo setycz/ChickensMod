@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "chickens",
+  "version": "${version}",
+  "name": "Chickens",
+  "description": "Resource chickens, crossbreeding, stats and henhouses for Fabric 26.3.",
+  "authors": [
+    "setycz (original)",
+    "Joshua (Fabric port)"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.setycz.chickens.ChickensMod"
+    ],
+    "client": [
+      "com.setycz.chickens.client.ChickensClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}

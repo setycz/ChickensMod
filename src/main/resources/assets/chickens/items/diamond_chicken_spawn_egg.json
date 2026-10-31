@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/diamond_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 10079487
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 15135487
+      }
+    ]
+  }
+}

@@ -1,8 +1,20 @@
 {
-    "variants": {
-        "facing=north": { "model": "chickens:henhouse" },
-        "facing=south": { "model": "chickens:henhouse", "y": 180 },
-        "facing=west":  { "model": "chickens:henhouse", "y": 270 },
-        "facing=east":  { "model": "chickens:henhouse", "y": 90 }
+  "variants": {
+    "facing=north": {
+      "model": "chickens:block/henhouse",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "chickens:block/henhouse",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "chickens:block/henhouse",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "chickens:block/henhouse",
+      "y": 270
     }
+  }
 }

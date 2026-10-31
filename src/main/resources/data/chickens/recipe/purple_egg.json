@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:egg",
+    "minecraft:purple_dye"
+  ],
+  "result": {
+    "id": "chickens:purple_egg"
+  }
+}

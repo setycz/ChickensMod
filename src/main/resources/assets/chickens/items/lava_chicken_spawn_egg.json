@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/lava_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13382400
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 16776960
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "roost",
+  "version": "${version}",
+  "name": "Roost",
+  "description": "Capture, house, breed and automate resource chickens. Fabric 26.3 port.",
+  "authors": [
+    "Tim Wood, David Vierra (original)",
+    "Joshua (Fabric port)"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.timwoodcreates.roost.RoostMod"
+    ],
+    "client": [
+      "com.timwoodcreates.roost.client.RoostClient"
+    ],
+    "jei_mod_plugin": [
+      "com.timwoodcreates.roost.jei.RoostJeiPlugin"
+    ]
+  },
+  "depends": {
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabricloader": ">=0.19.5",
+    "fabric-api": "*",
+    "chickens": ">=0.1.4"
+  },
+  "suggests": {
+    "jei": ">=31.17.0.103"
+  }
+}

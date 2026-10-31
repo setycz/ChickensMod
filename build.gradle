@@ -1,112 +1,56 @@
+plugins { id 'net.fabricmc.fabric-loom' version "${loom_version}" }
+version = project.mod_version
+group = 'com.setycz.chickens'
+base { archivesName = 'chickens-fabric-26.3' }
+loom {
+ splitEnvironmentSourceSets()
+ mods { chickens { sourceSet sourceSets.main; sourceSet sourceSets.client } }
+}
+dependencies {
+ minecraft "com.mojang:minecraft:${minecraft_version}"
+ implementation "net.fabricmc:fabric-loader:${loader_version}"
+ implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+}
+java { withSourcesJar(); sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+tasks.withType(JavaCompile).configureEach { options.release = 25; options.encoding = 'UTF-8' }
+processResources { inputs.property 'version', project.version; filesMatching('fabric.mod.json') { expand 'version': project.version } }
+jar { from('LICENSE.txt') }
 
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+// The regression harness is an isolated development mod, never a release dependency.
+if (providers.gradleProperty('regressionTests').getOrElse('false') == 'true') {
+    sourceSets {
+        regression {
+            java.srcDir 'src/testmod/java'
+            resources.srcDir 'src/testmod/resources'
+            compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+            runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
         }
     }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    configurations {
+        regressionImplementation.extendsFrom implementation
+        regressionRuntimeOnly.extendsFrom runtimeOnly
     }
-}
-
-plugins {
-	id "com.matthewprenger.cursegradle" version "1.0.7"
-}
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-
-version = modversion
-group= "com.setycz.chickens" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "chickens"
-
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
-}
-
-minecraft {
-    version = mcversion + "-" + forgeversion + forgeversion_suffix
-    runDir = "run"
-
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161111"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-	
-	replace '@VERSION@', project.version
-	replace '@FORGEVERSION@', forgeversion
-}
-
-repositories {
-    mavenCentral()
-    maven { url "http://mobiusstrip.eu/maven" }
-    maven { url = "http://chickenbones.net/maven/" }
-    maven { url "http://dvs1.progwml6.com/files/maven" }
-}
-
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.6.387"
-    compile "mcp.mobius.waila:Waila:1.7.0-B3_1.9.4"
-}
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+    loom {
+        mods {
+            'chickens-regression' { sourceSet sourceSets.regression }
+        }
+        runs {
+            regressionServer {
+                server()
+                name = 'Chickens regression server'
+                source sourceSets.regression
+                runDir 'run-regression'
+                programArg '--nogui'
+            }
+        }
     }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    tasks.register('prepareRegressionServer') {
+        doLast {
+            def dir = file('run-regression')
+            dir.mkdirs()
+            new File(dir, 'eula.txt').text = 'eula=true\n'
+            new File(dir, 'server.properties').text = 'online-mode=false\nserver-ip=127.0.0.1\nserver-port=0\nlevel-type=minecraft:flat\ngenerate-structures=false\nview-distance=2\nsimulation-distance=2\n'
+        }
     }
-}
-
-curseforge {
-	apiKey = curse_token
-	project {
-		id = curse_project_id
-		changelog = file('changelog.txt')
-		releaseType = project.releaseType
-		addGameVersion '1.10.2'
-		relations {
-			optionalLibrary 'waila'
-			optionalLibrary 'just-enough-items-jei'
-		}
-	}
+    tasks.named('runRegressionServer') { dependsOn 'prepareRegressionServer' }
 }

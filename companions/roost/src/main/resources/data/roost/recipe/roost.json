@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "www",
+    "w w",
+    "hhh"
+  ],
+  "key": {
+    "w": "#minecraft:planks",
+    "h": "minecraft:hay_block"
+  },
+  "result": {
+    "id": "roost:roost"
+  }
+}

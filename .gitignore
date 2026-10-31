@@ -20,3 +20,10 @@ build
 # other
 eclipse
 run
+
+# Fabric development
+.gradle/
+build/
+run/
+run-regression/
+*.log

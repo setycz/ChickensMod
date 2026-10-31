@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/gunpowder_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 10066329
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 4210752
+      }
+    ]
+  }
+}

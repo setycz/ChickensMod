@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "e",
+    "s",
+    "f"
+  ],
+  "key": {
+    "e": "minecraft:egg",
+    "s": "minecraft:stick",
+    "f": "minecraft:feather"
+  },
+  "result": {
+    "id": "roost:catcher"
+  }
+}

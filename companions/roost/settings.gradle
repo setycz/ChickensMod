@@ -1,0 +1,2 @@
+pluginManagement { repositories { maven { url = 'https://maven.fabricmc.net/' }; mavenCentral(); gradlePluginPortal() } }
+rootProject.name='roost-fabric-26.3'

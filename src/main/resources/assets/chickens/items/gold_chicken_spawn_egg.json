@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "chickens:item/gold_chicken_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 13421568
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 16777088
+      }
+    ]
+  }
+}

@@ -1,0 +1,1760 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "roost:block/roost_box",
+        "y": 0
+      },
+      "when": {
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "roost:block/roost_box",
+        "y": 90
+      },
+      "when": {
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "roost:block/roost_box",
+        "y": 180
+      },
+      "when": {
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "roost:block/roost_box",
+        "y": 270
+      },
+      "when": {
+        "facing": "west"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "1"
+      },
+      "apply": {
+        "model": "roost:block/bird_vanilla",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "1"
+      },
+      "apply": {
+        "model": "roost:block/bird_vanilla",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "1"
+      },
+      "apply": {
+        "model": "roost:block/bird_vanilla",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "1"
+      },
+      "apply": {
+        "model": "roost:block/bird_vanilla",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "2"
+      },
+      "apply": {
+        "model": "roost:block/bird_smart",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "2"
+      },
+      "apply": {
+        "model": "roost:block/bird_smart",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "2"
+      },
+      "apply": {
+        "model": "roost:block/bird_smart",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "2"
+      },
+      "apply": {
+        "model": "roost:block/bird_smart",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "3"
+      },
+      "apply": {
+        "model": "roost:block/bird_white",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "3"
+      },
+      "apply": {
+        "model": "roost:block/bird_white",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "3"
+      },
+      "apply": {
+        "model": "roost:block/bird_white",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "3"
+      },
+      "apply": {
+        "model": "roost:block/bird_white",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "4"
+      },
+      "apply": {
+        "model": "roost:block/bird_yellow",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "4"
+      },
+      "apply": {
+        "model": "roost:block/bird_yellow",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "4"
+      },
+      "apply": {
+        "model": "roost:block/bird_yellow",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "4"
+      },
+      "apply": {
+        "model": "roost:block/bird_yellow",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "5"
+      },
+      "apply": {
+        "model": "roost:block/bird_blue",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "5"
+      },
+      "apply": {
+        "model": "roost:block/bird_blue",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "5"
+      },
+      "apply": {
+        "model": "roost:block/bird_blue",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "5"
+      },
+      "apply": {
+        "model": "roost:block/bird_blue",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "6"
+      },
+      "apply": {
+        "model": "roost:block/bird_green",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "6"
+      },
+      "apply": {
+        "model": "roost:block/bird_green",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "6"
+      },
+      "apply": {
+        "model": "roost:block/bird_green",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "6"
+      },
+      "apply": {
+        "model": "roost:block/bird_green",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "7"
+      },
+      "apply": {
+        "model": "roost:block/bird_red",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "7"
+      },
+      "apply": {
+        "model": "roost:block/bird_red",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "7"
+      },
+      "apply": {
+        "model": "roost:block/bird_red",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "7"
+      },
+      "apply": {
+        "model": "roost:block/bird_red",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "8"
+      },
+      "apply": {
+        "model": "roost:block/bird_black",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "8"
+      },
+      "apply": {
+        "model": "roost:block/bird_black",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "8"
+      },
+      "apply": {
+        "model": "roost:block/bird_black",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "8"
+      },
+      "apply": {
+        "model": "roost:block/bird_black",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "9"
+      },
+      "apply": {
+        "model": "roost:block/bird_pink",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "9"
+      },
+      "apply": {
+        "model": "roost:block/bird_pink",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "9"
+      },
+      "apply": {
+        "model": "roost:block/bird_pink",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "9"
+      },
+      "apply": {
+        "model": "roost:block/bird_pink",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "10"
+      },
+      "apply": {
+        "model": "roost:block/bird_purple",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "10"
+      },
+      "apply": {
+        "model": "roost:block/bird_purple",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "10"
+      },
+      "apply": {
+        "model": "roost:block/bird_purple",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "10"
+      },
+      "apply": {
+        "model": "roost:block/bird_purple",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "11"
+      },
+      "apply": {
+        "model": "roost:block/bird_orange",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "11"
+      },
+      "apply": {
+        "model": "roost:block/bird_orange",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "11"
+      },
+      "apply": {
+        "model": "roost:block/bird_orange",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "11"
+      },
+      "apply": {
+        "model": "roost:block/bird_orange",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "12"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_blue",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "12"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_blue",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "12"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_blue",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "12"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_blue",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "13"
+      },
+      "apply": {
+        "model": "roost:block/bird_lime",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "13"
+      },
+      "apply": {
+        "model": "roost:block/bird_lime",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "13"
+      },
+      "apply": {
+        "model": "roost:block/bird_lime",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "13"
+      },
+      "apply": {
+        "model": "roost:block/bird_lime",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "14"
+      },
+      "apply": {
+        "model": "roost:block/bird_gray",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "14"
+      },
+      "apply": {
+        "model": "roost:block/bird_gray",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "14"
+      },
+      "apply": {
+        "model": "roost:block/bird_gray",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "14"
+      },
+      "apply": {
+        "model": "roost:block/bird_gray",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "15"
+      },
+      "apply": {
+        "model": "roost:block/bird_cyan",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "15"
+      },
+      "apply": {
+        "model": "roost:block/bird_cyan",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "15"
+      },
+      "apply": {
+        "model": "roost:block/bird_cyan",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "15"
+      },
+      "apply": {
+        "model": "roost:block/bird_cyan",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "16"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_gray",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "16"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_gray",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "16"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_gray",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "16"
+      },
+      "apply": {
+        "model": "roost:block/bird_light_gray",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "17"
+      },
+      "apply": {
+        "model": "roost:block/bird_magenta",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "17"
+      },
+      "apply": {
+        "model": "roost:block/bird_magenta",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "17"
+      },
+      "apply": {
+        "model": "roost:block/bird_magenta",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "17"
+      },
+      "apply": {
+        "model": "roost:block/bird_magenta",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "18"
+      },
+      "apply": {
+        "model": "roost:block/bird_flint",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "18"
+      },
+      "apply": {
+        "model": "roost:block/bird_flint",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "18"
+      },
+      "apply": {
+        "model": "roost:block/bird_flint",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "18"
+      },
+      "apply": {
+        "model": "roost:block/bird_flint",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "19"
+      },
+      "apply": {
+        "model": "roost:block/bird_quartz",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "19"
+      },
+      "apply": {
+        "model": "roost:block/bird_quartz",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "19"
+      },
+      "apply": {
+        "model": "roost:block/bird_quartz",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "19"
+      },
+      "apply": {
+        "model": "roost:block/bird_quartz",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "20"
+      },
+      "apply": {
+        "model": "roost:block/bird_log",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "20"
+      },
+      "apply": {
+        "model": "roost:block/bird_log",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "20"
+      },
+      "apply": {
+        "model": "roost:block/bird_log",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "20"
+      },
+      "apply": {
+        "model": "roost:block/bird_log",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "21"
+      },
+      "apply": {
+        "model": "roost:block/bird_sand",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "21"
+      },
+      "apply": {
+        "model": "roost:block/bird_sand",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "21"
+      },
+      "apply": {
+        "model": "roost:block/bird_sand",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "21"
+      },
+      "apply": {
+        "model": "roost:block/bird_sand",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "22"
+      },
+      "apply": {
+        "model": "roost:block/bird_string",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "22"
+      },
+      "apply": {
+        "model": "roost:block/bird_string",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "22"
+      },
+      "apply": {
+        "model": "roost:block/bird_string",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "22"
+      },
+      "apply": {
+        "model": "roost:block/bird_string",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "23"
+      },
+      "apply": {
+        "model": "roost:block/bird_glowstone",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "23"
+      },
+      "apply": {
+        "model": "roost:block/bird_glowstone",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "23"
+      },
+      "apply": {
+        "model": "roost:block/bird_glowstone",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "23"
+      },
+      "apply": {
+        "model": "roost:block/bird_glowstone",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "24"
+      },
+      "apply": {
+        "model": "roost:block/bird_gunpowder",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "24"
+      },
+      "apply": {
+        "model": "roost:block/bird_gunpowder",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "24"
+      },
+      "apply": {
+        "model": "roost:block/bird_gunpowder",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "24"
+      },
+      "apply": {
+        "model": "roost:block/bird_gunpowder",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "25"
+      },
+      "apply": {
+        "model": "roost:block/bird_redstone",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "25"
+      },
+      "apply": {
+        "model": "roost:block/bird_redstone",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "25"
+      },
+      "apply": {
+        "model": "roost:block/bird_redstone",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "25"
+      },
+      "apply": {
+        "model": "roost:block/bird_redstone",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "26"
+      },
+      "apply": {
+        "model": "roost:block/bird_glass",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "26"
+      },
+      "apply": {
+        "model": "roost:block/bird_glass",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "26"
+      },
+      "apply": {
+        "model": "roost:block/bird_glass",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "26"
+      },
+      "apply": {
+        "model": "roost:block/bird_glass",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "27"
+      },
+      "apply": {
+        "model": "roost:block/bird_iron",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "27"
+      },
+      "apply": {
+        "model": "roost:block/bird_iron",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "27"
+      },
+      "apply": {
+        "model": "roost:block/bird_iron",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "27"
+      },
+      "apply": {
+        "model": "roost:block/bird_iron",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "28"
+      },
+      "apply": {
+        "model": "roost:block/bird_coal",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "28"
+      },
+      "apply": {
+        "model": "roost:block/bird_coal",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "28"
+      },
+      "apply": {
+        "model": "roost:block/bird_coal",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "28"
+      },
+      "apply": {
+        "model": "roost:block/bird_coal",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "29"
+      },
+      "apply": {
+        "model": "roost:block/bird_brown",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "29"
+      },
+      "apply": {
+        "model": "roost:block/bird_brown",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "29"
+      },
+      "apply": {
+        "model": "roost:block/bird_brown",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "29"
+      },
+      "apply": {
+        "model": "roost:block/bird_brown",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "30"
+      },
+      "apply": {
+        "model": "roost:block/bird_gold",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "30"
+      },
+      "apply": {
+        "model": "roost:block/bird_gold",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "30"
+      },
+      "apply": {
+        "model": "roost:block/bird_gold",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "30"
+      },
+      "apply": {
+        "model": "roost:block/bird_gold",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "31"
+      },
+      "apply": {
+        "model": "roost:block/bird_snowball",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "31"
+      },
+      "apply": {
+        "model": "roost:block/bird_snowball",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "31"
+      },
+      "apply": {
+        "model": "roost:block/bird_snowball",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "31"
+      },
+      "apply": {
+        "model": "roost:block/bird_snowball",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "32"
+      },
+      "apply": {
+        "model": "roost:block/bird_water",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "32"
+      },
+      "apply": {
+        "model": "roost:block/bird_water",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "32"
+      },
+      "apply": {
+        "model": "roost:block/bird_water",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "32"
+      },
+      "apply": {
+        "model": "roost:block/bird_water",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "33"
+      },
+      "apply": {
+        "model": "roost:block/bird_lava",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "33"
+      },
+      "apply": {
+        "model": "roost:block/bird_lava",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "33"
+      },
+      "apply": {
+        "model": "roost:block/bird_lava",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "33"
+      },
+      "apply": {
+        "model": "roost:block/bird_lava",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "34"
+      },
+      "apply": {
+        "model": "roost:block/bird_clay",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "34"
+      },
+      "apply": {
+        "model": "roost:block/bird_clay",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "34"
+      },
+      "apply": {
+        "model": "roost:block/bird_clay",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "34"
+      },
+      "apply": {
+        "model": "roost:block/bird_clay",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "35"
+      },
+      "apply": {
+        "model": "roost:block/bird_leather",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "35"
+      },
+      "apply": {
+        "model": "roost:block/bird_leather",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "35"
+      },
+      "apply": {
+        "model": "roost:block/bird_leather",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "35"
+      },
+      "apply": {
+        "model": "roost:block/bird_leather",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "36"
+      },
+      "apply": {
+        "model": "roost:block/bird_netherwart",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "36"
+      },
+      "apply": {
+        "model": "roost:block/bird_netherwart",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "36"
+      },
+      "apply": {
+        "model": "roost:block/bird_netherwart",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "36"
+      },
+      "apply": {
+        "model": "roost:block/bird_netherwart",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "37"
+      },
+      "apply": {
+        "model": "roost:block/bird_diamond",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "37"
+      },
+      "apply": {
+        "model": "roost:block/bird_diamond",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "37"
+      },
+      "apply": {
+        "model": "roost:block/bird_diamond",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "37"
+      },
+      "apply": {
+        "model": "roost:block/bird_diamond",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "38"
+      },
+      "apply": {
+        "model": "roost:block/bird_blaze",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "38"
+      },
+      "apply": {
+        "model": "roost:block/bird_blaze",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "38"
+      },
+      "apply": {
+        "model": "roost:block/bird_blaze",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "38"
+      },
+      "apply": {
+        "model": "roost:block/bird_blaze",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "39"
+      },
+      "apply": {
+        "model": "roost:block/bird_slime",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "39"
+      },
+      "apply": {
+        "model": "roost:block/bird_slime",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "39"
+      },
+      "apply": {
+        "model": "roost:block/bird_slime",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "39"
+      },
+      "apply": {
+        "model": "roost:block/bird_slime",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "40"
+      },
+      "apply": {
+        "model": "roost:block/bird_ender",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "40"
+      },
+      "apply": {
+        "model": "roost:block/bird_ender",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "40"
+      },
+      "apply": {
+        "model": "roost:block/bird_ender",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "40"
+      },
+      "apply": {
+        "model": "roost:block/bird_ender",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "41"
+      },
+      "apply": {
+        "model": "roost:block/bird_ghast",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "41"
+      },
+      "apply": {
+        "model": "roost:block/bird_ghast",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "41"
+      },
+      "apply": {
+        "model": "roost:block/bird_ghast",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "41"
+      },
+      "apply": {
+        "model": "roost:block/bird_ghast",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "42"
+      },
+      "apply": {
+        "model": "roost:block/bird_emerald",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "42"
+      },
+      "apply": {
+        "model": "roost:block/bird_emerald",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "42"
+      },
+      "apply": {
+        "model": "roost:block/bird_emerald",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "42"
+      },
+      "apply": {
+        "model": "roost:block/bird_emerald",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "bird": "43"
+      },
+      "apply": {
+        "model": "roost:block/bird_magma",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "bird": "43"
+      },
+      "apply": {
+        "model": "roost:block/bird_magma",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "bird": "43"
+      },
+      "apply": {
+        "model": "roost:block/bird_magma",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "bird": "43"
+      },
+      "apply": {
+        "model": "roost:block/bird_magma",
+        "y": 270
+      }
+    }
+  ]
+}
