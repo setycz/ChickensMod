@@ -18,15 +18,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
-/** Discovered by JEI only; no main/client initializer references JEI classes. */
+/** Loaded by the optional jei_mod_plugin entrypoint, never the mod initializers. */
 @JeiPlugin
 public final class RoostJeiPlugin implements IModPlugin {
  public record Recipe(ItemStack left,ItemStack right,ItemStack child,int weight,int total) {}
+ public record Hatching(ItemStack egg,ItemStack chicken) {}
+ public static final RecipeType<Hatching> HATCHING=RecipeType.create("roost","hatching",Hatching.class);
  public static final RecipeType<Recipe> TYPE=RecipeType.create("roost","breeding",Recipe.class);
  public Identifier getPluginUid(){return RoostMod.id("jei_breeding");}
- @Override public void registerCategories(IRecipeCategoryRegistration r){r.addRecipeCategories(new Category(r.getJeiHelpers().getGuiHelper().createDrawableItemLike(RoostMod.BLOCKS.get(1))));}
- @Override public void registerRecipes(IRecipeRegistration r){r.addRecipes(TYPE,recipes());}
+ @Override public void registerCategories(IRecipeCategoryRegistration r){r.addRecipeCategories(new Category(r.getJeiHelpers().getGuiHelper().createDrawableItemLike(RoostMod.BLOCKS.get(1))),new HatchingCategory(r.getJeiHelpers().getGuiHelper().createDrawableItemLike(Items.EGG)));}
+ @Override public void registerRecipes(IRecipeRegistration r){r.addRecipes(TYPE,recipes());r.addRecipes(HATCHING,hatchingRecipes());}
  @Override public void registerRecipeCatalysts(IRecipeCatalystRegistration r){r.addRecipeCatalyst(new ItemStack(RoostMod.BLOCKS.get(1)),TYPE);}
+ public static List<Hatching> hatchingRecipes(){
+  List<Hatching> recipes=new ArrayList<>();
+  ChickensMod.COLORED_EGGS.forEach((egg,breed)->{if(breed.enabled())recipes.add(new Hatching(new ItemStack(egg),new ItemStack(RoostMod.BIRDS.get(breed.id))));});
+  recipes.add(new Hatching(new ItemStack(Items.EGG),new ItemStack(RoostMod.BIRDS.get("vanilla"))));
+  return List.copyOf(recipes);
+ }
  public static List<Recipe> recipes(){
   List<Recipe> recipes=new ArrayList<>();Set<String> pairs=new HashSet<>();
   for(Breed child:Breeds.ALL.values()){
@@ -61,4 +69,25 @@ public final class RoostJeiPlugin implements IModPlugin {
    g.text(font,"Breeder + 2 seeds",4,46,0xFF404040,false);
   }
  }
+ static final class HatchingCategory implements IRecipeCategory<Hatching>{
+  private final IDrawable icon;HatchingCategory(IDrawable icon){this.icon=icon;}
+  public RecipeType<Hatching> getRecipeType(){return HATCHING;}
+  public Component getTitle(){return Component.literal("Hatch and Capture");}
+  public IDrawable getIcon(){return icon;}
+  public int getWidth(){return 154;}public int getHeight(){return 76;}
+  public void setRecipe(IRecipeLayoutBuilder b,Hatching r,IFocusGroup focus){
+   b.addInputSlot(4,4).addItemStack(r.egg());
+   b.addInputSlot(48,4).addItemStack(new ItemStack(RoostMod.CATCHER));
+   b.addOutputSlot(124,4).addItemStack(r.chicken());
+  }
+  public void draw(Hatching r,IRecipeSlotsView slots,GuiGraphicsExtractor g,double x,double y){
+   var font=Minecraft.getInstance().font;
+   g.text(font,"+",30,8,0xFF404040,false);g.text(font,"->",91,8,0xFF404040,false);
+   g.text(font,"Throw egg to hatch (1/8)",4,28,0xFF404040,false);
+   g.text(font,"Let the chick grow up",4,41,0xFF404040,false);
+   g.text(font,"Use Chicken Catcher",4,54,0xFF404040,false);
+   g.text(font,"Egg recipe: hover + R",4,67,0xFF404040,false);
+  }
+ }
+
 }
